@@ -7,6 +7,7 @@ import 'fields/custom_file_field.dart';
 import 'fields/custom_number_field.dart';
 import 'fields/custom_radio_field.dart';
 import 'fields/custom_text_field.dart';
+import 'fields/custom_website_field.dart';
 import 'fields/custom_whatsapp_field.dart';
 
 class KRegisteredFields {
@@ -20,6 +21,7 @@ class KRegisteredFields {
     CustomFileField(),
     CustomDateInputField(),
     CustomFieldWhatsapp(),
+    CustomFieldWebsite(),
   ];
 
   CustomField? get(String type) {

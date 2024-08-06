@@ -76,11 +76,12 @@ class CustomFieldWhatsapp extends CustomField {
           height: 14.rh(context),
         ),
         CustomTextFormField(
+          action: TextInputAction.next,
           fillColor: context.color.secondaryColor,
           borderColor: context.color.borderColor.darken(30),
           formaters: [FilteringTextInputFormatter.digitsOnly],
           keyboard: TextInputType.phone,
-          validator: required == true || phone?.isNotEmpty == true
+          validator: parameters['required'] == 1 || phone?.isNotEmpty == true
               ? CustomTextFieldValidator.phoneNumber
               : null,
           onChange: (val) {

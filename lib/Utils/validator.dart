@@ -114,8 +114,17 @@ class Validator {
           return result;
         }
       });
+      final urlPattern = RegExp(
+        r'((http|https|ftp):\/\/[^\s/$.?#].[^\s]*)',
+        caseSensitive: false,
+        multiLine: false,
+        );
+      if(!urlPattern.hasMatch(value)){
+        return 'plzValidUrlLbl'.translate(context);
+      }
+
     } else {
-      return null;
+      return 'plzValidUrlLbl'.translate(context);
     }
     return null;
   }
