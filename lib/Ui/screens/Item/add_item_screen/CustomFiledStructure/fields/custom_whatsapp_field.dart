@@ -7,9 +7,9 @@ import '../../../../../../Utils/ui_utils.dart';
 import '../../../../Widgets/DynamicField/dynamic_field.dart';
 import '../custom_field.dart';
 
-class CustomFieldText extends CustomField {
+class CustomFieldWhatsapp extends CustomField {
   @override
-  String type = "textbox";
+  String type = "whatsappfield";
   String initialValue = "";
 
   @override
