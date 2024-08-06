@@ -36,6 +36,8 @@ class Validator {
       {String? value, required BuildContext context}) {
     // return null;
 
+    value = value?.replaceFirst(RegExp(r'^0+'), '');
+
     final pattern = RegExp(r"^[0-9]{6,15}$");
     if ((value ??= "").trim().isEmpty) {
       return "pleaseEnterValidPhoneNumber".translate(context);
