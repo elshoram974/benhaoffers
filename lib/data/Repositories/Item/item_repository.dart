@@ -243,7 +243,7 @@ class ItemRepository {
   }
 
   Future<void> itemTotalClick(int id) async {
-    Map<String, dynamic> response = await Api.post(
+    await Api.post(
         url: Api.setItemTotalClickApi, parameter: {Api.itemId: id});
   }
 

@@ -515,7 +515,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                       ),
                       CustomTextFormField(
                         controller: adAdditionalDetailsController,
-                        validator: CustomTextFieldValidator.url,
+                        validator: adAdditionalDetailsController.text.isNotEmpty? CustomTextFieldValidator.url : null,
                         // prefix: Text("${Constant.currencySymbol} "),
                         // controller: _videoLinkController,
                         // isReadOnly: widget.properyDetails != null,

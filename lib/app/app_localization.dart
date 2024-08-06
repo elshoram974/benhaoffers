@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-// import 'package:eClassify/Utils/hive_utils.dart';
+import 'package:eClassify/Utils/hive_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,12 +27,12 @@ class AppLocalization {
     // value from root-bundle will be encoded string
     Map<String, dynamic> mappedJson = {};
 
-    // if (HiveUtils.getLanguage() == null ||
-    //     HiveUtils.getLanguage()['data'] == null) {
+    if (HiveUtils.getLanguage() == null ||
+        HiveUtils.getLanguage()['data'] == null) {
       mappedJson = json.decode(jsonStringValues);
-    // } else {
-    //   mappedJson = Map<String, dynamic>.from(HiveUtils.getLanguage()['data']);
-    // }
+    } else {
+      mappedJson = Map<String, dynamic>.from(HiveUtils.getLanguage()['data']);
+    }
     _localizedValues =
         mappedJson.map((key, value) => MapEntry(key, value.toString()));
   }
