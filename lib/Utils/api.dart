@@ -262,6 +262,7 @@ class Api {
           headers: headers(),
         ),
       );
+      print("res --- ${response}");
 
       var resp = response.data;
 
@@ -271,6 +272,7 @@ class Api {
 
       return Map.from(resp);
     } on DioException catch (e) {
+      print("Error: $e");
       if (e.response?.statusCode == 401) {
         userExpired();
       }
