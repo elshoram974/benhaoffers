@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Other string resources -->
+    <string name = "AppName" >Benha Offers</string>
+    <string name="default_notification_channel_id">basic_channel</string>
+</resources>

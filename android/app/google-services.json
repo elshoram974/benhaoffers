@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "831808483289",
+    "project_id": "benha-offers",
+    "storage_bucket": "benha-offers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831808483289:android:adac3196f14e8439dcf3c8",
+        "android_client_info": {
+          "package_name": "com.devetechno.benhaoffers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831808483289-74rkjegnnnqh7jb15k2ungralnde03gd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devetechno.benhaoffers",
+            "certificate_hash": "b70b3f38e57599ab7e8c2b76f150aa68e0f75b57"
+          }
+        },
+        {
+          "client_id": "831808483289-b7q4fl3jarhtume52nn4be5qpsk45dce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devetechno.benhaoffers",
+            "certificate_hash": "a0a2b7173df10e877703b9f97445a72a14209cfb"
+          }
+        },
+        {
+          "client_id": "831808483289-q93ad5r3mkvmjb05snrqq4s931osonlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzn-XycR20_eHh6xUYSAOafD3qtLry1JA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831808483289-q93ad5r3mkvmjb05snrqq4s931osonlv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
