@@ -28,7 +28,7 @@ class LocalAwsomeNotification {
     requestPermission();
 
     notification.initialize(
-        null,
+        'resource://drawable/notification_icon',
         [
           NotificationChannel(
               channelKey: Constant.notificationChannel,
