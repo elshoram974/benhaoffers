@@ -149,7 +149,7 @@ class Routes {
             print("snapshot connectionstate***${snapshot.connectionState}");
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Return a loading indicator while fetching data
-              return Scaffold(
+              return const Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),

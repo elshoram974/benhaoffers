@@ -75,12 +75,12 @@ class _BlockedUserListScreenState extends State<BlockedUserListScreen> {
                   child: ListView.builder(
                     controller: _pageScrollController,
                     itemCount: state.data.length,
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     itemBuilder: (context, index) {
                       BlockedUserModel user = state.data[index];
 
                       return Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             vertical: 0.0, horizontal: sidePadding),
                         child: Container(
                             // height: 100,

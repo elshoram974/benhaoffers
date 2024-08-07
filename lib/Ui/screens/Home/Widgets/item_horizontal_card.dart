@@ -93,7 +93,7 @@ class ItemHorizontalCard extends StatelessWidget {
                                       AppTheme.dark
                                   ? null
                                   : [
-                                      BoxShadow(
+                                      const BoxShadow(
                                         color: Color.fromARGB(12, 0, 0, 0),
                                         offset: Offset(0, 2),
                                         blurRadius: 10,
@@ -185,7 +185,7 @@ class ItemHorizontalCard extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsetsDirectional.only(
+                          padding: const EdgeInsetsDirectional.only(
                             top: 0,
                             start: 12,
                             bottom: 5,
@@ -276,7 +276,7 @@ class ItemHorizontalCard extends StatelessWidget {
                           AppTheme.dark
                           ? null
                           : [
-                        BoxShadow(
+                        const BoxShadow(
                             color: Color.fromARGB(33, 0, 0, 0),
                             offset: Offset(0, 2),
                             blurRadius: 15,

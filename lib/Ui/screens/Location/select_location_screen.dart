@@ -20,7 +20,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
     if (!serviceEnabled) {
       // Location services are not enabled.
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Location services are disabled.')),
+        const SnackBar(content: Text('Location services are disabled.')),
       );
       return;
     }
@@ -31,7 +31,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
       if (permission == LocationPermission.denied) {
         // Permissions are denied.
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Location permissions are denied')),
+          const SnackBar(content: Text('Location permissions are denied')),
         );
         return;
       }
@@ -40,7 +40,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever.
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Location permissions are permanently denied.')),
+        const SnackBar(content: Text('Location permissions are permanently denied.')),
       );
       return;
     }
@@ -80,53 +80,53 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: Text('Location'),
+        title: const Text('Location'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Sharing accurate location helps you make a quicker sale',
               style: TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 32),
-            Text(
+            const SizedBox(height: 32),
+            const Text(
               'What is the location of the car you are selling?',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _getCurrentLocation,
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black, backgroundColor: Colors.white,
-                side: BorderSide(color: Colors.grey),
-                padding: EdgeInsets.all(16),
+                side: const BorderSide(color: Colors.grey),
+                padding: const EdgeInsets.all(16),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.location_on),
-                  SizedBox(width: 8),
+                  const Icon(Icons.location_on),
+                  const SizedBox(width: 8),
                   Expanded(child: Text(_currentLocation)),
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _navigateToCountryScreen,
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black, backgroundColor: Colors.white,
-                side: BorderSide(color: Colors.grey),
-                padding: EdgeInsets.all(16),
+                side: const BorderSide(color: Colors.grey),
+                padding: const EdgeInsets.all(16),
               ),
-              child: Text('Somewhere else'),
+              child: const Text('Somewhere else'),
             ),
           ],
         ),

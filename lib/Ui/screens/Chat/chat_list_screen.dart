@@ -107,9 +107,9 @@ class _ChatListScreenState extends State<ChatListScreen>
                     context.color.textDefaultColor.withOpacity(0.5),
                 // Unselected tab text color
                 labelStyle:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 // Selected tab text style
-                labelPadding: EdgeInsets.symmetric(horizontal: 16),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
                 // Padding around the tab text
                 indicatorSize: TabBarIndicatorSize.tab,
               ),
@@ -163,7 +163,7 @@ class _ChatListScreenState extends State<ChatListScreen>
           }
           if (state is GetBuyerChatListSuccess) {
             if (state.chatedUserList.isEmpty) {
-              return NoChatFound();
+              return const NoChatFound();
             }
             return Column(
               children: [
@@ -257,7 +257,7 @@ class _ChatListScreenState extends State<ChatListScreen>
           }
           if (state is GetSellerChatListSuccess) {
             if (state.chatedUserList.isEmpty) {
-              return NoChatFound();
+              return const NoChatFound();
             }
             return Column(
               children: [

@@ -279,7 +279,7 @@ class LoginScreenState extends State<LoginScreen> {
                 backgroundColor: context.color.backgroundColor,
                 bottomNavigationBar: !isOtpSent && !sendMailClicked
                     ? termAndPolicyTxt()
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
                 body: BlocListener<LoginCubit, LoginState>(
                   listener: (context, state) {
                     if (state is LoginSuccess) {
@@ -531,7 +531,7 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   UiUtils.buildButton(context,
                       prefixWidget: Padding(
-                        padding: EdgeInsetsDirectional.only(end: 10.0),
+                        padding: const EdgeInsetsDirectional.only(end: 10.0),
                         child: UiUtils.getSvg(AppIcons.googleIcon,
                             width: 22, height: 22),
                       ),
@@ -558,7 +558,7 @@ class LoginScreenState extends State<LoginScreen> {
                   if (Platform.isIOS)
                     UiUtils.buildButton(context,
                         prefixWidget: Padding(
-                          padding: EdgeInsetsDirectional.only(end: 10.0),
+                          padding: const EdgeInsetsDirectional.only(end: 10.0),
                           child: UiUtils.getSvg(AppIcons.appleIcon,
                               width: 22, height: 22),
                         ),
@@ -592,7 +592,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget termAndPolicyTxt() {
     return Padding(
-      padding: EdgeInsetsDirectional.only(bottom: 15.0, start: 25.0, end: 25.0),
+      padding: const EdgeInsetsDirectional.only(bottom: 15.0, start: 25.0, end: 25.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,

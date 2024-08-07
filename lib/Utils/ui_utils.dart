@@ -534,7 +534,7 @@ class UiUtils {
         }),
         isAcceptContainesPush: false,
         onAccept: () async {
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(const Duration(seconds: 1), () {
             Navigator.pushNamed(context, Routes.subscriptionPackageListRoute);
           });
         },

@@ -325,14 +325,14 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                           }
                         },
                         child: Padding(
-                          padding: EdgeInsetsDirectional.only(end: 30.0),
+                          padding: const EdgeInsetsDirectional.only(end: 30.0),
                           child: Container(
                             height: 24,
                             width: 24,
                             alignment: AlignmentDirectional.center,
                             child: PopupMenuButton(
                               color: context.color.territoryColor,
-                              offset: Offset(-12, 15),
+                              offset: const Offset(-12, 15),
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(17),
@@ -544,10 +544,10 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           if (model.isAlreadyReported != null && !model.isAlreadyReported!) {
             return setReportAd();
           } else {
-            return SizedBox(); // Return an empty widget if conditions are not met
+            return const SizedBox(); // Return an empty widget if conditions are not met
           }
         } else {
-          return SizedBox(); // Return an empty widget if item is not in cubit
+          return const SizedBox(); // Return an empty widget if item is not in cubit
         }
       },
     );
@@ -578,7 +578,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
 
       if (state is FetchRelatedItemsSuccess) {
         if (state.itemModel.isEmpty || state.itemModel.length == 1) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
 
         return buildRelatedListWidget(state);
@@ -598,7 +598,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
               .size(context.font.large)
               .bold(weight: FontWeight.w600)
               .setMaxLines(lines: 1),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           GridListAdapter(
@@ -619,7 +619,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   width: 162,
                 );
               } else {
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
             },
             total: state.itemModel.length,
@@ -711,7 +711,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 }
               },
               child: AnimatedCrossFade(
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 crossFadeState: isFeaturedWidget
                     ? CrossFadeState.showFirst
                     : CrossFadeState.showSecond,
@@ -780,14 +780,14 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                     ],
                   ),
                 ),
-                secondChild: SizedBox.shrink(),
+                secondChild: const SizedBox.shrink(),
               ),
             ),
           );
         }),
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -819,10 +819,10 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 ),
               );
             } else {
-              return SizedBox();
+              return const SizedBox();
             }
           } else {
-            return SizedBox();
+            return const SizedBox();
           }
         }),
         ...List.generate(model.customFields!.length, (index) {
@@ -850,10 +850,10 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 ),
               );
             } else {
-              return SizedBox();
+              return const SizedBox();
             }
           } else {
-            return SizedBox();
+            return const SizedBox();
           }
         })
       ],
@@ -893,7 +893,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           child: Container(
               width: 50,
               height: 50,
-              margin: EdgeInsets.only(top: 2),
+              margin: const EdgeInsets.only(top: 2),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: context.color.territoryColor.withOpacity(0.1)),
@@ -936,7 +936,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             style:FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               backgroundColor: const Color(0xff1daa61),
-              fixedSize: Size.fromHeight(33),
+              fixedSize: const Size.fromHeight(33),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ) ,
             child: Text(
@@ -1532,8 +1532,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                                 shape: BoxShape.circle,
                                 color: Colors.black.withOpacity(0.5),
                               ),
-                              padding: EdgeInsets.all(12),
-                              child: Icon(
+                              padding: const EdgeInsets.all(12),
+                              child: const Icon(
                                 Icons.play_arrow,
                                 color: Colors.white,
                                 size: 25,
@@ -1680,7 +1680,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
         },
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -1796,12 +1796,12 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             //crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+              const Icon(
                 Icons.report,
                 size: 20,
                 color: Colors.red, // Icon color can be adjusted
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Expanded(
@@ -1815,7 +1815,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             ]),
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -1901,7 +1901,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           Expanded(
             flex: 3,
             child: Padding(
-              padding: EdgeInsetsDirectional.only(start: 5.0),
+              padding: const EdgeInsetsDirectional.only(start: 5.0),
               child: Text(model.address!)
                   .color(context.color.textDefaultColor.withOpacity(0.5)),
             ),
@@ -1946,7 +1946,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
               .color(context.color.textDefaultColor),
         ),
         setAddress(isDate: false),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         InkWell(
@@ -1975,7 +1975,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 mapType: MapType.normal,
                 markers: {
                   Marker(
-                    markerId: MarkerId('currentPosition'),
+                    markerId: const MarkerId('currentPosition'),
                     position: currentPosition,
                   )
                 },
@@ -2040,7 +2040,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
 
   Widget setReportAd() {
     return AnimatedCrossFade(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       crossFadeState: isShowReportAds
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
@@ -2061,12 +2061,12 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 //crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.report,
                     size: 20,
                     color: Colors.red, // Icon color can be adjusted
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Expanded(
@@ -2078,7 +2078,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                         .size(context.font.large),
                   ),
                 ]),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             BlocListener<ItemReportCubit, ItemReportState>(
               listener: (context, state) {
                 if (state is ItemReportFailure) {
@@ -2104,7 +2104,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                       context: context);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: context.color.territoryColor
@@ -2121,7 +2121,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           ],
         ),
       ),
-      secondChild: SizedBox.shrink(),
+      secondChild: const SizedBox.shrink(),
     );
   }
 
@@ -2234,7 +2234,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                       fillColor: context.color.borderColor.darken(20),
                       filled: true,
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                          const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                       hintText: "yourOffer".translate(context),
                       hintStyle: TextStyle(
                           fontWeight: FontWeight.bold,

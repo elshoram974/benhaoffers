@@ -243,7 +243,7 @@ class SearchScreenState extends State<SearchScreen>
             Navigator.pop(context);
           },
           child: Padding(
-            padding: EdgeInsetsDirectional.only(start: 18.0, top: 12),
+            padding: const EdgeInsetsDirectional.only(start: 18.0, top: 12),
             child: UiUtils.getSvg(AppIcons.arrowLeft,
                 fit: BoxFit.none, color: context.color.textDefaultColor),
           ),
@@ -292,7 +292,7 @@ class SearchScreenState extends State<SearchScreen>
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              ClipRRect(
+              const ClipRRect(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 borderRadius: BorderRadius.all(Radius.circular(15)),
                 child: CustomShimmer(height: 90, width: 90),
@@ -422,7 +422,7 @@ class SearchScreenState extends State<SearchScreen>
 
         if (items.isNotEmpty) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -448,8 +448,8 @@ class SearchScreenState extends State<SearchScreen>
                       thickness: 1.2,
                     );
                   },
-                  padding: EdgeInsets.only(top: 10),
-                  physics: NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(top: 10),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return Row(
@@ -459,7 +459,7 @@ class SearchScreenState extends State<SearchScreen>
                           size: 22,
                           color: context.color.textDefaultColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Expanded(
@@ -494,7 +494,7 @@ class SearchScreenState extends State<SearchScreen>
             ),
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );
@@ -560,7 +560,7 @@ class SearchScreenState extends State<SearchScreen>
             }
           }
 
-          return Center(child: const SomethingWentWrong());
+          return const Center(child: SomethingWentWrong());
         }
 
         if (state is SearchItemSuccess) {
@@ -585,17 +585,17 @@ class SearchScreenState extends State<SearchScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.only(start: 5.0),
+                  padding: const EdgeInsetsDirectional.only(start: 5.0),
                   child: Text("searchedItems".translate(context))
                       .color(context.color.textDefaultColor.withOpacity(0.5))
                       .size(context.font.normal),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 3,
                 ),
                 ListView.separated(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   separatorBuilder: (context, index) {
                     return Container(
                       height: 8,
@@ -676,12 +676,12 @@ class SearchScreenState extends State<SearchScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.only(start: 5.0),
+                  padding: const EdgeInsetsDirectional.only(start: 5.0),
                   child: Text("popularAds".translate(context))
                       .color(context.color.textDefaultColor.withOpacity(0.5))
                       .size(context.font.normal),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 3,
                 ),
                 ListView.separated(
@@ -691,7 +691,7 @@ class SearchScreenState extends State<SearchScreen>
                     vertical: 8,
                   ),*/
 
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   separatorBuilder: (context, index) {
                     return Container(
                       height: 8,

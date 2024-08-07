@@ -119,7 +119,7 @@ class CountriesScreenState extends State<CountriesScreen> {
               child: Container(
                   width: double.maxFinite,
                   height: 48.rh(context),
-                  margin: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   alignment: AlignmentDirectional.center,
                   decoration: BoxDecoration(
                       border: Border.all(
@@ -175,7 +175,7 @@ class CountriesScreenState extends State<CountriesScreen> {
             Navigator.pop(context);
           },
           child: Padding(
-            padding: EdgeInsetsDirectional.only(
+            padding: const EdgeInsetsDirectional.only(
               start: 18.0,
             ),
             child: UiUtils.getSvg(AppIcons.arrowLeft,
@@ -214,7 +214,7 @@ class CountriesScreenState extends State<CountriesScreen> {
           baseColor: Theme.of(context).colorScheme.shimmerBaseColor,
           highlightColor: Theme.of(context).colorScheme.shimmerHighlightColor,
           child: Container(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             width: double.maxFinite,
             height: 56,
             decoration: BoxDecoration(
@@ -416,9 +416,9 @@ class CountriesScreenState extends State<CountriesScreen> {
 
   Widget currentLocation() {
     return Padding(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Container(
-        padding: EdgeInsets.only(top: 5),
+        padding: const EdgeInsets.only(top: 5),
         color: context.color.secondaryColor,
         child: Column(
           children: [
@@ -458,7 +458,7 @@ class CountriesScreenState extends State<CountriesScreen> {
                 ),
               ),
             ),
-            Divider(
+            const Divider(
               thickness: 1.2,
               height: 10,
             ),
@@ -665,7 +665,7 @@ class CountriesScreenState extends State<CountriesScreen> {
                   }
                 }
 
-                return Center(child: const SomethingWentWrong());
+                return const Center(child: SomethingWentWrong());
               }
 
               if (state is FetchCountriesSuccess) {
@@ -703,7 +703,7 @@ class CountriesScreenState extends State<CountriesScreen> {
                           controller: controller,
                           itemCount: state.countriesModel.length,
                           padding: EdgeInsets.zero,
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           separatorBuilder: (context, index) {
                             return const Divider(
                               thickness: 1.2,

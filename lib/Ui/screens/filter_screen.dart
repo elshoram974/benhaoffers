@@ -381,7 +381,7 @@ class FilterScreenState extends State<FilterScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: moreDetailDynamicFields.map((field) {
-              if(field.customField?.type == CustomFieldWhatsapp().type || field.customField?.type == CustomFieldWebsite().type) return SizedBox();
+              if(field.customField?.type == CustomFieldWhatsapp().type || field.customField?.type == CustomFieldWebsite().type) return const SizedBox();
               field.stateUpdater(setState);
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 9.0),
@@ -390,7 +390,7 @@ class FilterScreenState extends State<FilterScreen> {
             }).toList(),
           );
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       },
     );
@@ -452,7 +452,7 @@ class FilterScreenState extends State<FilterScreen> {
         ],
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -537,7 +537,7 @@ class FilterScreenState extends State<FilterScreen> {
               );
       }));
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -574,9 +574,9 @@ class FilterScreenState extends State<FilterScreen> {
                 Padding(
                     padding: const EdgeInsetsDirectional.only(start: 15.0),
                     child: Text(name).color(color)),
-                Spacer(),
+                const Spacer(),
                 Padding(
-                  padding: EdgeInsetsDirectional.only(end: 14.0),
+                  padding: const EdgeInsetsDirectional.only(end: 14.0),
                   child: UiUtils.getSvg(
                     AppIcons.downArrow,
                   ),
@@ -648,9 +648,9 @@ class FilterScreenState extends State<FilterScreen> {
                       : Text("allCategories".translate(context)).color(
                           context.color.textDefaultColor.withOpacity(0.5)),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
-                  padding: EdgeInsetsDirectional.only(end: 14.0),
+                  padding: const EdgeInsetsDirectional.only(end: 14.0),
                   child: UiUtils.getSvg(
                     AppIcons.downArrow,
                   ),
@@ -810,9 +810,9 @@ class FilterScreenState extends State<FilterScreen> {
                   child: Text(Constant.postedSince[index].status)
                       .color(context.color.textDefaultColor.withOpacity(0.5)),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
-                  padding: EdgeInsetsDirectional.only(end: 14.0),
+                  padding: const EdgeInsetsDirectional.only(end: 14.0),
                   child: UiUtils.getSvg(AppIcons.downArrow,
                       color: context.color.textDefaultColor),
                 ),

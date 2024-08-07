@@ -405,7 +405,7 @@ class ChatMessageState extends State<ChatMessage>
                         builder: (context, state) {
                           if (state is SendMessageInProgress) {
                             return Padding(
-                              padding: EdgeInsetsDirectional.only(
+                              padding: const EdgeInsetsDirectional.only(
                                   end: 5.0, bottom: 2),
                               child: Icon(
                                 Icons.watch_later_outlined,
@@ -417,7 +417,7 @@ class ChatMessageState extends State<ChatMessage>
 
                           if (state is SendMessageFailed) {
                             return Padding(
-                              padding: EdgeInsetsDirectional.only(
+                              padding: const EdgeInsetsDirectional.only(
                                   end: 5.0, bottom: 2),
                               child: Icon(
                                 Icons.error,
@@ -437,7 +437,7 @@ class ChatMessageState extends State<ChatMessage>
                 height: 5,
               ),
               Padding(
-                padding: EdgeInsetsDirectional.only(end: 3.0),
+                padding: const EdgeInsetsDirectional.only(end: 3.0),
                 child: Text(
                   (DateTime.parse(widget.createdAt))
                       .toLocal()

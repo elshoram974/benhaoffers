@@ -221,7 +221,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                       ),
                       UiUtils.buildButton(context,
                           prefixWidget: Padding(
-                            padding: EdgeInsetsDirectional.only(end: 10.0),
+                            padding: const EdgeInsetsDirectional.only(end: 10.0),
                             child: UiUtils.getSvg(AppIcons.googleIcon,
                                 width: 22, height: 22),
                           ),
@@ -249,7 +249,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                       if (Platform.isIOS)
                         UiUtils.buildButton(context,
                             prefixWidget: Padding(
-                              padding: EdgeInsetsDirectional.only(end: 10.0),
+                              padding: const EdgeInsetsDirectional.only(end: 10.0),
                               child: UiUtils.getSvg(AppIcons.appleIcon,
                                   width: 22, height: 22),
                             ),
@@ -285,7 +285,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
 
   Widget termAndPolicyTxt() {
     return Padding(
-      padding: EdgeInsetsDirectional.only(bottom: 15.0, start: 25.0, end: 25.0),
+      padding: const EdgeInsetsDirectional.only(bottom: 15.0, start: 25.0, end: 25.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,

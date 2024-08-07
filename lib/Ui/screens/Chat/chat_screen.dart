@@ -358,10 +358,10 @@ class _ChatScreenState extends State<ChatScreen>
                                                     }
                                                   },
                                                 ))
-                                            : SizedBox();
+                                            : const SizedBox();
                                       });
                                     })),
-                                SizedBox(
+                                const SizedBox(
                                   height: 8,
                                 ),
                                 Row(
@@ -579,7 +579,7 @@ class _ChatScreenState extends State<ChatScreen>
                   Navigator.pop(context);
                 },
                 child: Padding(
-                  padding: EdgeInsetsDirectional.only(start: 20),
+                  padding: const EdgeInsetsDirectional.only(start: 20),
                   child: UiUtils.getSvg(AppIcons.arrowLeft,
                       fit: BoxFit.none,
                       color: context.color.textDefaultColor),
@@ -600,7 +600,7 @@ class _ChatScreenState extends State<ChatScreen>
                     thickness: 1,
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+                    margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
                     color: context.color.secondaryColor,
                     height: 63,
                     child: Row(
@@ -646,12 +646,12 @@ class _ChatScreenState extends State<ChatScreen>
                           ),
                         ),
 
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         // Adding horizontal space between items
                         Expanded(
                           child: Container(
                             color: context.color.secondaryColor,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Row(
                               mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
@@ -668,7 +668,7 @@ class _ChatScreenState extends State<ChatScreen>
                                 ),
                                 Padding(
                                   padding:
-                                      EdgeInsetsDirectional.only(start: 15.0),
+                                      const EdgeInsetsDirectional.only(start: 15.0),
                                   child: Text(
                                     Constant.currencySymbol.toString() +
                                         widget.itemPrice
@@ -686,7 +686,7 @@ class _ChatScreenState extends State<ChatScreen>
                     ),
                   ),
                   isNotificationPermissionGranted
-                      ? SizedBox.shrink()
+                      ? const SizedBox.shrink()
                       : FittedBox(
                           fit: BoxFit.cover,
                           child: Container(
@@ -759,14 +759,14 @@ class _ChatScreenState extends State<ChatScreen>
                             }
                           },
                           child: Padding(
-                            padding: EdgeInsetsDirectional.only(end: 30.0),
+                            padding: const EdgeInsetsDirectional.only(end: 30.0),
                             child: Container(
                               height: 24,
                               width: 24,
                               alignment: AlignmentDirectional.center,
                               child: PopupMenuButton(
                                 color: context.color.secondaryColor,
-                                offset: Offset(-12, 15),
+                                offset: const Offset(-12, 15),
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(17),
@@ -1112,13 +1112,13 @@ class _ChatScreenState extends State<ChatScreen>
         alignment: AlignmentDirectional.topEnd,
         child: Container(
             height: 71,
-            margin: EdgeInsetsDirectional.only(top: 15, bottom: 15, end: 15),
-            padding: EdgeInsets.all(12),
+            margin: const EdgeInsetsDirectional.only(top: 15, bottom: 15, end: 15),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
                 border: Border.all(
                     color: context.color.territoryColor.withOpacity(0.3)),
                 color: context.color.territoryColor.withOpacity(0.17),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(0),
                     topLeft: Radius.circular(8),
                     bottomRight: Radius.circular(8),
@@ -1144,13 +1144,13 @@ class _ChatScreenState extends State<ChatScreen>
         alignment: AlignmentDirectional.topStart,
         child: Container(
             height: 71,
-            margin: EdgeInsetsDirectional.only(top: 15, bottom: 15, start: 15),
-            padding: EdgeInsets.all(12),
+            margin: const EdgeInsetsDirectional.only(top: 15, bottom: 15, start: 15),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
                 border: Border.all(
                     color: context.color.territoryColor.withOpacity(0.3)),
                 color: context.color.territoryColor.withOpacity(0.17),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(8),
                     topLeft: Radius.circular(0),
                     bottomRight: Radius.circular(8),

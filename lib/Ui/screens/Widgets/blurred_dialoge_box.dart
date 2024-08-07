@@ -116,7 +116,7 @@ class BlurredDialogBox extends StatelessWidget implements BlurDialoge {
                     title != null
                         ? Text(title!.firstUpperCase(),
                             textAlign: TextAlign.center)
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                   ],
                 ),
                 content: content,
