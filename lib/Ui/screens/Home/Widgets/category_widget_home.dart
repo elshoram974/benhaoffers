@@ -4,6 +4,7 @@ import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../data/model/category_model.dart';
 import '../../../../exports/main_export.dart';
 import '../../Widgets/Errors/no_data_found.dart';
 import '../../main_activity.dart';
@@ -16,8 +17,13 @@ class CategoryWidgetHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FetchCategoryCubit, FetchCategoryState>(
       builder: (context, state) {
+        final List<CategoryModel> list = [];
         if (state is FetchCategorySuccess) {
-          if (state.categories.isNotEmpty) {
+          list.addAll(state.categories);
+          if (state.categories.length > 15)
+            list.removeRange(15, state.categories.length);
+            
+          if (list.isNotEmpty) {
             return Padding(
               padding: const EdgeInsets.only(top: 12),
               child: SizedBox(
@@ -48,41 +54,35 @@ class CategoryWidgetHome extends StatelessWidget {
                       ? Axis.vertical
                       : Axis.horizontal,
                   itemBuilder: (context, index) {
-                    if (index == state.categories.length) {
+                    if (index == list.length) {
                       return moreCategory(context);
                     } else {
                       return CategoryHomeCard(
-                        title: state.categories[index].name!,
-                        url: state.categories[index].url!,
+                        title: list[index].name!,
+                        url: list[index].url!,
                         onTap: () {
-                          if (state.categories[index].children!.isNotEmpty) {
+                          if (list[index].children!.isNotEmpty) {
                             Navigator.pushNamed(
                                 context, Routes.subCategoryScreen,
                                 arguments: {
-                                  "categoryList":
-                                      state.categories[index].children,
-                                  "catName": state.categories[index].name,
-                                  "catId": state.categories[index].id,
-                                  "categoryIds": [
-                                    state.categories[index].id.toString()
-                                  ]
+                                  "categoryList": list[index].children,
+                                  "catName": list[index].name,
+                                  "catId": list[index].id,
+                                  "categoryIds": [list[index].id.toString()]
                                 });
                           } else {
                             Navigator.pushNamed(context, Routes.itemsList,
                                 arguments: {
-                                  'catID':
-                                      state.categories[index].id.toString(),
-                                  'catName': state.categories[index].name,
-                                  "categoryIds": [
-                                    state.categories[index].id.toString()
-                                  ]
+                                  'catID': list[index].id.toString(),
+                                  'catName': list[index].name,
+                                  "categoryIds": [list[index].id.toString()]
                                 });
                           }
                         },
                       );
                     }
                   },
-                  itemCount: state.categories.length + 1,
+                  itemCount: list.length + 1,
                 ),
               ),
             );
