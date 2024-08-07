@@ -195,7 +195,7 @@ class HomeScreenState extends State<HomeScreen>
                                 section: section,
                               );
                             } else {
-                              return SizedBox.shrink();
+                              return const SizedBox.shrink();
                             }
                           }),
                           if (state.sections.isNotEmpty &&
@@ -205,7 +205,7 @@ class HomeScreenState extends State<HomeScreen>
                                   borderRadius: BorderRadius.circular(15),
                                   color: context.color.secondaryColor),
                               height: 85,
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                   horizontal: sidePadding, vertical: 10),
 
                               // Height of the banner ad container
@@ -214,7 +214,7 @@ class HomeScreenState extends State<HomeScreen>
                                   AdBannerWidget(), // Custom widget for banner ad
                             )
                           ] else ...[
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             )
                           ],
@@ -222,7 +222,7 @@ class HomeScreenState extends State<HomeScreen>
                       );
                     }
 
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   },
                 ),
                 const AllItemsWidget(),
@@ -246,20 +246,20 @@ class HomeScreenState extends State<HomeScreen>
         ),
         child: Column(
           children: [
-            ClipRRect(
+            const ClipRRect(
               clipBehavior: Clip.antiAliasWithSaveLayer,
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: CustomShimmer(height: 52, width: double.maxFinite),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            ClipRRect(
+            const ClipRRect(
               clipBehavior: Clip.antiAliasWithSaveLayer,
               borderRadius: BorderRadius.all(Radius.circular(10)),
               child: CustomShimmer(height: 170, width: double.maxFinite),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Container(
@@ -267,7 +267,7 @@ class HomeScreenState extends State<HomeScreen>
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: 10,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -306,7 +306,7 @@ class HomeScreenState extends State<HomeScreen>
             const SizedBox(
               height: 18,
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomShimmer(
@@ -321,11 +321,11 @@ class HomeScreenState extends State<HomeScreen>
             ),
             Container(
               height: 214,
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: 5,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -370,11 +370,11 @@ class HomeScreenState extends State<HomeScreen>
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20),
               child: GridView.builder(
                 shrinkWrap: true,
                 itemCount: 16,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,7 +409,7 @@ class HomeScreenState extends State<HomeScreen>
                     ],
                   );
                 },
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisExtent: 215,
                   crossAxisCount: 2, // Single column grid
                   mainAxisSpacing: 15.0,
@@ -458,7 +458,6 @@ class AllItemsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FetchHomeAllItemsCubit, FetchHomeAllItemsState>(
       builder: (context, state) {
-        print("all item state****$state");
         if (state is FetchHomeAllItemsSuccess) {
           if (state.items.isNotEmpty) {
             return Column(
@@ -480,7 +479,7 @@ class AllItemsWidget extends StatelessWidget {
                   type: ListUiType.Mixed,
                   mixMode: true,
                   crossAxisCount: 2,
-                  height: MediaQuery.of(context).size.height / 3.5.rh(context),
+                  height: MediaQuery.of(context).size.height / 3.rh(context),
                   builder: (context, int index, bool isGrid) {
                     ItemModel? item = state.items[index];
 
@@ -516,19 +515,19 @@ class AllItemsWidget extends StatelessWidget {
               ],
             );
           } else {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
         }
         if (state is FetchHomeAllItemsFail) {
           if (state.error is ApiException) {
             if (state.error.error == "no-internet") {
-              return Center(child: NoInternet());
+              return const Center(child: NoInternet());
             }
           }
 
           return const SomethingWentWrong();
         }
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
     );
   }

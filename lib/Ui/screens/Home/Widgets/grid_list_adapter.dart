@@ -46,7 +46,7 @@ class GridListAdapter extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) => builder(context, index, false),
           itemCount: total,
-          separatorBuilder: listSaperator ?? ((c, i) => Container()),
+          separatorBuilder: listSaperator ?? ((c, i) => const SizedBox()),
         ),
       );
     } else if (type == ListUiType.Grid) {
@@ -72,15 +72,14 @@ class GridListAdapter extends StatelessWidget {
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: sidePadding,vertical: 15/2),
+            padding: const EdgeInsets.symmetric(
+                horizontal: sidePadding, vertical: 15 / 2),
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-              crossAxisCount: crossAxisCount ?? 2,
-
-              height: height ?? 1,
-              mainAxisSpacing: 15,
-              crossAxisSpacing: 15
-            ),
+                    crossAxisCount: crossAxisCount ?? 2,
+                    height: height ?? 1,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 15),
             itemBuilder: (context, index) => builder(context, i + index, true),
             itemCount: min(gridCount, total - i),
           ),
@@ -88,7 +87,6 @@ class GridListAdapter extends StatelessWidget {
 
         int listItemCount = min(listCount, total - i - gridCount);
         if (listItemCount > 0) {
-
           children.add(
             ListView.builder(
               shrinkWrap: true,

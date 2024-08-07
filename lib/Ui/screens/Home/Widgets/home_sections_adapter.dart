@@ -43,7 +43,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: MediaQuery.of(context).size.height / 3.5.rh(context),
+                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -60,7 +60,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
               ],
             )
-          : SizedBox.shrink();
+          : const SizedBox.shrink();
     } else if (section.style == "style_2") {
       return section.sectionData!.isNotEmpty
           ? Column(
@@ -77,7 +77,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: MediaQuery.of(context).size.height / 3.5.rh(context),
+                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -94,7 +94,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
               ],
             )
-          : SizedBox.shrink();
+          : const SizedBox.shrink();
     } else if (section.style == "style_3") {
       return section.sectionData!.isNotEmpty
           ? Column(
@@ -112,7 +112,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 GridListAdapter(
                   type: ListUiType.Grid,
                   crossAxisCount: 2,
-                  height: MediaQuery.of(context).size.height / 3.5.rh(context),
+                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
                   builder: (context, int index, bool) {
                     ItemModel? item = section.sectionData?[index];
 
@@ -125,7 +125,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
               ],
             )
-          : SizedBox.shrink();
+          : const SizedBox.shrink();
     } else if (section.style == "style_4") {
       return section.sectionData!.isNotEmpty
           ? Column(
@@ -142,7 +142,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: MediaQuery.of(context).size.height / 3.5.rh(context),
+                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -159,7 +159,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
               ],
             )
-          : SizedBox.shrink();
+          : const SizedBox.shrink();
     } else {
       return Container();
     }
@@ -181,7 +181,7 @@ class TitleHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.only(
+      padding: const EdgeInsetsDirectional.only(
           top: 18, bottom: 12, start: sidePadding, end: sidePadding),
       child: Row(
         children: [
@@ -267,7 +267,7 @@ class _ItemCardState extends State<ItemCard> {
                         widget.item?.image ?? "",
                         height: imageHeight,
                         width: double.infinity,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                       ),
                     ),
                     if (widget.item?.isFeature ?? false)
@@ -291,7 +291,7 @@ class _ItemCardState extends State<ItemCard> {
                             .size(context.font.large),
                         Text(widget.item!.name!)
                             .firstUpperCaseWidget()
-                            .setMaxLines(lines: 1)
+                            .setMaxLines(lines: 2)
                             .size(context.font.large),
                         if (widget.item?.address != "")
                           Row(
@@ -303,8 +303,8 @@ class _ItemCardState extends State<ItemCard> {
                               ),
                               Expanded(
                                 child: Padding(
-                                  padding:
-                                      EdgeInsetsDirectional.only(start: 3.0),
+                                  padding: const EdgeInsetsDirectional.only(
+                                      start: 3.0),
                                   child: Text(widget.item?.address ?? "")
                                       .size((widget.bigCard == true)
                                           ? context.font.small
