@@ -645,6 +645,7 @@ class MainActivityState extends State<MainActivity>
               if (currtab == index) ...{
                 UiUtils.getSvg(
                   activeSvg,
+                  color: context.color.primary.darken(30),
                 ),
               } else ...{
                 UiUtils.getSvg(svgImage,
