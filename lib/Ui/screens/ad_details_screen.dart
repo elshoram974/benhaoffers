@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:intl/intl.dart';
@@ -48,6 +49,8 @@ import 'Chat/chat_screen.dart';
 import 'Home/Widgets/grid_list_adapter.dart';
 import 'Home/Widgets/home_sections_adapter.dart';
 import 'Item/add_item_screen/CustomFiledStructure/fields/custom_date_input_field.dart';
+import 'Item/add_item_screen/CustomFiledStructure/fields/custom_website_field.dart';
+import 'Item/add_item_screen/CustomFiledStructure/fields/custom_whatsapp_field.dart';
 import 'Widgets/Errors/no_internet.dart';
 import 'Widgets/Errors/something_went_wrong.dart';
 import 'Widgets/shimmerLoadingContainer.dart';
@@ -907,8 +910,46 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
     }
 
     String val = value[0].toString();
-
-    if (field.type == CustomDateInputField().type) {
+    if (field.type == CustomFieldWebsite().type) {
+      return TextButton(
+        onPressed: () async{
+          if (await canLaunchUrlString(val)) {
+            launchUrlString(val);
+          } else {
+            HelperUtils.showSnackBarMessage(context, "unable_to_open".translate(context));
+          }
+        },
+        child: Text(val),
+      );
+    } else if (field.type == CustomFieldWhatsapp().type) {
+      return Align(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: FilledButton(
+            onPressed: () async{
+              if (await canLaunchUrlString(val)) {
+                launchUrlString(val);
+              } else {
+                HelperUtils.showSnackBarMessage(context, "unable_to_open".translate(context));
+              }
+            },
+            style:FilledButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+              backgroundColor: const Color(0xff1daa61),
+              fixedSize: Size.fromHeight(33),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ) ,
+            child: Text(
+              "order_now".translate(context),
+              style: TextStyle(
+                color: context.color.secondaryColor,
+                fontSize: context.font.small,
+              ),
+            ),
+          ),
+        ),
+      );
+    } else if (field.type == CustomDateInputField().type) {
       DateTime? date = DateTime.tryParse(value[0].toString());
       if (date != null) {
         val = DateFormat.yMMMd().format(date);
@@ -2083,8 +2124,6 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
       secondChild: SizedBox.shrink(),
     );
   }
-
-
 
   void makeOfferBottomSheet(ItemModel model) async {
     await UiUtils.showBlurredDialoge(
