@@ -643,10 +643,7 @@ class MainActivityState extends State<MainActivity>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               if (currtab == index) ...{
-                UiUtils.getSvg(
-                  activeSvg,
-                  color: context.color.primary.darken(30),
-                ),
+                UiUtils.getSvg(activeSvg),
               } else ...{
                 UiUtils.getSvg(svgImage,
                     color: context.color.textLightColor.darken(30)),
