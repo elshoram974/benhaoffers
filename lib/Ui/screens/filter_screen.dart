@@ -17,6 +17,8 @@ import '../../utils/api.dart';
 
 import '../../utils/ui_utils.dart';
 import 'Item/add_item_screen/CustomFiledStructure/custom_field.dart';
+import 'Item/add_item_screen/CustomFiledStructure/fields/custom_website_field.dart';
+import 'Item/add_item_screen/CustomFiledStructure/fields/custom_whatsapp_field.dart';
 import 'Widgets/DynamicField/dynamic_field.dart';
 import 'main_activity.dart';
 
@@ -379,6 +381,7 @@ class FilterScreenState extends State<FilterScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: moreDetailDynamicFields.map((field) {
+              if(field.customField?.type == CustomFieldWhatsapp().type || field.customField?.type == CustomFieldWebsite().type) return SizedBox();
               field.stateUpdater(setState);
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 9.0),
