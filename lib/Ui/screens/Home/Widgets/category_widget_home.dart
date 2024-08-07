@@ -22,7 +22,7 @@ class CategoryWidgetHome extends StatelessWidget {
           list.addAll(state.categories);
           if (state.categories.length > 15)
             list.removeRange(15, state.categories.length);
-            
+
           if (list.isNotEmpty) {
             return Padding(
               padding: const EdgeInsets.only(top: 12),
@@ -55,7 +55,7 @@ class CategoryWidgetHome extends StatelessWidget {
                       : Axis.horizontal,
                   itemBuilder: (context, index) {
                     if (index == list.length) {
-                      return moreCategory(context);
+                      return moreCategory();
                     } else {
                       return CategoryHomeCard(
                         title: list[index].name!,
@@ -100,66 +100,69 @@ class CategoryWidgetHome extends StatelessWidget {
     );
   }
 
-  Widget moreCategory(BuildContext context) {
-    return SizedBox(
-      width: 70,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, Routes.categories,
-              arguments: {"from": Routes.home}).then(
-            (dynamic value) {
-              if (value != null) {
-                selectedCategory = value;
-                //setState(() {});
-              }
-            },
-          );
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
-          child: Column(
-            children: [
-              Container(
-                clipBehavior: Clip.antiAlias,
-                height: 70,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(
-                      color: context.color.borderColor.darken(60), width: 1),
-                  color: context.color.secondaryColor,
-                ),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SizedBox(
-                      // color: Colors.blue,
-                      width: 48,
-                      height: 48,
-                      child: Center(
-                        child: RotatedBox(
-                            quarterTurns: 1,
-                            child: UiUtils.getSvg(AppIcons.more,
-                                color: context.color.territoryColor)),
+  Widget moreCategory() {
+    return Builder(
+      builder: (context) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, Routes.categories,
+                arguments: {"from": Routes.home}).then(
+              (dynamic value) {
+                if (value != null) {
+                  selectedCategory = value;
+                  //setState(() {});
+                }
+              },
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                          color: context.color.borderColor.darken(60), width: 1),
+                      color: context.color.secondaryColor,
+                    ),
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                          // color: Colors.blue,
+                          width: 48,
+                          height: 48,
+                          child: Center(
+                            child: RotatedBox(
+                                quarterTurns: 1,
+                                child: UiUtils.getSvg(AppIcons.more,
+                                    color: context.color.territoryColor)),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Text("more".translate(context))
-                    .centerAlign()
-                    .setMaxLines(lines: 2)
-                    .size(context.font.smaller)
-                    .color(
-                      context.color.textDefaultColor,
-                    ),
-              ))
-            ],
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Text("more".translate(context))
+                      .centerAlign()
+                      .setMaxLines(lines: 2)
+                      .size(context.font.smaller)
+                      .color(
+                        context.color.textDefaultColor,
+                      ),
+                ))
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 }
