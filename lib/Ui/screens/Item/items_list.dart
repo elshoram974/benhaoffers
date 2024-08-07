@@ -291,7 +291,6 @@ class ItemsListState extends State<ItemsList> {
                 ? widget.categoryName
                 : selectedcategoryName,
           ),
-          bottomNavigationBar: bottomWidget(),
           body: RefreshIndicator(
             onRefresh: () async {
               // Debug log to check if onRefresh is triggered
@@ -308,6 +307,7 @@ class ItemsListState extends State<ItemsList> {
             child: Column(
               children: [
                 searchBarWidget(),
+                filterBarWidget(),
                 Expanded(child: fetchItems()),
               ],
             ),
@@ -317,7 +317,7 @@ class ItemsListState extends State<ItemsList> {
     );
   }
 
-  Container bottomWidget() {
+  Container filterBarWidget() {
     return Container(
       color: context.color.secondaryColor,
       padding: EdgeInsets.only(top: 3, bottom: 3),
