@@ -279,7 +279,8 @@ class _ItemCardState extends State<ItemCard> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0 ,vertical: 9),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 7.5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
