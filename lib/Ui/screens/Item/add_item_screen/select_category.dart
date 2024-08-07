@@ -23,8 +23,7 @@ class SelectCategoryScreen extends StatefulWidget {
   const SelectCategoryScreen({super.key});
 
   static Route route(RouteSettings settings) {
-    Map<String, dynamic> apiParameters =
-        settings.arguments as Map<String, dynamic>;
+    settings.arguments as Map<String, dynamic>;
     return BlurredRouter(
       builder: (context) {
         return const SelectCategoryScreen();

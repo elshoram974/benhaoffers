@@ -69,10 +69,6 @@ class FetchCategorySuccess extends FetchCategoryState {
     );
   }
 
-
-
-
-
   String toJson() => json.encode(toMap());
 
   factory FetchCategorySuccess.fromJson(String source) =>
@@ -100,6 +96,8 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
     try {
       emit(FetchCategoryInProgress());
 
+      page = 1;
+
       DataOutput<CategoryModel> categories =
           await _categoryRepository.fetchCategories(page: 1);
 
@@ -122,29 +120,37 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
     return <CategoryModel>[];
   }
 
+  int page = 1;
+
   Future<void> fetchCategoriesMore() async {
     try {
+      print(
+          "response :  : map length is $page");
       if (state is FetchCategorySuccess) {
         if ((state as FetchCategorySuccess).isLoadingMore) {
           return;
         }
+        page++;
         emit((state as FetchCategorySuccess).copyWith(isLoadingMore: true));
         DataOutput<CategoryModel> result =
             await _categoryRepository.fetchCategories(
-          page: (state as FetchCategorySuccess).page + 1,
+          page: page,
         );
 
         FetchCategorySuccess categoryState = (state as FetchCategorySuccess);
         categoryState.categories.addAll(result.modelList);
+        print(
+            "response :  : map length is categoryState.categories ${categoryState.categories.length}");
 
-        List<String> list = categoryState.categories.map((e) => e.url!).toList();
+        List<String> list =
+            categoryState.categories.map((e) => e.url!).toList();
         await HelperUtils.precacheSVG(list);
 
         emit(FetchCategorySuccess(
             isLoadingMore: false,
             hasError: false,
             categories: categoryState.categories,
-            page: (state as FetchCategorySuccess).page + 1,
+            page: page,
             total: result.total));
       }
     } catch (e) {
@@ -161,8 +167,6 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
     return false;
   }
 
-
-
   @override
   FetchCategoryState? fromJson(Map<String, dynamic> json) {
     return null;
@@ -172,6 +176,4 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
   Map<String, dynamic>? toJson(FetchCategoryState state) {
     return null;
   }
-
-
 }
