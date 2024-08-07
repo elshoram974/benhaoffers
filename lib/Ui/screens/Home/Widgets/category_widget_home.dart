@@ -1,4 +1,3 @@
-
 import 'package:eClassify/Ui/screens/Home/home_screen.dart';
 import 'package:eClassify/Utils/AppIcon.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
@@ -23,14 +22,31 @@ class CategoryWidgetHome extends StatelessWidget {
               padding: const EdgeInsets.only(top: 12),
               child: SizedBox(
                 width: context.screenWidth,
-                height: 103,
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
+                height: AppSettings.makeHomeCategoryGridView ? null : 103,
+                child: GridView.builder(
+                  gridDelegate: AppSettings.makeHomeCategoryGridView
+                      ? SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          childAspectRatio: 0.8,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        )
+                      : SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          childAspectRatio: 1.45,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                  physics: AppSettings.makeHomeCategoryGridView
+                      ? const NeverScrollableScrollPhysics()
+                      : const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(
                     horizontal: sidePadding,
                   ),
                   shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: AppSettings.makeHomeCategoryGridView
+                      ? Axis.vertical
+                      : Axis.horizontal,
                   itemBuilder: (context, index) {
                     if (index == state.categories.length) {
                       return moreCategory(context);
@@ -39,7 +55,6 @@ class CategoryWidgetHome extends StatelessWidget {
                         title: state.categories[index].name!,
                         url: state.categories[index].url!,
                         onTap: () {
-
                           if (state.categories[index].children!.isNotEmpty) {
                             Navigator.pushNamed(
                                 context, Routes.subCategoryScreen,
@@ -48,7 +63,9 @@ class CategoryWidgetHome extends StatelessWidget {
                                       state.categories[index].children,
                                   "catName": state.categories[index].name,
                                   "catId": state.categories[index].id,
-                                  "categoryIds":[state.categories[index].id.toString()]
+                                  "categoryIds": [
+                                    state.categories[index].id.toString()
+                                  ]
                                 });
                           } else {
                             Navigator.pushNamed(context, Routes.itemsList,
@@ -56,7 +73,9 @@ class CategoryWidgetHome extends StatelessWidget {
                                   'catID':
                                       state.categories[index].id.toString(),
                                   'catName': state.categories[index].name,
-                                  "categoryIds":[state.categories[index].id.toString()]
+                                  "categoryIds": [
+                                    state.categories[index].id.toString()
+                                  ]
                                 });
                           }
                         },
@@ -64,11 +83,6 @@ class CategoryWidgetHome extends StatelessWidget {
                     }
                   },
                   itemCount: state.categories.length + 1,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      width: 12,
-                    );
-                  },
                 ),
               ),
             );
@@ -134,7 +148,7 @@ class CategoryWidgetHome extends StatelessWidget {
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.all(0.0),
-                child:  Text("more".translate(context))
+                child: Text("more".translate(context))
                     .centerAlign()
                     .setMaxLines(lines: 2)
                     .size(context.font.smaller)
