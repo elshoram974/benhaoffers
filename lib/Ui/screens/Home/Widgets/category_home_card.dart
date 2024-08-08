@@ -48,7 +48,7 @@ class CategoryHomeCard extends StatelessWidget {
                   flex: 4,
                   child: Container(
                     clipBehavior: Clip.antiAlias,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(

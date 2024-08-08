@@ -194,7 +194,7 @@ class _RecordButtonState extends State<RecordButton> {
           //color: Colors.black,
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 15, end: 25),
+          padding: const EdgeInsetsDirectional.only(start: 15, end: 25),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () async {
@@ -264,8 +264,8 @@ class _RecordButtonState extends State<RecordButton> {
             color: context.color.territoryColor,
           ),
           child: widget.isSending
-              ? CircularProgressIndicator()
-              : Icon(
+              ? const CircularProgressIndicator()
+              : const Icon(
                   Icons.mic,
                   color: Colors.white,
                 ),

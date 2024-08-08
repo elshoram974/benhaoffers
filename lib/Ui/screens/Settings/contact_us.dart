@@ -231,7 +231,7 @@ class _EmailSendWidgetState extends State<EmailSendWidget> {
                 AppTheme.dark
                 ? null
                 : [
-              BoxShadow(
+              const BoxShadow(
                   blurRadius: 3, color: ui.Color.fromARGB(255, 201, 201, 201))
             ],
             color: context.color.secondaryColor,

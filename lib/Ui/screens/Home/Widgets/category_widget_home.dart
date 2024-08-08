@@ -31,13 +31,13 @@ class CategoryWidgetHome extends StatelessWidget {
                 height: AppSettings.makeHomeCategoryGridView ? null : 103,
                 child: GridView.builder(
                   gridDelegate: AppSettings.makeHomeCategoryGridView
-                      ? SliverGridDelegateWithFixedCrossAxisCount(
+                      ? const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
                           childAspectRatio: 0.8,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
                         )
-                      : SliverGridDelegateWithFixedCrossAxisCount(
+                      : const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1,
                           childAspectRatio: 1.45,
                           crossAxisSpacing: 12,

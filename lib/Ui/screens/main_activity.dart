@@ -412,7 +412,7 @@ class MainActivityState extends State<MainActivity>
 
   late List<Widget> pages = [
     HomeScreen(from: widget.from),
-    ChatListScreen(),
+    const ChatListScreen(),
     const ItemsScreen(),
     const ProfileScreen(),
   ];
@@ -467,7 +467,7 @@ class MainActivityState extends State<MainActivity>
                 //onPageChanged: onItemSwipe,
                 children: pages,
               ),
-              if (Constant.maintenanceMode == "1") MaintenanceMode()
+              if (Constant.maintenanceMode == "1") const MaintenanceMode()
             ],
           ),
         ),

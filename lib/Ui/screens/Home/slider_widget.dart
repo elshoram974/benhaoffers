@@ -320,7 +320,7 @@ class _SliderWidgetState extends State<SliderWidget>
             ),
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );

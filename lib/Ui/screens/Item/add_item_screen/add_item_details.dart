@@ -556,7 +556,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                     onSelected(ImageSource.camera);
                   },
                 ),
-                Padding(padding: EdgeInsets.all(8.0)),
+                const Padding(padding: EdgeInsets.all(8.0)),
                 GestureDetector(
                   child: Text('gallery'.translate(context)),
                   onTap: () {

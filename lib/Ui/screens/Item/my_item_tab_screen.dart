@@ -311,7 +311,7 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                                             Text("${Constant.currencySymbol}\t${item.price}")
                                                 .color(context.color.territoryColor)
                                                 .bold(),
-                                            Spacer(),
+                                            const Spacer(),
                                             showStatus(item)
                                           ],
                                         ),
@@ -344,7 +344,7 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(width: 20,),
+                                            const SizedBox(width: 20,),
                                             Flexible(
                                               flex: 1,
                                               child: Row(

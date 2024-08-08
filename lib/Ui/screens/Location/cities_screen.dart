@@ -130,7 +130,7 @@ class CitiesScreenState extends CloudState<CitiesScreen> {
           child: Container(
               width: double.maxFinite,
               height: 48.rh(context),
-              margin: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               alignment: AlignmentDirectional.center,
               decoration: BoxDecoration(
                   border: Border.all(
@@ -184,7 +184,7 @@ class CitiesScreenState extends CloudState<CitiesScreen> {
             Navigator.pop(context);
           },
           child: Padding(
-            padding: EdgeInsetsDirectional.only(
+            padding: const EdgeInsetsDirectional.only(
               start: 18.0,
             ),
             child: UiUtils.getSvg(AppIcons.arrowLeft,
@@ -223,7 +223,7 @@ class CitiesScreenState extends CloudState<CitiesScreen> {
           baseColor: Theme.of(context).colorScheme.shimmerBaseColor,
           highlightColor: Theme.of(context).colorScheme.shimmerHighlightColor,
           child: Container(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             width: double.maxFinite,
             height: 56,
             decoration: BoxDecoration(
@@ -270,7 +270,7 @@ class CitiesScreenState extends CloudState<CitiesScreen> {
             }
           }
 
-          return Center(child: const SomethingWentWrong());
+          return const Center(child: SomethingWentWrong());
         }
 
         if (state is FetchCitiesSuccess) {
@@ -314,7 +314,7 @@ class CitiesScreenState extends CloudState<CitiesScreen> {
                       itemCount: state.citiesModel.length,
                       padding: EdgeInsets.zero,
                       controller: controller,
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       separatorBuilder: (context, index) {
                         return const Divider(

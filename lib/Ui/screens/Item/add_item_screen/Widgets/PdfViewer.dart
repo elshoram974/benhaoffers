@@ -80,8 +80,8 @@ class _PDFViewerState extends State<PdfViewer> {
         showBackButton: true,
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Container(
+          ? const Center(child: CircularProgressIndicator())
+          : SizedBox(
               child: Center(
                 child: PDFView(
                   filePath: Pfile.path,

@@ -154,7 +154,7 @@ class ItemsListState extends State<ItemsList> {
                             controller: searchController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 8),
                               //OutlineInputBorder()
                               fillColor:
@@ -320,7 +320,7 @@ class ItemsListState extends State<ItemsList> {
   Container filterBarWidget() {
     return Container(
       color: context.color.secondaryColor,
-      padding: EdgeInsets.only(top: 3, bottom: 3),
+      padding: const EdgeInsets.only(top: 3, bottom: 3),
       height: 45,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -342,7 +342,7 @@ class ItemsListState extends State<ItemsList> {
         children: [
           UiUtils.getSvg(AppIcons.filterByIcon,
               color: context.color.textDefaultColor),
-          SizedBox(
+          const SizedBox(
             width: 7,
           ),
           Text("filterTitle".translate(context))
@@ -381,7 +381,7 @@ class ItemsListState extends State<ItemsList> {
         children: [
           UiUtils.getSvg(AppIcons.sortByIcon,
               color: context.color.textDefaultColor),
-          SizedBox(
+          const SizedBox(
             width: 7,
           ),
           Text("sortBy".translate(context))
@@ -396,7 +396,7 @@ class ItemsListState extends State<ItemsList> {
   showSortByBottomSheet() {
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(8.0),
           topRight: Radius.circular(8.0),
@@ -407,7 +407,7 @@ class ItemsListState extends State<ItemsList> {
         return Container(
           decoration: BoxDecoration(
             color: context.color.secondaryColor,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8),
             ),
@@ -430,16 +430,16 @@ class ItemsListState extends State<ItemsList> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 17, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
                 child: Text(
                   'sortBy'.translate(context),
                   textAlign: TextAlign.start,
                 ).bold(weight: FontWeight.bold).size(context.font.large),
               ),
 
-              Divider(height: 1), // Add some space between title and options
+              const Divider(height: 1), // Add some space between title and options
               ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 title: Text('default'.translate(context)),
                 onTap: () {
                   Navigator.pop(context);
@@ -459,9 +459,9 @@ class ItemsListState extends State<ItemsList> {
                   // Handle option 1 selection
                 },
               ),
-              Divider(height: 1), // Divider between option 1 and option 2
+              const Divider(height: 1), // Divider between option 1 and option 2
               ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 title: Text('newToOld'.translate(context)),
                 onTap: () {
                   Navigator.pop(context);
@@ -478,9 +478,9 @@ class ItemsListState extends State<ItemsList> {
                   });
                 },
               ),
-              Divider(height: 1), // Divider between option 2 and option 3
+              const Divider(height: 1), // Divider between option 2 and option 3
               ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 title: Text('oldToNew'.translate(context)),
                 onTap: () {
                   Navigator.pop(context);
@@ -497,9 +497,9 @@ class ItemsListState extends State<ItemsList> {
                   });
                 },
               ),
-              Divider(height: 1), // Divider between option 3 and option 4
+              const Divider(height: 1), // Divider between option 3 and option 4
               ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 title: Text('priceHighToLow'.translate(context)),
                 onTap: () {
                   Navigator.pop(context);
@@ -516,9 +516,9 @@ class ItemsListState extends State<ItemsList> {
                   });
                 },
               ),
-              Divider(height: 1), // Divider between option 4 and option 5
+              const Divider(height: 1), // Divider between option 4 and option 5
               ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 title: Text('priceLowToHigh'.translate(context)),
                 onTap: () {
                   Navigator.pop(context);

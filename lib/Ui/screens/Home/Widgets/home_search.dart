@@ -14,7 +14,7 @@ class HomeSearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget buildSearchIcon() {
       return Padding(
-          padding: EdgeInsetsDirectional.only(start: 16.0,end: 16),
+          padding: const EdgeInsetsDirectional.only(start: 16.0,end: 16),
           child: UiUtils.getSvg(AppIcons.search,
               color: context.color.territoryColor));
     }

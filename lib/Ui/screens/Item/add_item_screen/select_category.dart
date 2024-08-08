@@ -133,7 +133,7 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
                                     addCloudData("breadCrumb", bcd);
                                     //}
                                   });
-                                  Future.delayed(Duration(seconds: 1), () {
+                                  Future.delayed(const Duration(seconds: 1), () {
                                     // Notify that touch processing is complete
                                     TouchManager.touchProcessed();
                                   });
@@ -148,7 +148,7 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
                                       arguments: {
                                         "current": category,
                                       });
-                                  Future.delayed(Duration(seconds: 1), () {
+                                  Future.delayed(const Duration(seconds: 1), () {
                                     // Notify that touch processing is complete
                                     TouchManager.touchProcessed();
                                   });
@@ -386,7 +386,7 @@ class _SelectNestedCategoryState extends CloudState<SelectNestedCategory> {
                                         addCloudData("breadCrumb", bcd);
                                       });
 
-                                      Future.delayed(Duration(seconds: 1), () {
+                                      Future.delayed(const Duration(seconds: 1), () {
                                         // Notify that touch processing is complete
                                         TouchManager.touchProcessed();
                                       });
@@ -422,7 +422,7 @@ class _SelectNestedCategoryState extends CloudState<SelectNestedCategory> {
                                           addCloudData("breadCrumb", bcd);
                                         }
                                       });
-                                      Future.delayed(Duration(seconds: 1), () {
+                                      Future.delayed(const Duration(seconds: 1), () {
                                         // Notify that touch processing is complete
                                         TouchManager.touchProcessed();
                                       });
@@ -573,7 +573,7 @@ class _SelectNestedCategoryState extends CloudState<SelectNestedCategory> {
                               addCloudData("breadCrumb", bcd);
                             }
                           });
-                          Future.delayed(Duration(seconds: 1), () {
+                          Future.delayed(const Duration(seconds: 1), () {
                             // Notify that touch processing is complete
                             TouchManager.touchProcessed();
                           });
@@ -651,7 +651,7 @@ class _SelectNestedCategoryState extends CloudState<SelectNestedCategory> {
             baseColor: Theme.of(context).colorScheme.shimmerBaseColor,
             highlightColor: Theme.of(context).colorScheme.shimmerHighlightColor,
             child: Container(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               width: double.maxFinite,
               height: 56,
               decoration: BoxDecoration(

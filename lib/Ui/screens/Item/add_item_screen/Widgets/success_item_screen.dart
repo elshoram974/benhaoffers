@@ -48,7 +48,7 @@ class _SuccessItemScreenState extends State<SuccessItemScreen>
 
     _slideController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1), // Adjust duration as needed
+      duration: const Duration(seconds: 1), // Adjust duration as needed
     );
 
     _slideAnimation = Tween<Offset>(
@@ -112,7 +112,7 @@ class _SuccessItemScreenState extends State<SuccessItemScreen>
   void _navigateBackToHome() {
     if (mounted)
       Future.delayed(
-        Duration(milliseconds: 500),
+        const Duration(milliseconds: 500),
         () {
           if (mounted) Navigator.popUntil(context, (route) => route.isFirst);
           MainActivity.globalKey.currentState?.onItemTapped(0);
@@ -144,7 +144,7 @@ class _SuccessItemScreenState extends State<SuccessItemScreen>
                           position: _slideAnimation,
                           child: Column(
                             children: [
-                              SizedBox(height: 50),
+                              const SizedBox(height: 50),
                               if (!widget.isEdit)
                                 Text(
                                   'congratulations'.translate(context),
@@ -152,14 +152,14 @@ class _SuccessItemScreenState extends State<SuccessItemScreen>
                                     .size(context.font.extraLarge)
                                     .color(context.color.territoryColor)
                                     .bold(weight: FontWeight.w600),
-                              SizedBox(height: 18),
+                              const SizedBox(height: 18),
                               Text(widget.isEdit
                                       ? 'updatedSuccess'.translate(context)
                                       : 'submittedSuccess'.translate(context))
                                   .centerAlign()
                                   .size(context.font.larger)
                                   .color(context.color.textDefaultColor),
-                              SizedBox(height: 60),
+                              const SizedBox(height: 60),
                               InkWell(
                                 onTap: () {
                                   _navigateToAdDetailsScreen();
@@ -181,7 +181,7 @@ class _SuccessItemScreenState extends State<SuccessItemScreen>
                                 child: Container(
                                   height: 48,
                                   alignment: AlignmentDirectional.center,
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                       horizontal: 65, vertical: 10),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
@@ -194,7 +194,7 @@ class _SuccessItemScreenState extends State<SuccessItemScreen>
                                       .color(context.color.territoryColor),
                                 ),
                               ),
-                              SizedBox(height: 15),
+                              const SizedBox(height: 15),
                               InkWell(
                                 onTap: () {
                                   _navigateBackToHome();
@@ -210,7 +210,7 @@ class _SuccessItemScreenState extends State<SuccessItemScreen>
                         ),
                       ],
                     )
-                  : SizedBox(), // Placeholder
+                  : const SizedBox(), // Placeholder
         ),
       ),
     );

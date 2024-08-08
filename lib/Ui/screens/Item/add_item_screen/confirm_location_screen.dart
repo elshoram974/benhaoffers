@@ -1406,14 +1406,14 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
     return PopScope(
       canPop: true,
       onPopInvoked: (didPop) async {
-        Future.delayed(Duration(milliseconds: 500), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           return;
         });
       },
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: UiUtils.buildAppBar(context, onBackPress: () {
-            Future.delayed(Duration(milliseconds: 500), () {
+            Future.delayed(const Duration(milliseconds: 500), () {
               Navigator.pop(context);
             });
           }, showBackButton: true, title: "confirmLocation".translate(context)),
@@ -1425,7 +1425,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                       formatedAddress!.city == null)) {
                 HelperUtils.showSnackBarMessage(
                     context, "cityRequired".translate(context));
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 2), () {
                   dialogueBottomSheet(
                       controller: cityTextController,
                       title: "enterCity".translate(context),
@@ -1437,7 +1437,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                       formatedAddress!.country == null)) {
                 HelperUtils.showSnackBarMessage(
                     context, "countryRequired".translate(context));
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 2), () {
                   dialogueBottomSheet(
                       controller: countryTextController,
                       title: "enterCountry".translate(context),
@@ -1495,7 +1495,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
         Widgets.hideLoder(context);
         //This will locally update item model
         myAdsCubitReference[getCloudData("edit_from")]?.edit(state.model);
-        Future.delayed(Duration(milliseconds: 500), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted) {
             Navigator.pushNamed(context, Routes.successItemScreen,
                 arguments: {'model': state.model, 'isEdit': widget.isEdit});
@@ -1522,7 +1522,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                       .centerAlign(),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20, right: 15, left: 15),
+                  padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
                   child: UiUtils.buildButton(context, height: 48,
                       onPressed: () {
                     Navigator.pushNamed(context, Routes.countriesScreen,
@@ -1586,14 +1586,14 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                           width: 1.5),
                       radius: 5),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Expanded(
                   child: Stack(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
                         child: ClipRRect(
@@ -1640,7 +1640,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                                 setState(() {
                                   _markers.clear(); // Clear existing markers
                                   _markers.add(Marker(
-                                    markerId: MarkerId('selectedLocation'),
+                                    markerId: const MarkerId('selectedLocation'),
                                     position: latLng,
                                   ));
                                   latitude = latLng.latitude;
@@ -1911,7 +1911,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                       fillColor: context.color.borderColor.darken(20),
                       filled: true,
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       hintText: hintText,
                       hintStyle: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -1980,7 +1980,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
           highlightColor: Theme.of(context).colorScheme.shimmerHighlightColor,
           child: Container(
             height: 400,
-            margin: EdgeInsets.symmetric(horizontal: 18),
+            margin: const EdgeInsets.symmetric(horizontal: 18),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.grey,
@@ -1993,7 +1993,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
             baseColor: Theme.of(context).colorScheme.shimmerBaseColor,
             highlightColor: Theme.of(context).colorScheme.shimmerHighlightColor,
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey,
