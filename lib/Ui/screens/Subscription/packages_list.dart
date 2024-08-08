@@ -92,11 +92,11 @@ class _SubscriptionPackageListScreenState
                       // Spread radius
                       blurRadius: 2,
                       // Blur radius
-                      offset: Offset(0, 1), // Shadow offset
+                      offset: const Offset(0, 1), // Shadow offset
                     ),
                   ]),
               child: TabBar(
-                tabs: [
+                tabs: const [
                   Tab(text: "Ads Listing"),
                   Tab(text: "Featured Ads"),
                 ],
@@ -111,11 +111,11 @@ class _SubscriptionPackageListScreenState
                 unselectedLabelColor:
                     context.color.textDefaultColor.withOpacity(0.5),
                 // Unselected tab text color
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   fontSize: 16,
                 ),
                 // Selected tab text style
-                labelPadding: EdgeInsets.symmetric(horizontal: 16),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
                 // Padding around the tab text
                 indicatorSize: TabBarIndicatorSize.tab,
               ),

@@ -25,7 +25,7 @@ class AdHelper {
         adUnitId: Platform.isAndroid
             ? Constant.interstitialAdIdAndroid //Android interstitial ad id
             : Constant.interstitialAdIdIOS, //iOS interstitial ad id
-        request: AdRequest(
+        request: const AdRequest(
           nonPersonalizedAds: true,
         ),
         adLoadCallback: InterstitialAdLoadCallback(

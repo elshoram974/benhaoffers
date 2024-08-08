@@ -124,7 +124,7 @@ class _CategoryListState extends State<SubCategoryScreen>
                         ? ListView.separated(
                             itemCount: widget.categoryList.length,
                             padding: EdgeInsets.zero,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             separatorBuilder: (context, index) {
                               return const Divider(
@@ -266,7 +266,7 @@ class _CategoryListState extends State<SubCategoryScreen>
                 itemCount: state.categories.length,
                 padding: EdgeInsets.zero,
                 controller: controller,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 separatorBuilder: (context, index) {
                   return const Divider(
@@ -365,7 +365,7 @@ class _CategoryListState extends State<SubCategoryScreen>
           baseColor: Theme.of(context).colorScheme.shimmerBaseColor,
           highlightColor: Theme.of(context).colorScheme.shimmerHighlightColor,
           child: Container(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             width: double.maxFinite,
             height: 56,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),

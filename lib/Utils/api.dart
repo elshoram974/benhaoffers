@@ -376,7 +376,7 @@ class Api {
     HelperUtils.showSnackBarMessage(Constant.navigatorKey.currentContext!,
         "userIsDeactivated".translate(Constant.navigatorKey.currentContext!),
         messageDuration: 3);
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       HiveUtils.clear();
       Constant.favoriteItemList.clear();
       Constant.navigatorKey.currentContext!.read<UserDetailsCubit>().clear();

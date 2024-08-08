@@ -146,7 +146,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
                       child: Container(
                         width: 100,
                         height: 110,
-                        padding: EdgeInsets.all(30),
+                        padding: const EdgeInsets.all(30),
 
                         color: context.color.primaryColor,
                         //TODO: replace url below with model data response
@@ -253,7 +253,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
     return Expanded(
       flex: 10,
       child: ListView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         children: [
           Text(widget.model.name!)
@@ -264,7 +264,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
                 fontWeight: FontWeight.w600,
               ))
               .size(context.font.larger),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           if (widget.model.type == "item_listing")
             checkmarkPoint(context,
                 "${widget.model.limit.toString()}\t${"adsListing".translate(context)}"),
@@ -285,7 +285,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
     return Expanded(
       flex: 10,
       child: ListView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         children: [
           Text(widget.model.name!)
@@ -295,7 +295,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
                       fontWeight: FontWeight.w600))
               .size(context.font.larger)
               .centerAlign(),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           if (widget.model.type == "item_listing")
             checkmarkPoint(context,
                 "${widget.model.userPurchasedPackages![0].remainingItemLimit}/${widget.model.limit.toString()}\t${"adsListing".translate(context)}"),
@@ -321,7 +321,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
           DateTime.parse(widget.model.userPurchasedPackages![0].endDate!);
       String formattedDate = intl.DateFormat.yMMMMd().format(dateTime);
       return Padding(
-        padding: EdgeInsetsDirectional.only(
+        padding: const EdgeInsetsDirectional.only(
             bottom: 15.0,
             start: 15,
             end: 15), // EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -329,7 +329,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
             "${"yourSubscriptionWillExpireOn".translate(context)} $formattedDate"),
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -342,7 +342,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
         // mainAxisAlignment: MainAxisAlignment.start,
         // width: context.screenWidth * 0.55,
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsetsDirectional.only(start: 2.0),
             child: Icon(
               Icons.circle_rounded,
@@ -350,7 +350,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
             ),
           ),
           //  const Icon(Icons.check_box_rounded, size: 25.0, color: Colors.cyan), //TODO: change it to given icon and fill according to status passed
-          SizedBox(width: 15),
+          const SizedBox(width: 15),
           Expanded(
               child: Text(
             text,
@@ -441,7 +441,7 @@ class _SubscriptionPlansItemState extends State<SubscriptionPlansItem> {
                   ),
                   ListView.builder(
                     shrinkWrap: true,
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     itemCount: enabledGateways.length,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {

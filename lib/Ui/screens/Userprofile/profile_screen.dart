@@ -743,8 +743,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("• "),
-        SizedBox(width: 3),
+        const Text("• "),
+        const SizedBox(width: 3),
         Expanded(
           child: Text(
             text,
