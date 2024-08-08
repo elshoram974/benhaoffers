@@ -114,7 +114,7 @@ it will call API in background without showing the process and when data availab
   static int uploadImageQuality = 50; //0 to 100th
   static const Set additionalRTLlanguages =
       {}; //Add language code in brackat  {"ab","bc"}
-  static const bool makeHomeCategoryGridView = true;
+  static const bool makeHomeCategoryGridView = false;
 
 /////Advance settings
 //This file is located in assets/riveAnimations
