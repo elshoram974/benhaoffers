@@ -135,6 +135,7 @@ class Api {
   static String userid = "userid";
   static String measurement = "measurement";
   static String categoryId = "category_id";
+  static String sellerId = "seller_id";
   static String title = "title";
   static String carpetArea = "carpet_area";
   static String builtUpArea = "built_up_area";

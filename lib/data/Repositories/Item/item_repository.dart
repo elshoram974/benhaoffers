@@ -184,6 +184,25 @@ class ItemRepository {
     return DataOutput(total: response['data']['total'] ?? 0, modelList: items);
   }
 
+  Future<DataOutput<ItemModel>> fetchItemFromSellerId({
+    required int sellerId,
+    required int page,
+  }) async {
+    Map<String, dynamic> parameters = {
+      Api.sellerId: sellerId,
+      Api.page: page,
+    };
+
+    Map<String, dynamic> response =
+        await Api.get(url: Api.getItemApi, queryParameters: parameters);
+
+    List<ItemModel> items = (response['data']['data'] as List)
+        .map((e) => ItemModel.fromJson(e))
+        .toList();
+
+    return DataOutput(total: response['data']['total'] ?? 0, modelList: items);
+  }
+
   Future<DataOutput<ItemModel>> fetchPopularItems(
       {required String sortBy, required int page}) async {
     Map<String, dynamic> parameters = {Api.sortBy: sortBy, Api.page: page};
@@ -243,8 +262,7 @@ class ItemRepository {
   }
 
   Future<void> itemTotalClick(int id) async {
-    await Api.post(
-        url: Api.setItemTotalClickApi, parameter: {Api.itemId: id});
+    await Api.post(url: Api.setItemTotalClickApi, parameter: {Api.itemId: id});
   }
 
   Future<Map> makeAnOfferItem(int id, int amount) async {
