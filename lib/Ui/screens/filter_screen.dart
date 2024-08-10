@@ -381,7 +381,9 @@ class FilterScreenState extends State<FilterScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: moreDetailDynamicFields.map((field) {
-              if(field.customField?.type == CustomFieldWhatsapp().type || field.customField?.type == CustomFieldWebsite().type) return const SizedBox();
+              if (field.customField?.type == CustomFieldWhatsapp().type ||
+                  field.customField?.type == CustomFieldWebsite().type)
+                return const SizedBox();
               field.stateUpdater(setState);
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 9.0),

@@ -27,6 +27,7 @@ import '../Ui/screens/Home/Widgets/subCategoryFilterScreen.dart';
 import '../Ui/screens/Home/category_list.dart';
 import '../Ui/screens/Home/change_language_screen.dart';
 import '../Ui/screens/Home/search_screen.dart';
+import '../Ui/screens/Home/seller_details_screen.dart';
 import '../Ui/screens/Item/add_item_screen/Widgets/success_item_screen.dart';
 import '../Ui/screens/Item/add_item_screen/select_category.dart';
 import '../Ui/screens/Item/my_items_screen.dart';
@@ -84,6 +85,7 @@ class Routes {
   static const mostLikedItemsScreen = '/mostLikedItemsScreen';
   static const mostViewedItemsScreen = '/mostViewedItemsScreen';
   static const blogDetailsScreenRoute = '/blogDetailsScreenRoute';
+  static const sellerDetailsScreen = '/sellerDetailsScreen';
 
   static const languageListScreenRoute = '/languageListScreenRoute';
   static const searchScreenRoute = '/searchScreenRoute';
@@ -190,6 +192,9 @@ class Routes {
 
       case categories:
         return CategoryList.route(routeSettings);
+
+      case sellerDetailsScreen:
+        return SellerDetailsScreen.route(routeSettings);
       case subCategoryScreen:
         return SubCategoryScreen.route(routeSettings);
       case categoryFilterScreen:

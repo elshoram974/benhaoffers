@@ -208,12 +208,14 @@ class ItemCard extends StatefulWidget {
   final double? width;
   final bool? bigCard;
   final ItemModel? item;
+  final bool showSeller;
 
   const ItemCard({
     super.key,
     required this.item,
     this.width,
     this.bigCard,
+    this.showSeller = true,
   });
 
   @override
@@ -279,17 +281,32 @@ class _ItemCardState extends State<ItemCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: context.color.territoryColor,
-                            borderRadius: BorderRadius.circular(8),
+                        GestureDetector(
+                          onTap: widget.showSeller
+                              ? () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    Routes.sellerDetailsScreen,
+                                    arguments: {
+                                      "seller": widget.item?.user,
+                                    },
+                                  );
+                                }
+                              : null,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: context.color.territoryColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(widget.showSeller
+                                    ? "${widget.item?.user?.name}"
+                                    : "${Constant.currencySymbol} ${widget.item?.price}")
+                                .bold()
+                                .color(Colors.white)
+                                .size(context.font.small),
                           ),
-                          child: Text("${widget.item?.user?.name}")
-                              .bold()
-                              .color(Colors.white)
-                              .size(context.font.small),
                         ),
                         FittedBox(
                           fit: BoxFit.scaleDown,
