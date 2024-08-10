@@ -615,7 +615,7 @@ class ItemsListState extends State<ItemsList> {
                           SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                               crossAxisCount: 2,
                               height: MediaQuery.of(context).size.height /
-                                  3.5.rh(context),
+                                  3.rh(context),
                               mainAxisSpacing: 7,
                               crossAxisSpacing: 10),
                       itemCount: state.itemModel.length,
@@ -634,6 +634,7 @@ class ItemsListState extends State<ItemsList> {
                             },
                             child: ItemCard(
                               item: item,
+                              width: MediaQuery.sizeOf(context).width / 2.3.rw(context),
                             ));
                       },
                     ),
