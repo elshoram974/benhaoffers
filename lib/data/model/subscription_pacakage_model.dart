@@ -15,6 +15,7 @@ class SubscriptionPackageModel {
   int? status;
   String? createdAt;
   String? updatedAt;
+  DateTime? endDate;
   bool? isActive;
   List<UserPurchasedPackages>? userPurchasedPackages;
 
@@ -33,6 +34,7 @@ class SubscriptionPackageModel {
       this.status,
       this.createdAt,
       this.updatedAt,
+      this.endDate,
       this.isActive,
       this.userPurchasedPackages});
 
@@ -60,6 +62,7 @@ class SubscriptionPackageModel {
       json['user_purchased_packages'].forEach((v) {
         userPurchasedPackages!.add(UserPurchasedPackages.fromJson(v));
       });
+      endDate = DateTime.tryParse(userPurchasedPackages?.firstOrNull?.endDate ?? '');
     }
   }
 
@@ -79,6 +82,7 @@ class SubscriptionPackageModel {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['end_date'] = endDate?.toIso8601String();
     data['is_active'] = isActive;
     if (userPurchasedPackages != null) {
       data['user_purchased_packages'] =

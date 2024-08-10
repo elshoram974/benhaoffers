@@ -8,14 +8,17 @@ import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/responsiveSize.dart';
 
 import 'package:eClassify/data/model/item/item_model.dart';
+import 'package:eClassify/data/model/subscription_pacakage_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../Utils/cloudState/cloud_state.dart';
 import '../../../../Utils/helper_utils.dart';
 import '../../../../Utils/imagePicker.dart';
 import '../../../../Utils/ui_utils.dart';
+import '../../../../Utils/validator.dart';
 import '../../../../data/cubits/CustomField/fetch_custom_fields_cubit.dart';
 import '../../../../data/model/category_model.dart';
 import '../../../../exports/main_export.dart';
@@ -69,6 +72,10 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
   final TextEditingController adPhoneNumberController = TextEditingController();
   final TextEditingController adAdditionalDetailsController =
       TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
+  DateTime? _tempEndDate;
+  late String dateToShow = "chooseDate".translate(context);
+
 
   void _onBreadCrumbItemTap(int index) {
     int popTimes = (widget.breadCrumbItems!.length - 1) - index;
@@ -88,10 +95,16 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
   late List selectedCategoryList;
   ItemModel? item;
 
+  Future<void> fetchPackages() async {
+    await BlocProvider.of<FetchAdsListingSubscriptionPackagesCubit>(context)
+        .fetchPackages();
+  }
+
   @override
   void initState() {
     AbstractField.fieldsData.clear();
     AbstractField.files.clear();
+    fetchPackages();
     if (widget.isEdit == true) {
       item = getCloudData('edit_request') as ItemModel;
 
@@ -233,7 +246,8 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                             ? item!.allCategoryIds
                             : selectedCategoryList.join(','),
                         if (widget.isEdit == true)
-                          "delete_item_image_id": deleteItemImageList.join(',')
+                          "delete_item_image_id": deleteItemImageList.join(','),
+                        "end_date": endDateController.text
 
                         //missing in API
                         /* "image": _pickTitleImage.pickedFile,
@@ -271,265 +285,380 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
             ),
             body: Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("youAreAlmostThere".translate(context))
-                          .size(context.font.large)
-                          .bold(weight: FontWeight.w600)
-                          .color(context.color.textColorDark),
-                      SizedBox(
-                        height: 16.rh(context),
-                      ),
-                      if (widget.breadCrumbItems != null)
+              child: RefreshIndicator(
+                onRefresh: fetchPackages,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("youAreAlmostThere".translate(context))
+                            .size(context.font.large)
+                            .bold(weight: FontWeight.w600)
+                            .color(context.color.textColorDark),
                         SizedBox(
-                          height: 20,
-                          width: context.screenWidth,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  bool isNotLast =
-                                      (widget.breadCrumbItems!.length - 1) !=
-                                          index;
-
-                                  return Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          _onBreadCrumbItemTap(index);
-                                        },
-                                        child: Text(widget
-                                                .breadCrumbItems![index].name!)
-                                            .firstUpperCaseWidget()
-                                            .color(
-                                              isNotLast
-                                                  ? context.color.textColorDark
-                                                  : context
-                                                      .color.territoryColor,
-                                            ),
-                                      ),
-                                      if (index <
-                                          widget.breadCrumbItems!.length - 1)
-                                        const Text(" > ").color(
-                                            context.color.territoryColor),
-
-                                      /*InkWell(
-                                    onTap: () {
-                                      _onBreadCrumbItemTap(index);
-                                    },
-                                    child: Text(widget
-                                            .breadCrumbItems[index].name)
-                                        .firstUpperCaseWidget()
-                                        .color(
-                                          isNotLast
-                                              ? context.color.teritoryColor
-                                              : context.color.textColorDark,
-                                        ),
-                                  ),
-
-                                  ///if it is not last
-                                  if (isNotLast)
-                                    const Text(" > ")
-                                        .color(context.color.teritoryColor)*/
-                                    ],
-                                  );
-                                },
-                                itemCount: widget.breadCrumbItems!.length),
-                          ),
+                          height: 16.rh(context),
                         ),
-                      SizedBox(
-                        height: 18.rh(context),
-                      ),
-                      Text("adTitle".translate(context)),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      CustomTextFormField(
-                        controller: adTitleController,
-                        // controller: _itemNameController,
-                        validator: CustomTextFieldValidator.nullCheck,
-                        action: TextInputAction.next,
-                        capitalization: TextCapitalization.sentences,
-                        hintText: "adTitleHere".translate(context),
-                        hintTextStyle: TextStyle(
-                            color:
-                                context.color.textDefaultColor.withOpacity(0.5),
-                            fontSize: context.font.large),
-                        onChange: (String val){
-                          String text = '';
-                          val = val.trim();
-                          for (int i = 0; i < val.length; i++) {
-                            text += slugLetter[val[i].toLowerCase()] ?? '';
-                          }
-                          adSlugController.text = text;
-                        },
-                      ),
-                      SizedBox(
-                        height: 15.rh(context),
-                      ),
-                      Text("${"adSlug".translate(context)}\t(${"englishOnlyLbl".translate(context)})"),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      CustomTextFormField(
-                        controller: adSlugController,
-                        // controller: _itemNameController,
-                        validator: CustomTextFieldValidator.slug,
-                        enabled: false,
-                        hintText: "adSlugHere".translate(context),
-                        hintTextStyle: TextStyle(
-                            color:
-                                context.color.textDefaultColor.withOpacity(0.5),
-                            fontSize: context.font.large),
-                      ),
-                      SizedBox(
-                        height: 15.rh(context),
-                      ),
-                      Text("descriptionLbl".translate(context)),
-                      SizedBox(
-                        height: 15.rh(context),
-                      ),
-                      CustomTextFormField(
-                        controller: adDescriptionController,
+                        if (widget.breadCrumbItems != null)
+                          SizedBox(
+                            height: 20,
+                            width: context.screenWidth,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    bool isNotLast =
+                                        (widget.breadCrumbItems!.length - 1) !=
+                                            index;
 
-                        action: TextInputAction.newline,
-                        // controller: _descriptionController,
-                        validator: CustomTextFieldValidator.nullCheck,
-                        capitalization: TextCapitalization.sentences,
-                        hintText: "writeSomething".translate(context),
-                        maxLine: 100,
-                        minLine: 6,
+                                    return Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            _onBreadCrumbItemTap(index);
+                                          },
+                                          child: Text(widget
+                                                  .breadCrumbItems![index]
+                                                  .name!)
+                                              .firstUpperCaseWidget()
+                                              .color(
+                                                isNotLast
+                                                    ? context
+                                                        .color.textColorDark
+                                                    : context
+                                                        .color.territoryColor,
+                                              ),
+                                        ),
+                                        if (index <
+                                            widget.breadCrumbItems!.length - 1)
+                                          const Text(" > ").color(
+                                              context.color.territoryColor),
 
-                        hintTextStyle: TextStyle(
-                            color:
-                                context.color.textDefaultColor.withOpacity(0.5),
-                            fontSize: context.font.large),
-                      ),
-                      SizedBox(
-                        height: 15.rh(context),
-                      ),
-                      Row(
-                        children: [
-                          Text("mainPicture".translate(context)),
-                          const SizedBox(
-                            width: 3,
+                                        /*InkWell(
+                                      onTap: () {
+                                        _onBreadCrumbItemTap(index);
+                                      },
+                                      child: Text(widget
+                                              .breadCrumbItems[index].name)
+                                          .firstUpperCaseWidget()
+                                          .color(
+                                            isNotLast
+                                                ? context.color.teritoryColor
+                                                : context.color.textColorDark,
+                                          ),
+                                    ),
+                
+                                    ///if it is not last
+                                    if (isNotLast)
+                                      const Text(" > ")
+                                          .color(context.color.teritoryColor)*/
+                                      ],
+                                    );
+                                  },
+                                  itemCount: widget.breadCrumbItems!.length),
+                            ),
                           ),
-                          Text("maxSize".translate(context))
-                              .italic()
-                              .size(context.font.small),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      Wrap(
-                        children: [
-                          if (_pickTitleImage.pickedFile != null)
-                            ...[]
-                          else
-                            ...[],
-                          titleImageListener(),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      Row(
-                        children: [
-                          Text("otherPictures".translate(context)),
-                          const SizedBox(
-                            width: 3,
-                          ),
-                          Text("max5Images".translate(context))
-                              .italic()
-                              .size(context.font.small),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      itemImagesListener(),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      Text("price".translate(context)),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      CustomTextFormField(
-                        controller: adPriceController,
-                        action: TextInputAction.next,
-                        prefix: Text("${Constant.currencySymbol} "),
-                        // controller: _priceController,
-                        formaters: [
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d*')),
-                        ],
-                        isReadOnly: false,
-                        keyboard: TextInputType.number,
-                        validator: CustomTextFieldValidator.nullCheck,
-                        hintText: "00",
-                        hintTextStyle: TextStyle(
-                            color:
-                                context.color.textDefaultColor.withOpacity(0.5),
-                            fontSize: context.font.large),
-                      ),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      Text("phoneNumber".translate(context)),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      CustomTextFormField(
-                        controller: adPhoneNumberController,
-                        action: TextInputAction.next,
-                        formaters: [
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d*')),
-                        ],
-                        isReadOnly: false,
-                        keyboard: TextInputType.phone,
-                        validator: CustomTextFieldValidator.phoneNumber,
-                        hintText: "9876543210",
-                        hintTextStyle: TextStyle(
-                            color:
-                                context.color.textDefaultColor.withOpacity(0.5),
-                            fontSize: context.font.large),
-                      ),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      Text("videoLink".translate(context)),
-                      SizedBox(
-                        height: 10.rh(context),
-                      ),
-                      CustomTextFormField(
-                        controller: adAdditionalDetailsController,
-                        validator: adAdditionalDetailsController.text.isNotEmpty? CustomTextFieldValidator.url : null,
-                        // prefix: Text("${Constant.currencySymbol} "),
-                        // controller: _videoLinkController,
-                        // isReadOnly: widget.properyDetails != null,
-                        hintText: "http://example.com/video.mp4",
-                        hintTextStyle: TextStyle(
-                            color:
-                                context.color.textDefaultColor.withOpacity(0.5),
-                            fontSize: context.font.large),
-                      ),
-                      SizedBox(
-                        height: 15.rh(context),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 18.rh(context),
+                        ),
+                        Text("adTitle".translate(context)),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        CustomTextFormField(
+                          controller: adTitleController,
+                          // controller: _itemNameController,
+                          validator: CustomTextFieldValidator.nullCheck,
+                          action: TextInputAction.next,
+                          capitalization: TextCapitalization.sentences,
+                          hintText: "adTitleHere".translate(context),
+                          hintTextStyle: TextStyle(
+                              color: context.color.textDefaultColor
+                                  .withOpacity(0.5),
+                              fontSize: context.font.large),
+                          onChange: (String val) {
+                            String text = '';
+                            val = val.trim();
+                            for (int i = 0; i < val.length; i++) {
+                              text += slugLetter[val[i].toLowerCase()] ?? '';
+                            }
+                            adSlugController.text = text;
+                          },
+                        ),
+                        SizedBox(
+                          height: 15.rh(context),
+                        ),
+                        Text(
+                            "${"adSlug".translate(context)}\t(${"englishOnlyLbl".translate(context)})"),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        CustomTextFormField(
+                          controller: adSlugController,
+                          // controller: _itemNameController,
+                          validator: CustomTextFieldValidator.slug,
+                          enabled: false,
+                          hintText: "adSlugHere".translate(context),
+                          hintTextStyle: TextStyle(
+                              color: context.color.textDefaultColor
+                                  .withOpacity(0.5),
+                              fontSize: context.font.large),
+                        ),
+                        SizedBox(
+                          height: 15.rh(context),
+                        ),
+                        Text("descriptionLbl".translate(context)),
+                        SizedBox(
+                          height: 15.rh(context),
+                        ),
+                        CustomTextFormField(
+                          controller: adDescriptionController,
+
+                          action: TextInputAction.newline,
+                          // controller: _descriptionController,
+                          validator: CustomTextFieldValidator.nullCheck,
+                          capitalization: TextCapitalization.sentences,
+                          hintText: "writeSomething".translate(context),
+                          maxLine: 100,
+                          minLine: 6,
+
+                          hintTextStyle: TextStyle(
+                              color: context.color.textDefaultColor
+                                  .withOpacity(0.5),
+                              fontSize: context.font.large),
+                        ),
+                        SizedBox(
+                          height: 15.rh(context),
+                        ),
+                        Row(
+                          children: [
+                            Text("mainPicture".translate(context)),
+                            const SizedBox(
+                              width: 3,
+                            ),
+                            Text("maxSize".translate(context))
+                                .italic()
+                                .size(context.font.small),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        Wrap(
+                          children: [
+                            if (_pickTitleImage.pickedFile != null)
+                              ...[]
+                            else
+                              ...[],
+                            titleImageListener(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        Row(
+                          children: [
+                            Text("otherPictures".translate(context)),
+                            const SizedBox(
+                              width: 3,
+                            ),
+                            Text("max5Images".translate(context))
+                                .italic()
+                                .size(context.font.small),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        itemImagesListener(),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        Text("price".translate(context)),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        CustomTextFormField(
+                          controller: adPriceController,
+                          action: TextInputAction.next,
+                          prefix: Text("${Constant.currencySymbol} "),
+                          // controller: _priceController,
+                          formaters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d*')),
+                          ],
+                          isReadOnly: false,
+                          keyboard: TextInputType.number,
+                          validator: CustomTextFieldValidator.nullCheck,
+                          hintText: "00",
+                          hintTextStyle: TextStyle(
+                              color: context.color.textDefaultColor
+                                  .withOpacity(0.5),
+                              fontSize: context.font.large),
+                        ),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        Text("phoneNumber".translate(context)),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        CustomTextFormField(
+                          controller: adPhoneNumberController,
+                          action: TextInputAction.next,
+                          formaters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d*')),
+                          ],
+                          isReadOnly: false,
+                          keyboard: TextInputType.phone,
+                          validator: CustomTextFieldValidator.phoneNumber,
+                          hintText: "9876543210",
+                          hintTextStyle: TextStyle(
+                              color: context.color.textDefaultColor
+                                  .withOpacity(0.5),
+                              fontSize: context.font.large),
+                        ),
+                        SizedBox(height: 10.rh(context)),
+                        Text("videoLink".translate(context)),
+                        SizedBox(height: 10.rh(context)),
+                        CustomTextFormField(
+                          controller: adAdditionalDetailsController,
+                          validator:
+                              adAdditionalDetailsController.text.isNotEmpty
+                                  ? CustomTextFieldValidator.url
+                                  : null,
+                          // prefix: Text("${Constant.currencySymbol} "),
+                          // controller: _videoLinkController,
+                          // isReadOnly: widget.properyDetails != null,
+                          hintText: "http://example.com/video.mp4",
+                          hintTextStyle: TextStyle(
+                              color: context.color.textDefaultColor
+                                  .withOpacity(0.5),
+                              fontSize: context.font.large),
+                        ),
+                        SizedBox(height: 10.rh(context)),
+                        Text("endDate".translate(context)),
+                        SizedBox(
+                          height: 10.rh(context),
+                        ),
+                        BlocConsumer<FetchAdsListingSubscriptionPackagesCubit,
+                            FetchAdsListingSubscriptionPackagesState>(
+                          listener: (context, state) {
+                            if(state is FetchAdsListingSubscriptionPackagesSuccess){
+                              DateTime? farthestEndDate = DateTime(2001);
+                              for (SubscriptionPackageModel e in state.subscriptionPackages) {
+                                if(e.endDate == null && e.isActive == true){
+                                  farthestEndDate = null;
+                                  break;
+                                }
+
+                                if(e.endDate != null && e.endDate!.isAfter(farthestEndDate!) && e.isActive == true){
+                                  farthestEndDate = e.endDate!;
+                                  _tempEndDate = e.endDate!;
+                                }
+                              }
+                              
+                              if(farthestEndDate != null){
+                                dateToShow = DateFormat.yMMMd().format(farthestEndDate);
+                                endDateController.text = farthestEndDate.toIso8601String();
+                              }
+                            }
+                          },
+                          builder: (context, state) {
+                            return CustomValidator<String>(
+                              initialValue: endDateController.text,
+                              validator: (String? value) {
+                                if (value?.isNotEmpty == true) {
+                                  return null;
+                                }
+
+                                return "pleaseSelectDate".translate(context);
+                              },
+                              builder: (state) {
+                                return Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        showDatePicker(
+                                          context: context,
+                                          firstDate: DateTime.now(),
+                                          lastDate: _tempEndDate ?? DateTime(2100),
+                                          initialDate: DateTime.tryParse(
+                                            endDateController.text,
+                                          ),
+                                        ).then((e) {
+                                          if (e != null) {
+                                            dateToShow = DateFormat.yMMMd().format(e);
+                                            endDateController.text = e.toIso8601String();
+                                            state.didChange(endDateController.text);
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 48,
+                                        width: double.infinity,
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                                start: 14.0),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: context.color.secondaryColor,
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            border: Border.all(
+                                              width: 1,
+                                              color: state.hasError
+                                                  ? context.color.error
+                                                  : context.color.borderColor
+                                                      .darken(30),
+                                            )),
+                                        child: Text(
+                                          dateToShow,
+                                          style: TextStyle(
+                                            color: state.hasError
+                                                ? context.color.error
+                                                : context.color.textColorDark
+                                                    .withOpacity(0.7),
+                                            fontSize: context.font.large,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: state.hasError,
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                                start: 14.0),
+                                        child: Text(
+                                          state.errorText ?? '',
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: context.font.small,
+                                            color: context.color.error,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        SizedBox(height: 15.rh(context)),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -694,7 +823,8 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       if (titleImageURL.isNotEmpty) {
         currentWidget = GestureDetector(
           onTap: () {
-            UiUtils.showFullScreenImage(context, provider: NetworkImage(titleImageURL));
+            UiUtils.showFullScreenImage(context,
+                provider: NetworkImage(titleImageURL));
           },
           child: Container(
             width: 100,
@@ -722,7 +852,8 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                 height: 100,
                 margin: const EdgeInsets.all(5),
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
                 child: Image.file(
                   file,
                   fit: BoxFit.cover,
@@ -756,7 +887,8 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                 },
                 child: Container(
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   alignment: AlignmentDirectional.center,
                   height: 48.rh(context),
                   child: Text(
@@ -797,7 +929,6 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       );
     });
   }
-
 
   Widget itemImagesListener() {
     return itemImagePicker.listenChangesInUI((context, files) {
@@ -1037,8 +1168,6 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
     );
   }
 }
-
-
 
 final Map<String, String> slugLetter = {
   'ٱ': 'a',
