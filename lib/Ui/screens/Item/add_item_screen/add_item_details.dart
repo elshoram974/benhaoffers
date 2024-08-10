@@ -367,6 +367,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                             fontSize: context.font.large),
                         onChange: (String val){
                           String text = '';
+                          val = val.trim();
                           for (int i = 0; i < val.length; i++) {
                             text += slugLetter[val[i].toLowerCase()] ?? '';
                           }
