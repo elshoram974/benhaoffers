@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -15,8 +13,6 @@ import '../../../utils/responsiveSize.dart';
 import '../../../utils/ui_utils.dart';
 import '../Home/Widgets/home_sections_adapter.dart';
 import '../Widgets/Errors/no_data_found.dart';
-import '../home/Widgets/item_horizontal_card.dart';
-import '../main_activity.dart';
 import '../widgets/AnimatedRoutes/blur_page_route.dart';
 import '../widgets/shimmerLoadingContainer.dart';
 
@@ -31,7 +27,10 @@ class SellerDetailsScreen extends StatefulWidget {
   static Route route(RouteSettings routeSettings) {
     Map? arguments = routeSettings.arguments as Map?;
     return BlurredRouter(
-      builder: (_) => SellerDetailsScreen(model: arguments?['model']),
+      builder: (_) => BlocProvider(
+        create: (context) => FetchItemFromSellerCubit(),
+        child: SellerDetailsScreen(model: arguments?['model']),
+      ),
     );
   }
 }
@@ -40,19 +39,10 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
   late final User seller = widget.model.user!;
 
   late ScrollController controller;
-  static TextEditingController searchController = TextEditingController();
-  bool isFocused = false;
-  bool isList = true;
-  String previousSearchQuery = "";
-  Timer? _searchDelay;
 
   @override
   void initState() {
     super.initState();
-    searchbody = {};
-    Constant.itemFilter = null;
-    searchController = TextEditingController();
-    searchController.addListener(searchItemListener);
     controller = ScrollController()..addListener(_loadMore);
 
     context
@@ -64,33 +54,9 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
   void dispose() {
     controller.removeListener(_loadMore);
     controller.dispose();
-    searchController.dispose();
     super.dispose();
   }
 
-  //this will listen and manage search
-  void searchItemListener() {
-    _searchDelay?.cancel();
-    searchCallAfterDelay();
-  }
-
-//This will create delay so we don't face rapid api call
-  void searchCallAfterDelay() {
-    _searchDelay = Timer(const Duration(milliseconds: 500), itemSearch);
-  }
-
-  ///This will call api after some delay
-  void itemSearch() {
-    if (previousSearchQuery != searchController.text) {
-      // context.read<FetchItemFromSellerCubit>().fetchItemFromCategory(
-      //     categoryId: int.parse(
-      //       widget.categoryId,
-      //     ),
-      //     search: searchController.text);
-      previousSearchQuery = searchController.text;
-      setState(() {});
-    }
-  }
 
   void _loadMore() async {
     if (controller.isEndReached()) {
@@ -106,29 +72,6 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
         //     sortBy: sortBy);
       }
     }
-  }
-
-  Widget setSearchIcon() {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: UiUtils.getSvg(AppIcons.search,
-            color: context.color.textDefaultColor));
-  }
-
-  Widget setSuffixIcon() {
-    return GestureDetector(
-      onTap: () {
-        searchController.clear();
-        isFocused = false; //set icon color to black back
-        FocusScope.of(context).unfocus(); //dismiss keyboard
-        setState(() {});
-      },
-      child: Icon(
-        Icons.close_rounded,
-        color: Theme.of(context).colorScheme.blackColor,
-        size: 30,
-      ),
-    );
   }
 
   @override
@@ -162,10 +105,22 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
             children: [
               sellerDetails(),
               fetchItems(),
+              loadingMoreProgress(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget loadingMoreProgress() {
+    return BlocBuilder<FetchItemFromSellerCubit, FetchItemFromSellerState>(
+      builder: (context, state) {
+        if (state is FetchItemFromSellerSuccess) {
+          if (state.isLoadingMore) return UiUtils.progress();
+        }
+        return const SizedBox();
+      },
     );
   }
 
@@ -259,7 +214,7 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
         builder: (context, state) {
       if (state is FetchItemFromCategoryInProgress) {
         return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          padding: const EdgeInsets.all(15),
           itemCount: 10,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -286,71 +241,34 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
             ),
           );
         }
-        return Column(
-          children: [
-            Expanded(
-              child: isList
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 3),
-                      itemCount: state.itemModel.length,
-                      itemBuilder: (context, index) {
-                        ItemModel item = state.itemModel[index];
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+              crossAxisCount: 2,
+              height: MediaQuery.of(context).size.height / 3.rh(context),
+              mainAxisSpacing: 7,
+              crossAxisSpacing: 10),
+          itemCount: state.itemModel.length,
+          itemBuilder: (context, index) {
+            ItemModel item = state.itemModel[index];
 
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.adDetailsScreen,
-                              arguments: {
-                                'model': item,
-                              },
-                            );
-                          },
-                          child: ItemHorizontalCard(
-                            item: item,
-                          ),
-                        );
-                      },
-                    )
-                  : GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                              crossAxisCount: 2,
-                              height: MediaQuery.of(context).size.height /
-                                  3.rh(context),
-                              mainAxisSpacing: 7,
-                              crossAxisSpacing: 10),
-                      itemCount: state.itemModel.length,
-                      itemBuilder: (context, index) {
-                        ItemModel item = state.itemModel[index];
-
-                        return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                Routes.adDetailsScreen,
-                                arguments: {
-                                  'model': item,
-                                },
-                              );
-                            },
-                            child: ItemCard(
-                              item: item,
-                              width: MediaQuery.sizeOf(context).width /
-                                  2.3.rw(context),
-                            ));
-                      },
-                    ),
-            ),
-            if (state.isLoadingMore) UiUtils.progress()
-          ],
+            return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.adDetailsScreen,
+                    arguments: {
+                      'model': item,
+                    },
+                  );
+                },
+                child: ItemCard(
+                  item: item,
+                  width: MediaQuery.sizeOf(context).width / 2.3.rw(context),
+                ));
+          },
         );
       }
       return Container();

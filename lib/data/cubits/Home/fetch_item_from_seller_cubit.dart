@@ -84,12 +84,11 @@ class FetchItemFromSellerCubit extends Cubit<FetchItemFromSellerState> {
             .copyWith(isLoadingMore: true));
 
         DataOutput<ItemModel> result = await _itemRepository.fetchItemFromSellerId(
-            sellerId: sellerId,
-            page: (state as FetchItemFromSellerSuccess).page + 1,
-            );
+          sellerId: sellerId,
+          page: (state as FetchItemFromSellerSuccess).page + 1,
+        );
 
-        FetchItemFromSellerSuccess item =
-            (state as FetchItemFromSellerSuccess);
+        FetchItemFromSellerSuccess item = (state as FetchItemFromSellerSuccess);
 
         item.itemModel.addAll(result.modelList);
 
