@@ -912,11 +912,12 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
     String val = value[0].toString();
     if (field.type == CustomFieldWebsite().type) {
       return TextButton(
-        onPressed: () async{
+        onPressed: () async {
           if (await canLaunchUrlString(val)) {
             launchUrlString(val);
           } else {
-            HelperUtils.showSnackBarMessage(context, "unable_to_open".translate(context));
+            HelperUtils.showSnackBarMessage(
+                context, "unable_to_open".translate(context));
           }
         },
         child: Text(val),
@@ -926,19 +927,21 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: FilledButton(
-            onPressed: () async{
+            onPressed: () async {
               if (await canLaunchUrlString(val)) {
                 launchUrlString(val);
               } else {
-                HelperUtils.showSnackBarMessage(context, "unable_to_open".translate(context));
+                HelperUtils.showSnackBarMessage(
+                    context, "unable_to_open".translate(context));
               }
             },
-            style:FilledButton.styleFrom(
+            style: FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               backgroundColor: const Color(0xff1daa61),
               fixedSize: const Size.fromHeight(33),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            ) ,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+            ),
             child: Text(
               "order_now".translate(context),
               style: TextStyle(
@@ -2104,7 +2107,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                       context: context);
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: context.color.territoryColor
@@ -2233,8 +2237,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   decoration: InputDecoration(
                       fillColor: context.color.borderColor.darken(20),
                       filled: true,
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
                       hintText: "yourOffer".translate(context),
                       hintStyle: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -2293,55 +2297,68 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
   }
 
   Widget setSellerDetails() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(children: [
-        SizedBox(
-            height: 60.rh(context),
-            width: 60.rw(context),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: model.user!.profile != null && model.user!.profile != ""
-                    ? UiUtils.getImage(model.user!.profile!, fit: BoxFit.fill)
-                    : UiUtils.getSvg(
-                        AppIcons.defaultPersonLogo,
-                        color: context.color.territoryColor,
-                        fit: BoxFit.none,
-                      ))),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(model.user!.name!).bold().size(context.font.large),
-              Text(model.user!.email!)
-                  .color(context.color.textLightColor)
-                  .size(context.font.small)
-            ]),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          Routes.sellerDetailsScreen,
+          arguments: {
+            "model": model,
+          },
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(children: [
+          SizedBox(
+              height: 60.rh(context),
+              width: 60.rw(context),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: model.user!.profile != null &&
+                          model.user!.profile != ""
+                      ? UiUtils.getImage(model.user!.profile!, fit: BoxFit.fill)
+                      : UiUtils.getSvg(
+                          AppIcons.defaultPersonLogo,
+                          color: context.color.territoryColor,
+                          fit: BoxFit.none,
+                        ))),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(model.user!.name!).bold().size(context.font.large),
+                    Text(model.user!.email!)
+                        .color(context.color.textLightColor)
+                        .size(context.font.small)
+                  ]),
+            ),
           ),
-        ),
-        setIconButtons(
-            assetName: AppIcons.message,
-            onTap: () {
-              HelperUtils.launchPathURL(
-                  isTelephone: false,
-                  isSMS: true,
-                  isMail: false,
-                  value: widget.model.contact!,
-                  context: context);
-            }),
-        SizedBox(width: 10.rw(context)),
-        setIconButtons(
-            assetName: AppIcons.call,
-            onTap: () {
-              HelperUtils.launchPathURL(
-                  isTelephone: true,
-                  isSMS: false,
-                  isMail: false,
-                  value: widget.model.contact!,
-                  context: context);
-            })
-      ]),
+          setIconButtons(
+              assetName: AppIcons.message,
+              onTap: () {
+                HelperUtils.launchPathURL(
+                    isTelephone: false,
+                    isSMS: true,
+                    isMail: false,
+                    value: widget.model.contact!,
+                    context: context);
+              }),
+          SizedBox(width: 10.rw(context)),
+          setIconButtons(
+              assetName: AppIcons.call,
+              onTap: () {
+                HelperUtils.launchPathURL(
+                    isTelephone: true,
+                    isSMS: false,
+                    isMail: false,
+                    value: widget.model.contact!,
+                    context: context);
+              })
+        ]),
+      ),
     );
   }
 
