@@ -215,14 +215,19 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
   Widget fetchItems() {
     return BlocBuilder<FetchItemFromSellerCubit, FetchItemFromSellerState>(
         builder: (context, state) {
-      if (state is FetchItemFromCategoryInProgress) {
-        return ListView.builder(
-          padding: const EdgeInsets.all(15),
+      if (state is FetchItemFromSellerInProgress) {
+        return GridView.builder(
           itemCount: 10,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+              crossAxisCount: 2,
+              height: MediaQuery.of(context).size.height / 3.rh(context),
+              mainAxisSpacing: 7,
+              crossAxisSpacing: 10),
           itemBuilder: (context, index) {
-            return buildItemsShimmer(context);
+            return const ItemCardShimmer();
           },
         );
       }

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../../../data/model/Home/home_screen_section.dart';
 
 import '../../Widgets/promoted_widget.dart';
+import '../../widgets/shimmerLoadingContainer.dart';
 import 'grid_list_adapter.dart';
 
 class HomeSectionsAdapter extends StatelessWidget {
@@ -361,6 +362,77 @@ class _ItemCardState extends State<ItemCard> {
             // favButton(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+class ItemCardShimmer extends StatelessWidget {
+  final double imageHeight = 147;
+  final double? width;
+
+  const ItemCardShimmer({super.key, this.width});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width ?? 250,
+      decoration: BoxDecoration(
+        color: context.color.borderColor.darken(30),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CustomShimmer(
+                height: imageHeight,
+                width: imageHeight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomShimmer(
+                  width: 100.rw(context),
+                  height: 10,
+                  borderRadius: 7,
+                ),
+                SizedBox(height: 20.rw(context)),
+                const CustomShimmer(height: 15, borderRadius: 7),
+                SizedBox(height: 20.rw(context)),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 12),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomShimmer(height: 10, borderRadius: 7),
+                      ),
+                      Expanded(
+                        child: CustomShimmer(height: 10, borderRadius: 7),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
