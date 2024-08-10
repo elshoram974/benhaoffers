@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../Utils/AppIcon.dart';
+import '../../../Utils/helper_utils.dart';
 import '../../../Utils/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
+import '../../../data/cubits/Home/fetch_item_from_seller_cubit.dart';
 import '../../../data/model/item/item_model.dart';
 import '../../../exports/main_export.dart';
 import '../../../utils/Extensions/extensions.dart';
@@ -18,9 +21,9 @@ import '../widgets/AnimatedRoutes/blur_page_route.dart';
 import '../widgets/shimmerLoadingContainer.dart';
 
 class SellerDetailsScreen extends StatefulWidget {
-  final User seller;
+  final ItemModel model;
 
-  const SellerDetailsScreen({super.key, required this.seller});
+  const SellerDetailsScreen({super.key, required this.model});
 
   @override
   SellerDetailsScreenState createState() => SellerDetailsScreenState();
@@ -28,13 +31,13 @@ class SellerDetailsScreen extends StatefulWidget {
   static Route route(RouteSettings routeSettings) {
     Map? arguments = routeSettings.arguments as Map?;
     return BlurredRouter(
-      builder: (_) => SellerDetailsScreen(seller: arguments?['seller']),
+      builder: (_) => SellerDetailsScreen(model: arguments?['model']),
     );
   }
 }
 
 class SellerDetailsScreenState extends State<SellerDetailsScreen> {
-  late final User seller = widget.seller;
+  late final User seller = widget.model.user!;
 
   late ScrollController controller;
   static TextEditingController searchController = TextEditingController();
@@ -52,11 +55,9 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
     searchController.addListener(searchItemListener);
     controller = ScrollController()..addListener(_loadMore);
 
-    // context.read<FetchItemFromCategoryCubit>().fetchItemFromCategory(
-    //     categoryId: int.parse(
-    //       widget.categoryId,
-    //     ),
-    //     search: "");
+    context
+        .read<FetchItemFromSellerCubit>()
+        .fetchItemFromSeller(sellerId: seller.id!);
   }
 
   @override
@@ -81,7 +82,7 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
   ///This will call api after some delay
   void itemSearch() {
     if (previousSearchQuery != searchController.text) {
-      // context.read<FetchItemFromCategoryCubit>().fetchItemFromCategory(
+      // context.read<FetchItemFromSellerCubit>().fetchItemFromCategory(
       //     categoryId: int.parse(
       //       widget.categoryId,
       //     ),
@@ -93,8 +94,11 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
 
   void _loadMore() async {
     if (controller.isEndReached()) {
-      if (context.read<FetchItemFromCategoryCubit>().hasMoreData()) {
-        // context.read<FetchItemFromCategoryCubit>().fetchItemFromCategoryMore(
+      if (context.read<FetchItemFromSellerCubit>().hasMoreData()) {
+        context
+            .read<FetchItemFromSellerCubit>()
+            .fetchItemFromSellerMore(sellerId: seller.id!);
+        // context.read<FetchItemFromSellerCubit>().fetchItemFromCategoryMore(
         //     catId: int.parse(
         //       widget.categoryId,
         //     ),
@@ -102,125 +106,6 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
         //     sortBy: sortBy);
       }
     }
-  }
-
-  Widget searchBarWidget() {
-    return Container(
-      height: 56.rh(context),
-      color: context.color.secondaryColor,
-      child: LayoutBuilder(builder: (context, c) {
-        return SizedBox(
-            width: c.maxWidth,
-            child: FittedBox(
-              fit: BoxFit.none,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 14, horizontal: 18.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                        width: 243.rw(context),
-                        height: 40.rh(context),
-                        alignment: AlignmentDirectional.center,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1,
-                                color: context.color.borderColor.darken(30)),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            color: context.color.primaryColor),
-                        child: TextFormField(
-                            controller: searchController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 8),
-                              //OutlineInputBorder()
-                              fillColor:
-                                  Theme.of(context).colorScheme.primaryColor,
-                              hintText: "searchHintLbl".translate(context),
-                              prefixIcon: setSearchIcon(),
-                              prefixIconConstraints: const BoxConstraints(
-                                  minHeight: 5, minWidth: 5),
-                            ),
-                            enableSuggestions: true,
-                            onEditingComplete: () {
-                              setState(
-                                () {
-                                  isFocused = false;
-                                },
-                              );
-                              FocusScope.of(context).unfocus();
-                            },
-                            onTap: () {
-                              //change prefix icon color to primary
-                              setState(() {
-                                isFocused = true;
-                              });
-                            })),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isList = false;
-                        });
-                      },
-                      child: Container(
-                        width: 40.rw(context),
-                        height: 40.rh(context),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 1,
-                              color: context.color.borderColor.darken(30)),
-                          color: context.color.secondaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: UiUtils.getSvg(AppIcons.gridViewIcon,
-                              color: !isList
-                                  ? context.color.textDefaultColor
-                                  : context.color.textDefaultColor
-                                      .withOpacity(0.2)),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isList = true;
-                        });
-                      },
-                      child: Container(
-                        width: 40.rw(context),
-                        height: 40.rh(context),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 1,
-                              color: context.color.borderColor.darken(30)),
-                          color: context.color.secondaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: UiUtils.getSvg(AppIcons.listViewIcon,
-                              color: isList
-                                  ? context.color.textDefaultColor
-                                  : context.color.textDefaultColor
-                                      .withOpacity(0.2)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ));
-      }),
-    );
   }
 
   Widget setSearchIcon() {
@@ -257,39 +142,27 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
         context: context,
         statusBarColor: context.color.secondaryColor,
       ),
-      child: PopScope(
-        canPop: true,
-        onPopInvoked: (isPop) {
-          Constant.itemFilter = null;
-        },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.primaryColor,
-          appBar: UiUtils.buildAppBar(
-            context,
-            showBackButton: true,
-            title:
-                selectedcategoryName == "" ? seller.name : selectedcategoryName,
-          ),
-          body: RefreshIndicator(
-            onRefresh: () async {
-              // Debug log to check if onRefresh is triggered
-
-              searchbody = {};
-              Constant.itemFilter = null;
-
-              // context.read<FetchItemFromCategoryCubit>().fetchItemFromCategory(
-              //       categoryId: int.parse(widget.categoryId),
-              //       search: "",
-              //     );
-            },
-            color: context.color.territoryColor,
-            child: Column(
-              children: [
-                sellerDetails(),
-                searchBarWidget(),
-                Expanded(child: fetchItems()),
-              ],
-            ),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.primaryColor,
+        appBar: UiUtils.buildAppBar(
+          context,
+          showBackButton: true,
+          title: seller.name,
+        ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            context
+                .read<FetchItemFromSellerCubit>()
+                .fetchItemFromSeller(sellerId: seller.id!);
+          },
+          color: context.color.territoryColor,
+          child: ListView(
+            controller: controller,
+            physics: const BouncingScrollPhysics(),
+            children: [
+              sellerDetails(),
+              fetchItems(),
+            ],
           ),
         ),
       ),
@@ -299,86 +172,116 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
   Padding sellerDetails() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(children: [
-        SizedBox(
-            height: 60.rh(context),
-            width: 60.rw(context),
+      child: Column(
+        children: [
+          SizedBox.square(
+            dimension: 160.rh(context),
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: seller.profile != null && seller.profile != ""
-                    ? UiUtils.getImage(seller.profile!, fit: BoxFit.fill)
-                    : UiUtils.getSvg(
-                        AppIcons.defaultPersonLogo,
-                        color: context.color.territoryColor,
-                        fit: BoxFit.none,
-                      ))),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(seller.name!).bold().size(context.font.large),
-              Text(seller.email!)
-                  .color(context.color.textLightColor)
-                  .size(context.font.small)
-            ]),
+              borderRadius: BorderRadius.circular(10),
+              child: seller.profile != null && seller.profile?.trim() != ""
+                  ? UiUtils.getImage(seller.profile!, fit: BoxFit.fill)
+                  : UiUtils.getSvg(
+                      AppIcons.defaultPersonLogo,
+                      color: context.color.territoryColor,
+                      fit: BoxFit.none,
+                    ),
+            ),
           ),
-        ),
-        // setIconButtons(
-        //     assetName: AppIcons.message,
-        //     onTap: () {
-        //       HelperUtils.launchPathURL(
-        //           isTelephone: false,
-        //           isSMS: true,
-        //           isMail: false,
-        //           value: widget.model.contact!,
-        //           context: context);
-        //     }),
-        // SizedBox(width: 10.rw(context)),
-        // setIconButtons(
-        //     assetName: AppIcons.call,
-        //     onTap: () {
-        //       HelperUtils.launchPathURL(
-        //           isTelephone: true,
-        //           isSMS: false,
-        //           isMail: false,
-        //           value: widget.model.contact!,
-        //           context: context);
-        //     })
-      ]),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(seller.name!).bold().size(context.font.large),
+                  Text(seller.email!)
+                      .color(context.color.textLightColor)
+                      .size(context.font.small)
+                ]),
+                const Spacer(),
+                setIconButtons(
+                  assetName: AppIcons.message,
+                  onTap: () {
+                    HelperUtils.launchPathURL(
+                        isTelephone: false,
+                        isSMS: true,
+                        isMail: false,
+                        value: widget.model.contact!,
+                        context: context);
+                  },
+                ),
+                SizedBox(width: 10.rw(context)),
+                setIconButtons(
+                  assetName: AppIcons.call,
+                  onTap: () {
+                    HelperUtils.launchPathURL(
+                        isTelephone: true,
+                        isSMS: false,
+                        isMail: false,
+                        value: widget.model.contact!,
+                        context: context);
+                  },
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
+  Widget setIconButtons({
+    required String assetName,
+    required void Function() onTap,
+    Color? color,
+    double? height,
+    double? width,
+  }) {
+    return Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: context.color.borderColor.darken(30))),
+        child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: InkWell(
+                onTap: onTap,
+                child: SvgPicture.asset(
+                  assetName,
+                  colorFilter: color == null
+                      ? ColorFilter.mode(
+                          context.color.territoryColor, BlendMode.srcIn)
+                      : ColorFilter.mode(color, BlendMode.srcIn),
+                ))));
+  }
+
   Widget fetchItems() {
-    return BlocBuilder<FetchItemFromCategoryCubit, FetchItemFromCategoryState>(
+    return BlocBuilder<FetchItemFromSellerCubit, FetchItemFromSellerState>(
         builder: (context, state) {
       if (state is FetchItemFromCategoryInProgress) {
         return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           itemCount: 10,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             return buildItemsShimmer(context);
           },
         );
       }
 
-      if (state is FetchItemFromCategoryFailure) {
+      if (state is FetchItemFromSellerFailure) {
         return Center(
           child: Text(state.errorMessage),
         );
       }
-      if (state is FetchItemFromCategorySuccess) {
+      if (state is FetchItemFromSellerSuccess) {
         if (state.itemModel.isEmpty) {
           return Center(
             child: NoDataFound(
               onTap: () {
-                // context
-                //     .read<FetchItemFromCategoryCubit>()
-                //     .fetchItemFromCategory(
-                //         categoryId: int.parse(
-                //           widget.categoryId,
-                //         ),
-                //         search: searchController.text.toString());
+                context
+                    .read<FetchItemFromSellerCubit>()
+                    .fetchItemFromSeller(sellerId: seller.id!);
               },
             ),
           );
@@ -389,11 +292,10 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
               child: isList
                   ? ListView.builder(
                       shrinkWrap: true,
-                      controller: controller,
+                      physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 3),
                       itemCount: state.itemModel.length,
-                      physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
                         ItemModel item = state.itemModel[index];
 
@@ -415,7 +317,7 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
                     )
                   : GridView.builder(
                       shrinkWrap: true,
-                      controller: controller,
+                      physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 5),
                       gridDelegate:
