@@ -2313,16 +2313,19 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           SizedBox(
               height: 60.rh(context),
               width: 60.rw(context),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: model.user!.profile != null &&
-                          model.user!.profile != ""
-                      ? UiUtils.getImage(model.user!.profile!, fit: BoxFit.fill)
-                      : UiUtils.getSvg(
-                          AppIcons.defaultPersonLogo,
-                          color: context.color.territoryColor,
-                          fit: BoxFit.none,
-                        ))),
+              child: Hero(
+                tag: model.user!.profile ?? model.user!.email!,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: model.user!.profile != null &&
+                            model.user!.profile != ""
+                        ? UiUtils.getImage(model.user!.profile!, fit: BoxFit.fill)
+                        : UiUtils.getSvg(
+                            AppIcons.defaultPersonLogo,
+                            color: context.color.territoryColor,
+                            fit: BoxFit.none,
+                          )),
+              )),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(10.0),

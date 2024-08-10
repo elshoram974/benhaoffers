@@ -131,15 +131,18 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
         children: [
           SizedBox.square(
             dimension: 160.rh(context),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: seller.profile != null && seller.profile?.trim() != ""
-                  ? UiUtils.getImage(seller.profile!, fit: BoxFit.fill)
-                  : UiUtils.getSvg(
-                      AppIcons.defaultPersonLogo,
-                      color: context.color.territoryColor,
-                      fit: BoxFit.none,
-                    ),
+            child: Hero(
+              tag: seller.profile ?? seller.email!,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: seller.profile != null && seller.profile?.trim() != ""
+                    ? UiUtils.getImage(seller.profile!, fit: BoxFit.fill)
+                    : UiUtils.getSvg(
+                        AppIcons.defaultPersonLogo,
+                        color: context.color.territoryColor,
+                        fit: BoxFit.none,
+                      ),
+              ),
             ),
           ),
           Padding(
