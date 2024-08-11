@@ -566,6 +566,8 @@ class MainActivityState extends State<MainActivity>
   }*/
 
   BottomAppBar bottomBar() {
+    bool visible = false;
+
     return BottomAppBar(
       color: context.color.secondaryColor,
       shape: const CircularNotchedRectangle(),
@@ -594,13 +596,12 @@ class MainActivityState extends State<MainActivity>
                       },
                       context: context);
                 }
-              }, child: BlocBuilder<FetchAdsListingSubscriptionPackagesCubit, FetchAdsListingSubscriptionPackagesState>(
+              }, child: BlocBuilder<FetchAdsListingSubscriptionPackagesCubit,
+                  FetchAdsListingSubscriptionPackagesState>(
                 builder: (context, state) {
-                  bool visible = false;
-
-                  if(state is FetchAdsListingSubscriptionPackagesSuccess){
+                  if (state is FetchAdsListingSubscriptionPackagesSuccess) {
                     for (var e in state.subscriptionPackages) {
-                      if(e.isActive == true){
+                      if (e.isActive == true) {
                         visible = true;
                         break;
                       }
