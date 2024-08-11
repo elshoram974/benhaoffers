@@ -68,6 +68,7 @@ class HomeScreenState extends State<HomeScreen>
     initializeSettings();
     addPageScrollListener();
     notificationPermissionChecker();
+    context.read<FetchAdsListingSubscriptionPackagesCubit>().fetchPackages();
 
     context.read<SliderCubit>().fetchSlider(
           context,
@@ -159,6 +160,7 @@ class HomeScreenState extends State<HomeScreen>
           color: context.color.territoryColor,
           //triggerMode: RefreshIndicatorTriggerMode.onEdge,
           onRefresh: () async {
+            context.read<FetchAdsListingSubscriptionPackagesCubit>().fetchPackages();
             context.read<SliderCubit>().fetchSlider(
                   context,
                 );

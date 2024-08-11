@@ -571,6 +571,7 @@ class MainActivityState extends State<MainActivity>
       shape: const CircularNotchedRectangle(),
       child: Container(
         color: context.color.secondaryColor,
+        height: 58,
         child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -580,42 +581,57 @@ class MainActivityState extends State<MainActivity>
               buildBottomNavigationbarItem(1, AppIcons.chatNav,
                   AppIcons.chatNavActive, "chat".translate(context)),
               BlocListener<FetchUserPackageLimitCubit,
-                      FetchUserPackageLimitState>(
-                  listener: (context, state) {
-                    if (state is FetchUserPackageLimitFailure) {
-                      UiUtils.noPackageAvailableDialog(context);
-                    }
-                    if (state is FetchUserPackageLimitInSuccess) {
-                      UiUtils.checkUser(
-                          onNotGuest: () {
-                            Navigator.pushNamed(
-                                context, Routes.selectCategoryScreen,
-                                arguments: <String, dynamic>{});
-                          },
-                          context: context);
-                    }
-                  },
-                  child: Transform(
-                    transform: Matrix4.identity()..translate(0.toDouble(), -20),
-                    child: GestureDetector(
-                      onTap: () async {
-                        //TODO:TEMP
-
-                        context
-                            .read<FetchUserPackageLimitCubit>()
-                            .fetchUserPackageLimit(packageType: "item_listing");
+                  FetchUserPackageLimitState>(listener: (context, state) {
+                if (state is FetchUserPackageLimitFailure) {
+                  UiUtils.noPackageAvailableDialog(context);
+                }
+                if (state is FetchUserPackageLimitInSuccess) {
+                  UiUtils.checkUser(
+                      onNotGuest: () {
+                        Navigator.pushNamed(
+                            context, Routes.selectCategoryScreen,
+                            arguments: <String, dynamic>{});
                       },
-                      child: SizedBox(
-                        width: 53.rw(context),
-                        height: 58,
-                        child: svgLoaded == false
-                            ? Container()
-                            : SvgPicture.string(
-                                svgEdit.toSVGString() ?? "",
-                              ),
+                      context: context);
+                }
+              }, child: BlocBuilder<FetchAdsListingSubscriptionPackagesCubit, FetchAdsListingSubscriptionPackagesState>(
+                builder: (context, state) {
+                  bool visible = false;
+
+                  if(state is FetchAdsListingSubscriptionPackagesSuccess){
+                    for (var e in state.subscriptionPackages) {
+                      if(e.isActive == true){
+                        visible = true;
+                        break;
+                      }
+                    }
+                  }
+                  return Visibility(
+                    visible: visible,
+                    child: Transform(
+                      transform: Matrix4.identity()
+                        ..translate(0.toDouble(), -20),
+                      child: GestureDetector(
+                        onTap: () async {
+                          context
+                              .read<FetchUserPackageLimitCubit>()
+                              .fetchUserPackageLimit(
+                                  packageType: "item_listing");
+                        },
+                        child: SizedBox(
+                          width: 53.rw(context),
+                          height: 58,
+                          child: svgLoaded == false
+                              ? Container()
+                              : SvgPicture.string(
+                                  svgEdit.toSVGString() ?? "",
+                                ),
+                        ),
                       ),
                     ),
-                  )),
+                  );
+                },
+              )),
               buildBottomNavigationbarItem(2, AppIcons.myAdsNav,
                   AppIcons.myAdsNavActive, "myAdsTab".translate(context)),
               buildBottomNavigationbarItem(3, AppIcons.profileNav,
