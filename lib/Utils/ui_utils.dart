@@ -23,15 +23,17 @@ import 'network_to_localsvg.dart';
 import 'responsiveSize.dart';
 
 class UiUtils {
-  static SvgPicture getSvg(String path,
+  static RepaintBoundary getSvg(String path,
       {Color? color, BoxFit? fit, double? width, double? height}) {
-    return SvgPicture.asset(
-      path,
-      colorFilter:
-          color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
-      fit: fit ?? BoxFit.contain,
-      width: width,
-      height: height,
+    return RepaintBoundary(
+      child: SvgPicture.asset(
+        path,
+        colorFilter:
+            color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
+        fit: fit ?? BoxFit.contain,
+        width: width,
+        height: height,
+      ),
     );
   }
 
@@ -136,28 +138,30 @@ class UiUtils {
       String? blurHash,
       bool? showFullScreenImage,
       Color? color}) {
-    return SvgPicture.network(
-      url,
-      colorFilter:
-          color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
-      width: width,
-      height: height,
-      fit: fit!,
-      placeholderBuilder: (context) {
-        return Container(
-            width: width,
-            color: context.color.territoryColor.withOpacity(0.1),
-            height: height,
-            alignment: AlignmentDirectional.center,
-            child: SizedBox(
-                width: width,
-                height: height,
-                child: getSvg(
-                  AppIcons.placeHolder,
-                  width: width ?? 70,
-                  height: height ?? 70,
-                )));
-      },
+    return RepaintBoundary(
+      child: SvgPicture.network(
+        url,
+        colorFilter:
+            color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
+        width: width,
+        height: height,
+        fit: fit!,
+        placeholderBuilder: (context) {
+          return Container(
+              width: width,
+              color: context.color.territoryColor.withOpacity(0.1),
+              height: height,
+              alignment: AlignmentDirectional.center,
+              child: SizedBox(
+                  width: width,
+                  height: height,
+                  child: Image.asset(
+                    AppIcons.placeHolder,
+                    width: width ?? 70,
+                    height: height ?? 70,
+                  )));
+        },
+      ),
     );
   }
 
@@ -181,7 +185,7 @@ class UiUtils {
             child: SizedBox(
                 width: width,
                 height: height,
-                child: getSvg(
+                child: Image.asset(
                   AppIcons.placeHolder,
                   width: width ?? 70,
                   height: height ?? 70,
@@ -196,7 +200,7 @@ class UiUtils {
           child: SizedBox(
             width: width,
             height: height,
-            child: getSvg(
+            child: Image.asset(
               AppIcons.placeHolder,
               width: width ?? 70,
               height: height ?? 70,

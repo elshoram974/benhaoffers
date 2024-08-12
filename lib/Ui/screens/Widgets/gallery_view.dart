@@ -63,7 +63,7 @@ class _GalleryViewWidgetState extends State<GalleryViewWidget> {
                     color: context.color.territoryColor.withOpacity(0.1),
                     alignment: AlignmentDirectional.center,
                     child: SizedBox(
-                      child: UiUtils.getSvg(
+                      child: Image.asset(
                         AppIcons.placeHolder,
                         width: 70,
                         height: 70,

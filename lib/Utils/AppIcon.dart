@@ -51,7 +51,7 @@ class AppIcons {
   static String done = _svgPath("done");
   static String promoted = _svgPath("promoted");
   static String homeLogo = _svgPath("Logo/homelogo");
-  static String placeHolder = _svgPath("Logo/placeholder");
+  static String placeHolder = "assets/svg/Logo/placeholder.png";
   static String noInternet = _svgPath("no_internet_illustrator");
   static String somethingWentWrong = _svgPath("something_went_wrong");
   static String itemMap = _svgPath("itemmap");
