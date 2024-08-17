@@ -70,63 +70,71 @@ class _SubscriptionPackageListScreenState
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2, // Number of tabs
-      child: Scaffold(
-        backgroundColor: context.color.backgroundColor,
-        appBar: UiUtils.buildAppBar(
-          context,
-          showBackButton: true,
-          title: "subsctiptionPlane".translate(context),
-          // bottomHeight: 49,
-          bottomHeight: 49,
+      child: PopScope(
+        canPop: true,
+        onPopInvoked: (didPop) {
+          context
+              .read<FetchAdsListingSubscriptionPackagesCubit>()
+              .fetchPackages();
+        },
+        child: Scaffold(
+          backgroundColor: context.color.backgroundColor,
+          appBar: UiUtils.buildAppBar(
+            context,
+            showBackButton: true,
+            title: "subsctiptionPlane".translate(context),
+            // bottomHeight: 49,
+            bottomHeight: 49,
 
-          bottom: [
-            Container(
-              decoration: BoxDecoration(
-                  color: context.color.secondaryColor,
-                  // Set background color here
-                  boxShadow: [
-                    BoxShadow(
-                      color: context.color.borderColor.withOpacity(0.8),
-                      // Shadow color
-                      spreadRadius: 3,
-                      // Spread radius
-                      blurRadius: 2,
-                      // Blur radius
-                      offset: const Offset(0, 1), // Shadow offset
-                    ),
-                  ]),
-              child: TabBar(
-                tabs: const [
-                  Tab(text: "Ads Listing"),
-                  Tab(text: "Featured Ads"),
-                ],
+            bottom: [
+              Container(
+                decoration: BoxDecoration(
+                    color: context.color.secondaryColor,
+                    // Set background color here
+                    boxShadow: [
+                      BoxShadow(
+                        color: context.color.borderColor.withOpacity(0.8),
+                        // Shadow color
+                        spreadRadius: 3,
+                        // Spread radius
+                        blurRadius: 2,
+                        // Blur radius
+                        offset: const Offset(0, 1), // Shadow offset
+                      ),
+                    ]),
+                child: TabBar(
+                  tabs: const [
+                    Tab(text: "Ads Listing"),
+                    Tab(text: "Featured Ads"),
+                  ],
 
-                indicatorColor: context.color.territoryColor,
-                // Line color
-                indicatorWeight: 3,
+                  indicatorColor: context.color.territoryColor,
+                  // Line color
+                  indicatorWeight: 3,
 
-                // Line thickness
-                labelColor: context.color.territoryColor,
-                // Selected tab text color
-                unselectedLabelColor:
-                    context.color.textDefaultColor.withOpacity(0.5),
-                // Unselected tab text color
-                labelStyle: const TextStyle(
-                  fontSize: 16,
+                  // Line thickness
+                  labelColor: context.color.territoryColor,
+                  // Selected tab text color
+                  unselectedLabelColor:
+                      context.color.textDefaultColor.withOpacity(0.5),
+                  // Unselected tab text color
+                  labelStyle: const TextStyle(
+                    fontSize: 16,
+                  ),
+                  // Selected tab text style
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  // Padding around the tab text
+                  indicatorSize: TabBarIndicatorSize.tab,
                 ),
-                // Selected tab text style
-                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-                // Padding around the tab text
-                indicatorSize: TabBarIndicatorSize.tab,
               ),
-            ),
-          ],
-        ),
-        body: TabBarView(
-          children: [
-            adsListing(),
-            featuredAds(),
-          ],
+            ],
+          ),
+          body: TabBarView(
+            children: [
+              adsListing(),
+              featuredAds(),
+            ],
+          ),
         ),
       ),
     );
