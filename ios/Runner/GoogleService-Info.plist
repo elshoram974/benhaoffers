@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>831808483289-p5obb8djpcebpbhq13088gmbh5ltpo55.apps.googleusercontent.com</string>
+	<string>831808483289-g5k7dhkrpv63nhkgfo2ivjnsd6lkl4go.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.831808483289-p5obb8djpcebpbhq13088gmbh5ltpo55</string>
+	<string>com.googleusercontent.apps.831808483289-g5k7dhkrpv63nhkgfo2ivjnsd6lkl4go</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>831808483289-74rkjegnnnqh7jb15k2ungralnde03gd.apps.googleusercontent.com</string>
+	<string>831808483289-18ibu20eu09qqts3eq791r2rk9rrlnq8.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCD7CfJNODJa_fyV10GFpwLUWhZKdf473A</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.devetechno.benhaoffers</string>
+	<string>com.deve.benhaoffers</string>
 	<key>PROJECT_ID</key>
 	<string>benha-offers</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:831808483289:ios:173f4bb759d41b2bdcf3c8</string>
+	<string>1:831808483289:ios:4ca9dd3effca81b9dcf3c8</string>
 </dict>
 </plist>
