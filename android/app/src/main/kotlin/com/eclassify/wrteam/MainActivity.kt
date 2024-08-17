@@ -1,4 +1,4 @@
-package com.devetechno.benhaoffers
+package com.deve.benhaoffers
 
 
 import io.flutter.embedding.android.FlutterActivity

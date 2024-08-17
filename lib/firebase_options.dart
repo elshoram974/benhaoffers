@@ -67,6 +67,6 @@ class DefaultFirebaseOptions {
     //     '831808483289-dhn3si4lpio5bhr32iu9u6j6d8ja0npr.apps.googleusercontent.com',
     // iosClientId:
     //     '831808483289-tutdvlsj06eis0n3eli5c4985fi0lkht.apps.googleusercontent.com',
-    iosBundleId: 'com.devetechno.benhaoffers',
+    iosBundleId: 'com.deve.benhaoffers',
   );
 }

@@ -27,18 +27,17 @@ class PaymentGateway {
 class AppSettings {
   /// Basic Settings
   static const String applicationName = 'Benha Offers';
-  static const String andoidPackageName = 'com.devetechno.benhaoffers';
+  static const String andoidPackageName = 'com.deve.benhaoffers';
   static const String iOSAppId = '12345678';
   static const String playstoreURLAndroid =
       "https://play.google.com/store/apps/details?id=$andoidPackageName";
   static const String appstoreURLios = "https://apps.apple.com/";
   static const String shareAppText = "Share this App";
 
-
-
 // DON'T FORGET TO GET HTTPS:// OR HTTP:// BEFORE YOUR ADMIN PANEL URL OR HOST URL
-  static const String hostUrl = "https://control.benhaoffers.com"; // DON'T ADD / AT END
-  
+  static const String hostUrl =
+      "https://control.benhaoffers.com"; // DON'T ADD / AT END
+
   static const int apiDataLoadLimit = 20;
   static const int maxCategoryShowLengthInHomeScreen = 5;
 
@@ -61,13 +60,13 @@ it will call API in background without showing the process and when data availab
 
   static const String shareNavigationWebUrl = "eclassify.wrteam.me";
 
-
   /// You will find this prefix from firebase console in dynamic link section
   static const String deepLinkPrefix =
       "https://control.benhaoffers.page.link"; //demo.page.link
 
   //set anything you want
-  static const String deepLinkName = "control.benhaoffers.com"; //deeplink demo.com
+  static const String deepLinkName =
+      "control.benhaoffers.com"; //deeplink demo.com
 
   static const MapType googleMapType =
       MapType.normal; //none , normal , satellite , terrain , hybrid
