@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:eClassify/Ui/screens/widgets/Errors/something_went_wrong.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ void initApp() async {
   ///Note: this file's code is very necessary and sensitive if you change it, this might affect whole app , So change it carefully.
   ///This must be used do not remove this line
   WidgetsFlutterBinding.ensureInitialized();
+  if(kDebugMode) HttpOverrides.global = MyHttpOverrides();
   final GoogleMapsFlutterPlatform mapsImplementation =
       GoogleMapsFlutterPlatform.instance;
   if (mapsImplementation is GoogleMapsFlutterAndroid) {
@@ -71,3 +73,9 @@ void initApp() async {
 
 
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
