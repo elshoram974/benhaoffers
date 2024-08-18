@@ -1,4 +1,4 @@
-  import 'package:eClassify/Ui/screens/Widgets/Errors/something_went_wrong.dart';
+import 'package:eClassify/Ui/screens/Widgets/Errors/something_went_wrong.dart';
 import 'package:eClassify/data/cubits/chatCubits/blocked_users_list_cubit.dart';
 import 'package:eClassify/data/cubits/chatCubits/get_seller_chat_users_cubit.dart';
 import 'package:flutter/material.dart';
@@ -172,7 +172,8 @@ class _ChatListScreenState extends State<ChatListScreen>
                       controller: chatBuyerScreenController,
                       shrinkWrap: true,
                       itemCount: state.chatedUserList.length,
-                      padding: const EdgeInsetsDirectional.all(16),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 74),
                       itemBuilder: (
                         context,
                         index,
@@ -208,8 +209,8 @@ class _ChatListScreenState extends State<ChatListScreen>
                                 ? chatedUser.item!.price!
                                 : 0,
                             itemAmount: chatedUser.amount!,
-                           status: chatedUser.item != null &&
-                                chatedUser.item!.status != null
+                            status: chatedUser.item != null &&
+                                    chatedUser.item!.status != null
                                 ? chatedUser.item!.status!
                                 : null,
                             buyerId: chatedUser.buyerId.toString(),
@@ -217,7 +218,11 @@ class _ChatListScreenState extends State<ChatListScreen>
                         );
                       }),
                 ),
-                if (state.isLoadingMore) UiUtils.progress()
+                if (state.isLoadingMore)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 58),
+                    child: UiUtils.progress(),
+                  ),
               ],
             );
           }
@@ -266,7 +271,8 @@ class _ChatListScreenState extends State<ChatListScreen>
                       controller: chatSellerScreenController,
                       shrinkWrap: true,
                       itemCount: state.chatedUserList.length,
-                      padding: const EdgeInsetsDirectional.all(16),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 74),
                       itemBuilder: (
                         context,
                         index,
@@ -305,7 +311,11 @@ class _ChatListScreenState extends State<ChatListScreen>
                         );
                       }),
                 ),
-                if (state.isLoadingMore) UiUtils.progress()
+                if (state.isLoadingMore)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 58),
+                    child: UiUtils.progress(),
+                  )
               ],
             );
           }

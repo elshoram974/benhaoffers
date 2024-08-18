@@ -1,4 +1,3 @@
-
 import 'package:eClassify/Ui/screens/Home/home_screen.dart';
 import 'package:eClassify/Utils/AppIcon.dart';
 import 'package:eClassify/Utils/ui_utils.dart';
@@ -64,9 +63,11 @@ class _MyItemTabState extends CloudState<MyItemTab> {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(
-        vertical: 10 + defaultPadding,
-        horizontal: defaultPadding,
+      padding: const EdgeInsets.only(
+        top: 10 + defaultPadding,
+        bottom: 68 + defaultPadding,
+        left: defaultPadding,
+        right: defaultPadding,
       ),
       itemCount: 5,
       separatorBuilder: (context, index) {
@@ -240,9 +241,11 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                   child: ListView.separated(
                     shrinkWrap: true,
                     controller: _pageScrollController,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: sidePadding,
-                      vertical: 8,
+                    padding: const EdgeInsets.only(
+                      left: sidePadding,
+                      right: sidePadding,
+                      top: 8,
+                      bottom: 66,
                     ),
                     separatorBuilder: (context, index) {
                       return Container(
@@ -309,7 +312,8 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Text("${Constant.currencySymbol}\t${item.price}")
-                                                .color(context.color.territoryColor)
+                                                .color(context
+                                                    .color.territoryColor)
                                                 .bold(),
                                             const Spacer(),
                                             showStatus(item)
@@ -322,7 +326,8 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                                         //SizedBox(height: 12,),
                                         Row(
                                           //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Flexible(
@@ -334,40 +339,49 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                                                       width: 14,
                                                       height: 14,
                                                       colorFilter: ColorFilter.mode(
-                                                          context.color.textDefaultColor, BlendMode.srcIn)),
+                                                          context.color
+                                                              .textDefaultColor,
+                                                          BlendMode.srcIn)),
                                                   const SizedBox(
                                                     width: 4,
                                                   ),
                                                   Text("${"views".translate(context)}:${item.views}")
                                                       .size(context.font.small)
-                                                      .color(context.color.textColorDark.withOpacity(0.5)),
+                                                      .color(context
+                                                          .color.textColorDark
+                                                          .withOpacity(0.5)),
                                                 ],
                                               ),
                                             ),
-                                            const SizedBox(width: 20,),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
                                             Flexible(
                                               flex: 1,
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  SvgPicture.asset(AppIcons.heart,
+                                                  SvgPicture.asset(
+                                                      AppIcons.heart,
                                                       width: 14,
                                                       height: 14,
                                                       colorFilter: ColorFilter.mode(
-                                                          context.color.textDefaultColor, BlendMode.srcIn)),
+                                                          context.color
+                                                              .textDefaultColor,
+                                                          BlendMode.srcIn)),
                                                   const SizedBox(
                                                     width: 4,
                                                   ),
                                                   Text("${"like".translate(context)}:${item.totalLikes.toString()}")
                                                       .size(context.font.small)
-                                                      .color(context.color.textColorDark.withOpacity(0.5)),
+                                                      .color(context
+                                                          .color.textColorDark
+                                                          .withOpacity(0.5)),
                                                 ],
                                               ),
                                             ),
                                           ],
                                         )
-
-
                                       ],
                                     ),
                                   ),
@@ -381,7 +395,11 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                     itemCount: state.items.length,
                   ),
                 ),
-                if (state.isLoadingMore) UiUtils.progress()
+                if (state.isLoadingMore)
+                  Padding(
+                    padding: const EdgeInsets.all(58),
+                    child: UiUtils.progress(),
+                  )
               ],
             );
           }

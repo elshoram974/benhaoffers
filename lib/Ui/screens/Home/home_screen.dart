@@ -140,6 +140,7 @@ class HomeScreenState extends State<HomeScreen>
     super.build(context);
 
     return SafeArea(
+      bottom: false,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -160,7 +161,9 @@ class HomeScreenState extends State<HomeScreen>
           color: context.color.territoryColor,
           //triggerMode: RefreshIndicatorTriggerMode.onEdge,
           onRefresh: () async {
-            context.read<FetchAdsListingSubscriptionPackagesCubit>().fetchPackages();
+            context
+                .read<FetchAdsListingSubscriptionPackagesCubit>()
+                .fetchPackages();
             context.read<SliderCubit>().fetchSlider(
                   context,
                 );
@@ -228,9 +231,7 @@ class HomeScreenState extends State<HomeScreen>
                   },
                 ),
                 const AllItemsWidget(),
-                const SizedBox(
-                  height: 30,
-                )
+                const SizedBox(height: 88),
               ],
             ),
           ),

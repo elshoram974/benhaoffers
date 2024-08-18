@@ -147,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             controller: profileScreenController,
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: const EdgeInsets.fromLTRB(18, 18, 18, 76),
               child: Column(children: <Widget>[
                 Container(
                   height: 91,

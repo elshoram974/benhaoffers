@@ -459,6 +459,7 @@ class MainActivityState extends State<MainActivity>
           backgroundColor: context.color.primaryColor,
           bottomNavigationBar:
               Constant.maintenanceMode == "1" ? null : bottomBar(),
+          extendBody: true,
           body: Stack(
             children: <Widget>[
               PageView(
@@ -565,80 +566,111 @@ class MainActivityState extends State<MainActivity>
     }
   }*/
 
-  BottomAppBar bottomBar() {
+  Widget bottomBar() {
     bool visible = false;
 
-    return BottomAppBar(
-      color: context.color.secondaryColor,
-      shape: const CircularNotchedRectangle(),
-      child: Container(
-        color: context.color.secondaryColor,
-        height: 58,
-        child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              buildBottomNavigationbarItem(0, AppIcons.homeNav,
-                  AppIcons.homeNavActive, "homeTab".translate(context)),
-              buildBottomNavigationbarItem(1, AppIcons.chatNav,
-                  AppIcons.chatNavActive, "chat".translate(context)),
-              BlocListener<FetchUserPackageLimitCubit,
-                  FetchUserPackageLimitState>(listener: (context, state) {
-                if (state is FetchUserPackageLimitFailure) {
-                  UiUtils.noPackageAvailableDialog(context);
-                }
-                if (state is FetchUserPackageLimitInSuccess) {
-                  UiUtils.checkUser(
-                      onNotGuest: () {
-                        Navigator.pushNamed(
-                            context, Routes.selectCategoryScreen,
-                            arguments: <String, dynamic>{});
-                      },
-                      context: context);
-                }
-              }, child: BlocBuilder<FetchAdsListingSubscriptionPackagesCubit,
-                  FetchAdsListingSubscriptionPackagesState>(
-                builder: (context, state) {
-                  if (state is FetchAdsListingSubscriptionPackagesSuccess) {
-                    for (var e in state.subscriptionPackages) {
-                      if (e.isActive == true) {
-                        visible = true;
-                        break;
-                      }
-                    }
-                  }
-                  return Visibility(
-                    visible: visible,
-                    child: Transform(
-                      transform: Matrix4.identity()
-                        ..translate(0.toDouble(), -20),
-                      child: GestureDetector(
-                        onTap: () async {
-                          context
-                              .read<FetchUserPackageLimitCubit>()
-                              .fetchUserPackageLimit(
-                                  packageType: "item_listing");
-                        },
-                        child: SizedBox(
-                          width: 53.rw(context),
-                          height: 58,
-                          child: svgLoaded == false
-                              ? Container()
-                              : SvgPicture.string(
-                                  svgEdit.toSVGString() ?? "",
-                                ),
-                        ),
-                      ),
+    return BlocBuilder<FetchAdsListingSubscriptionPackagesCubit,
+        FetchAdsListingSubscriptionPackagesState>(
+      builder: (context, state) {
+        double buttonWidth = 53.rw(context);
+        if (state is FetchAdsListingSubscriptionPackagesSuccess) {
+          for (var e in state.subscriptionPackages) {
+            if (e.isActive == true) {
+              visible = true;
+              break;
+            }
+          }
+        }
+        return SizedBox(
+          height: visible ? 78 : 58,
+          child: Stack(
+            fit: StackFit.expand,
+            alignment: Alignment.bottomCenter,
+            children: [
+              ClipPath(
+                clipper: visible ? AddButtonClipper(buttonWidth) : null,
+                child: BottomAppBar(
+                  color: Colors.transparent,
+                  shape: const CircularNotchedRectangle(),
+                  child: Container(
+                    color: context.color.secondaryColor,
+                    margin: visible ? const EdgeInsets.only(top: 20) : null,
+                    height: 58,
+                    child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          buildBottomNavigationbarItem(
+                              0,
+                              AppIcons.homeNav,
+                              AppIcons.homeNavActive,
+                              "homeTab".translate(context)),
+                          buildBottomNavigationbarItem(
+                              1,
+                              AppIcons.chatNav,
+                              AppIcons.chatNavActive,
+                              "chat".translate(context)),
+                          BlocListener<FetchUserPackageLimitCubit,
+                              FetchUserPackageLimitState>(
+                            listener: (context, state) {
+                              if (state is FetchUserPackageLimitFailure) {
+                                UiUtils.noPackageAvailableDialog(context);
+                              }
+                              if (state is FetchUserPackageLimitInSuccess) {
+                                UiUtils.checkUser(
+                                    onNotGuest: () {
+                                      Navigator.pushNamed(
+                                          context, Routes.selectCategoryScreen,
+                                          arguments: <String, dynamic>{});
+                                    },
+                                    context: context);
+                              }
+                            },
+                            child: Visibility(
+                              visible: visible,
+                              child: SizedBox(width: buttonWidth),
+                            ),
+                          ),
+                          buildBottomNavigationbarItem(
+                              2,
+                              AppIcons.myAdsNav,
+                              AppIcons.myAdsNavActive,
+                              "myAdsTab".translate(context)),
+                          buildBottomNavigationbarItem(
+                              3,
+                              AppIcons.profileNav,
+                              AppIcons.profileNavActive,
+                              "profileTab".translate(context))
+                        ]),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: visible,
+                child: Positioned(
+                  top: 0,
+                  child: GestureDetector(
+                    onTap: () async {
+                      context
+                          .read<FetchUserPackageLimitCubit>()
+                          .fetchUserPackageLimit(packageType: "item_listing");
+                    },
+                    child: SizedBox(
+                      width: buttonWidth,
+                      height: 58,
+                      child: svgLoaded == false
+                          ? Container()
+                          : SvgPicture.string(
+                              svgEdit.toSVGString() ?? "",
+                            ),
                     ),
-                  );
-                },
-              )),
-              buildBottomNavigationbarItem(2, AppIcons.myAdsNav,
-                  AppIcons.myAdsNavActive, "myAdsTab".translate(context)),
-              buildBottomNavigationbarItem(3, AppIcons.profileNav,
-                  AppIcons.profileNavActive, "profileTab".translate(context))
-            ]),
-      ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -676,5 +708,36 @@ class MainActivityState extends State<MainActivity>
         ),
       ),
     );
+  }
+}
+
+class AddButtonClipper extends CustomClipper<Path> {
+  final double buttonWidth;
+  AddButtonClipper(this.buttonWidth);
+  @override
+  Path getClip(Size size) {
+    final Path path = Path();
+    path.moveTo(0, 20);
+
+    final double firstButtonX = ((size.width - buttonWidth) / 2) + 3;
+    path.lineTo(firstButtonX, 20);
+    path.lineTo(firstButtonX, 15);
+
+    path.lineTo(size.width / 2, 0);
+
+    final double lastButtonX = ((size.width + buttonWidth) / 2) - 3;
+    path.lineTo(lastButtonX, 15);
+    path.lineTo(lastButtonX, 20);
+
+    path.lineTo(size.width, 20);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
   }
 }
