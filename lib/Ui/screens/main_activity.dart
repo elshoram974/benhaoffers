@@ -588,7 +588,7 @@ class MainActivityState extends State<MainActivity>
             alignment: Alignment.bottomCenter,
             children: [
               ClipPath(
-                clipper: visible ? AddButtonClipper(buttonWidth) : null,
+                clipper: visible ? AddButtonClipper() : null,
                 child: BottomAppBar(
                   color: Colors.transparent,
                   shape: const CircularNotchedRectangle(),
@@ -712,8 +712,7 @@ class MainActivityState extends State<MainActivity>
 }
 
 class AddButtonClipper extends CustomClipper<Path> {
-  final double buttonWidth;
-  AddButtonClipper(this.buttonWidth);
+  final double buttonWidth = 53;
   @override
   Path getClip(Size size) {
     final Path path = Path();
@@ -738,6 +737,6 @@ class AddButtonClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return true;
+    return false;
   }
 }
