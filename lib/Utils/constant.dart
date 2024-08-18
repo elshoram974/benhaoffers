@@ -102,8 +102,8 @@ class Constant {
 
   static const String notificationChannel = AppSettings.notificationChannel;
   static int uploadImageQuality = AppSettings.uploadImageQuality; //0 to 100
-  //static const int maxSizeInBytes = 4096 * 1024; //0 to 100
-  static const int maxSizeInBytes = 3 * 1024; //0 to 100
+  //static const int maxSizeInBytes = 4096 * 1024;
+  static const int maxSizeInBytes = 3 * 1024 * 1024;
 
   static String? subscriptionPackageId;
   static ItemFilterModel? itemFilter;
