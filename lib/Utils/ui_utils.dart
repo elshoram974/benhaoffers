@@ -217,11 +217,13 @@ class UiUtils {
       Color? normalProgressColor,
       bool? showWhite}) {
     if (Constant.useLottieProgress) {
-      return LottieBuilder.asset(
-        "assets/lottie/${showWhite == true ? Constant.progressLottieFileWhite : Constant.loadingSuccessLottieFile}",
-        width: width ?? 45,
-        height: height ?? 45,
-        delegates: const LottieDelegates(values: []),
+      return Center(
+        child: LottieBuilder.asset(
+          "assets/lottie/${showWhite == true ? Constant.progressLottieFileWhite : Constant.loadingSuccessLottieFile}",
+          width: width ?? 45,
+          height: height ?? 45,
+          delegates: const LottieDelegates(values: []),
+        ),
       );
     } else {
       return CircularProgressIndicator(
