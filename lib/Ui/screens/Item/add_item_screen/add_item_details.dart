@@ -76,7 +76,6 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
   DateTime? _tempEndDate;
   late String dateToShow = "chooseDate".translate(context);
 
-
   void _onBreadCrumbItemTap(int index) {
     int popTimes = (widget.breadCrumbItems!.length - 1) - index;
     int current = index;
@@ -119,6 +118,10 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       adPriceController.text = item?.price.toString() ?? "";
       adPhoneNumberController.text = item?.contact ?? "";
       adAdditionalDetailsController.text = item?.videoLink ?? "";
+      if (item?.endDate != null) {
+        endDateController.text = item!.endDate!.toIso8601String();
+        dateToShow = DateFormat.yMMMd().format(item!.endDate!);
+      }
       titleImageURL = item?.image ?? "";
 
       List<String?>? list = item?.galleryImages?.map((e) => e.image).toList();
@@ -552,23 +555,29 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         BlocConsumer<FetchAdsListingSubscriptionPackagesCubit,
                             FetchAdsListingSubscriptionPackagesState>(
                           listener: (context, state) {
-                            if(state is FetchAdsListingSubscriptionPackagesSuccess){
+                            if (state
+                                is FetchAdsListingSubscriptionPackagesSuccess) {
                               DateTime? farthestEndDate = DateTime(2001);
-                              for (SubscriptionPackageModel e in state.subscriptionPackages) {
-                                if(e.endDate == null && e.isActive == true){
+                              for (SubscriptionPackageModel e
+                                  in state.subscriptionPackages) {
+                                if (e.endDate == null && e.isActive == true) {
                                   farthestEndDate = null;
                                   break;
                                 }
 
-                                if(e.endDate != null && e.endDate!.isAfter(farthestEndDate!) && e.isActive == true){
+                                if (e.endDate != null &&
+                                    e.endDate!.isAfter(farthestEndDate!) &&
+                                    e.isActive == true) {
                                   farthestEndDate = e.endDate!;
                                   _tempEndDate = e.endDate!;
                                 }
                               }
-                              
-                              if(farthestEndDate != null){
-                                dateToShow = DateFormat.yMMMd().format(farthestEndDate);
-                                endDateController.text = farthestEndDate.toIso8601String();
+
+                              if (farthestEndDate != null) {
+                                dateToShow =
+                                    DateFormat.yMMMd().format(farthestEndDate);
+                                endDateController.text =
+                                    farthestEndDate.toIso8601String();
                               }
                             }
                           },
@@ -590,15 +599,19 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                         showDatePicker(
                                           context: context,
                                           firstDate: DateTime.now(),
-                                          lastDate: _tempEndDate ?? DateTime(2100),
+                                          lastDate:
+                                              _tempEndDate ?? DateTime(2100),
                                           initialDate: DateTime.tryParse(
                                             endDateController.text,
                                           ),
                                         ).then((e) {
                                           if (e != null) {
-                                            dateToShow = DateFormat.yMMMd().format(e);
-                                            endDateController.text = e.toIso8601String();
-                                            state.didChange(endDateController.text);
+                                            dateToShow =
+                                                DateFormat.yMMMd().format(e);
+                                            endDateController.text =
+                                                e.toIso8601String();
+                                            state.didChange(
+                                                endDateController.text);
                                           }
                                         });
                                       },

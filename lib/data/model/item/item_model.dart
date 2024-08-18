@@ -40,6 +40,7 @@ class ItemModel {
   String? city;
   String? state;
   String? country;
+  DateTime? endDate;
 
   double? get latitude => _latitude;
 
@@ -113,6 +114,7 @@ class ItemModel {
       this.area,
       this.city,
       this.state,
+      this.endDate,
       this.country}) {
     this.latitude = latitude;
     this.longitude = longitude;
@@ -154,6 +156,7 @@ class ItemModel {
       String? area,
       String? city,
       String? state,
+      DateTime? endDate,
       String? country}) {
     return ItemModel(
       id: id ?? this.id,
@@ -193,6 +196,7 @@ class ItemModel {
       city: city ?? this.city,
       state: state ?? this.state,
       country: country ?? this.country,
+      endDate: endDate ?? this.endDate,
     );
   }
 
@@ -241,6 +245,7 @@ class ItemModel {
     city = json['city'];
     state = json['state'];
     country = json['country'];
+    endDate = DateTime.tryParse(json['end_date']);
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     if (json['gallery_images'] != null) {
       galleryImages = <GalleryImages>[];
@@ -295,6 +300,7 @@ class ItemModel {
     data['city'] = city;
     data['state'] = state;
     data['country'] = country;
+    data['end_date'] = endDate?.toIso8601String();
     data['category'] = category!.toJson();
     if (areaId != null && area != null) {
       data['area'] = {
@@ -317,7 +323,7 @@ class ItemModel {
 
   @override
   String toString() {
-    return 'ItemModel{id: $id, name: $name,slug:$slug, description: $description, price: $price, image: $image, watermarkimage: $watermarkimage, latitude: $latitude, longitude: $longitude, address: $address, contact: $contact, total_likes: $totalLikes,isLiked: $isLike, isFeature: $isFeature,views: $views, type: $type, status: $status, active: $active, videoLink: $videoLink, user: $user, galleryImages: $galleryImages,itemOffers:$itemOffers, category: $category, customFields: $customFields,createdAt:$created,itemType:$itemType,userId:$userId,categoryId:$categoryId,isAlreadyOffered:$isAlreadyOffered,isAlreadyReported:$isAlreadyReported,allCategoryId:$allCategoryIds,rejected_reason:$rejectedReason,area_id:$areaId,area:$area,city:$city,state:$state,country:$country}';
+    return 'ItemModel{id: $id, name: $name,slug:$slug, description: $description, price: $price, image: $image, watermarkimage: $watermarkimage, latitude: $latitude, longitude: $longitude, address: $address, contact: $contact, total_likes: $totalLikes,isLiked: $isLike, isFeature: $isFeature,views: $views, type: $type, status: $status, active: $active, videoLink: $videoLink, user: $user, galleryImages: $galleryImages,itemOffers:$itemOffers, category: $category, customFields: $customFields,createdAt:$created,itemType:$itemType,userId:$userId,categoryId:$categoryId,isAlreadyOffered:$isAlreadyOffered,isAlreadyReported:$isAlreadyReported,allCategoryId:$allCategoryIds,rejected_reason:$rejectedReason,area_id:$areaId,area:$area,city:$city,state:$state,country:$country, end_date: $endDate}';
   }
 }
 
