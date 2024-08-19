@@ -121,6 +121,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       if (item?.endDate != null) {
         endDateController.text = item!.endDate!.toIso8601String();
         dateToShow = DateFormat.yMMMd().format(item!.endDate!);
+        _tempEndDate = item!.endDate;
       }
       titleImageURL = item?.image ?? "";
 
@@ -555,6 +556,8 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         BlocConsumer<FetchAdsListingSubscriptionPackagesCubit,
                             FetchAdsListingSubscriptionPackagesState>(
                           listener: (context, state) {
+                            if (item?.endDate != null) return;
+
                             if (state
                                 is FetchAdsListingSubscriptionPackagesSuccess) {
                               DateTime? farthestEndDate = DateTime(2001);

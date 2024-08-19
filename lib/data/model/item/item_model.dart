@@ -245,7 +245,7 @@ class ItemModel {
     city = json['city'];
     state = json['state'];
     country = json['country'];
-    endDate = DateTime.tryParse(json['end_date']);
+    endDate = DateTime.tryParse((json['end_date'] as String?) ?? '');
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     if (json['gallery_images'] != null) {
       galleryImages = <GalleryImages>[];
