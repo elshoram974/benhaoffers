@@ -162,7 +162,7 @@ class NotificationService {
   @pragma('vm:entry-point')
   static Future<void> onBackgroundMessageHandler(RemoteMessage message) async {
     print("Background message received: ${message.data}");
-    // handleNotification(message);
+    handleNotification(message);
   }
 
   static forgroundNotificationHandler(BuildContext context) async {
