@@ -1208,7 +1208,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
         itemModel.country
       ].where((part) => part != null && part.isNotEmpty).join(', ');
       formatedAddress = AddressComponent(
-          area: itemModel.area,
+          // area: itemModel.area,
           areaId: itemModel.areaId,
           city: itemModel.city,
           country: itemModel.country,
@@ -1281,9 +1281,9 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
           .first;
 
       formatedAddress = AddressComponent(
-          area: placeMark.subLocality,
+          // area: placeMark.subLocality,
           areaId: null,
-          city: placeMark.locality,
+          city: placeMark.subAdministrativeArea,
           country: placeMark.country,
           state: placeMark.administrativeArea);
 
@@ -1533,29 +1533,29 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                         //getCloudData('add_item_location_detail');
                         print("value location****$value");
 
-                        if (mounted)
+                        if (mounted) {
                           setState(() {
                             currentLocation = [
-                              location["area"] ?? null,
-                              location["city"] ?? null,
-                              location["state"] ?? null,
-                              location["country"] ?? null,
+                              // location["area"] ?? null,
+                              location["city"] ,
+                              location["state"] ,
+                              location["country"] ,
                             ]
                                 .where(
                                     (part) => part != null && part.isNotEmpty)
                                 .join(', ');
 
                             formatedAddress = AddressComponent(
-                                area: location["area"] ?? null,
-                                areaId: location["area_id"] ?? null,
-                                city: location["city"] ?? null,
-                                country: location["country"] ?? null,
-                                state: location["state"] ?? null);
+                                // area: location["area"] ,
+                                areaId: location["area_id"] ,
+                                city: location["city"] ,
+                                country: location["country"] ,
+                                state: location["state"] );
 
                             print(
                                 "latitude****${location["latitude"]}*****${location["longitude"]}");
-                            latitude = location["latitude"] ?? null;
-                            longitude = location["longitude"] ?? null;
+                            latitude = location["latitude"] ;
+                            longitude = location["longitude"] ;
 
                             print(
                                 "latitude11****${location["latitude"]}*****${location["longitude"]}");
@@ -1573,6 +1573,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                               position: LatLng(latitude!, longitude!),
                             ));
                           });
+                        }
                       }
                     });
                   },
@@ -1640,7 +1641,8 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                                 setState(() {
                                   _markers.clear(); // Clear existing markers
                                   _markers.add(Marker(
-                                    markerId: const MarkerId('selectedLocation'),
+                                    markerId:
+                                        const MarkerId('selectedLocation'),
                                     position: latLng,
                                   ));
                                   latitude = latLng.latitude;
@@ -1910,8 +1912,8 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                   decoration: InputDecoration(
                       fillColor: context.color.borderColor.darken(20),
                       filled: true,
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
                       hintText: hintText,
                       hintStyle: TextStyle(
                           fontWeight: FontWeight.bold,
