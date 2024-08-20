@@ -19,7 +19,7 @@ import 'package:eClassify/data/model/item/item_model.dart';
 import 'package:eClassify/data/model/safety_tips_model.dart';
 import 'package:eClassify/exports/main_export.dart';
 import 'package:eClassify/utils/AppIcon.dart';
-import 'package:eClassify/utils/validator.dart';
+// import 'package:eClassify/utils/validator.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -114,9 +114,9 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
   final TextEditingController _reportmessageController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final TextEditingController _makeAnOffermessageController =
-      TextEditingController();
-  final GlobalKey<FormState> _offerFormKey = GlobalKey();
+  // final TextEditingController _makeAnOffermessageController =
+  //     TextEditingController();
+  // final GlobalKey<FormState> _offerFormKey = GlobalKey();
 
   /* [
     "http://eclassify.thewrteam.in/storage/packages/M5t66y5DRVVOrxH7xjDoOg3PJnxavUqjZI1ILlHn.jpg",
@@ -2135,18 +2135,18 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
       dialoge: BlurredDialogBox(
         content: makeAnOffer(),
         onCancel: () {
-          _makeAnOffermessageController.clear();
+          // _makeAnOffermessageController.clear();
         },
         acceptButtonName: "send".translate(context),
         isAcceptContainesPush: true,
         onAccept: () => Future.value().then((_) {
-          if (_offerFormKey.currentState!.validate()) {
+          // if (_offerFormKey.currentState!.validate()) {
             context.read<MakeAnOfferItemCubit>().makeAnOfferItem(
                 widget.model.id!,
-                int.parse(_makeAnOffermessageController.text.trim()));
+                widget.model.price!);
             Navigator.pop(context);
             return;
-          }
+          // }
         }),
       ),
     );
@@ -2168,99 +2168,97 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
   }
 
   Widget makeAnOffer() {
-    double bottomPadding = (MediaQuery.of(context).viewInsets.bottom - 50);
-    bool isBottomPaddingNagative = bottomPadding.isNegative;
+    // double bottomPadding = (MediaQuery.of(context).viewInsets.bottom - 50);
+    // bool isBottomPaddingNagative = bottomPadding.isNegative;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
-        child: Form(
-          key: _offerFormKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text("makeAnOffer".translate(context))
-                  .size(context.font.larger)
-                  .centerAlign()
-                  .bold(),
-              Divider(
-                thickness: 1,
-                color: context.color.borderColor.darken(30),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("makeAnOffer".translate(context))
+                .size(context.font.larger)
+                .centerAlign()
+                .bold(),
+            Divider(
+              thickness: 1,
+              color: context.color.borderColor.darken(30),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            RichText(
+              text: TextSpan(
+                text: "sellerPrice".translate(context),
+                style: TextStyle(
+                    color: context.color.textDefaultColor.withOpacity(0.5),
+                    fontSize: 16),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: "\t${Constant.currencySymbol}${widget.model.price}",
+                    style: TextStyle(
+                        color: context.color.textDefaultColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              RichText(
-                text: TextSpan(
-                  text: "sellerPrice".translate(context),
-                  style: TextStyle(
-                      color: context.color.textDefaultColor.withOpacity(0.5),
-                      fontSize: 16),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "\t${Constant.currencySymbol}${widget.model.price}",
-                      style: TextStyle(
-                          color: context.color.textDefaultColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.only(
-                    bottom: isBottomPaddingNagative ? 0 : bottomPadding,
-                    start: 20,
-                    end: 20,
-                    top: 18),
-                child: TextFormField(
-                  maxLines: null,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: context.color.textDefaultColor),
-                  controller: _makeAnOffermessageController,
-                  cursorColor: context.color.territoryColor,
-                  //autovalidateMode: AutovalidateMode.always,
-                  validator: (val) {
-                    if (val == null || val.isEmpty) {
-                      return Validator.nullCheckValidator(val,
-                          context: context);
-                    } else {
-                      if (int.parse(val) > widget.model.price!) {
-                        return "offerPriceWarning".translate(context);
-                      }
-                      return null;
-                    }
-                  },
-                  decoration: InputDecoration(
-                      fillColor: context.color.borderColor.darken(20),
-                      filled: true,
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
-                      hintText: "yourOffer".translate(context),
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
-                          color:
-                              context.color.textDefaultColor.withOpacity(0.3)),
-                      focusColor: context.color.territoryColor,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: context.color.borderColor.darken(60))),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: context.color.borderColor.darken(60))),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: context.color.territoryColor))),
-                ),
-              ),
-            ],
-          ),
+            ),
+            // Padding(
+            //   padding: EdgeInsetsDirectional.only(
+            //       bottom: isBottomPaddingNagative ? 0 : bottomPadding,
+            //       start: 20,
+            //       end: 20,
+            //       top: 18),
+            //   child: TextFormField(
+            //     maxLines: null,
+            //     textAlign: TextAlign.center,
+            //     keyboardType: TextInputType.number,
+            //     style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 22,
+            //         color: context.color.textDefaultColor),
+            //     controller: _makeAnOffermessageController,
+            //     cursorColor: context.color.territoryColor,
+            //     //autovalidateMode: AutovalidateMode.always,
+            //     validator: (val) {
+            //       if (val == null || val.isEmpty) {
+            //         return Validator.nullCheckValidator(val,
+            //             context: context);
+            //       } else {
+            //         if (int.parse(val) > widget.model.price!) {
+            //           return "offerPriceWarning".translate(context);
+            //         }
+            //         return null;
+            //       }
+            //     },
+            //     decoration: InputDecoration(
+            //         fillColor: context.color.borderColor.darken(20),
+            //         filled: true,
+            //         contentPadding: const EdgeInsets.symmetric(
+            //             vertical: 12, horizontal: 10),
+            //         hintText: "yourOffer".translate(context),
+            //         hintStyle: TextStyle(
+            //             fontWeight: FontWeight.bold,
+            //             fontSize: 22,
+            //             color:
+            //                 context.color.textDefaultColor.withOpacity(0.3)),
+            //         focusColor: context.color.territoryColor,
+            //         enabledBorder: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(8),
+            //             borderSide: BorderSide(
+            //                 color: context.color.borderColor.darken(60))),
+            //         border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(8),
+            //             borderSide: BorderSide(
+            //                 color: context.color.borderColor.darken(60))),
+            //         focusedBorder: OutlineInputBorder(
+            //             borderSide:
+            //                 BorderSide(color: context.color.territoryColor))),
+            //   ),
+            // ),
+          
+          ],
         ),
       ),
     );

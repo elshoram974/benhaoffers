@@ -1111,7 +1111,7 @@ class _ChatScreenState extends State<ChatScreen>
       return Align(
         alignment: AlignmentDirectional.topEnd,
         child: Container(
-            height: 71,
+            height: 76,
             margin: const EdgeInsetsDirectional.only(top: 15, bottom: 15, end: 15),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -1143,7 +1143,7 @@ class _ChatScreenState extends State<ChatScreen>
       return Align(
         alignment: AlignmentDirectional.topStart,
         child: Container(
-            height: 71,
+            height: 76,
             margin: const EdgeInsetsDirectional.only(top: 15, bottom: 15, start: 15),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
