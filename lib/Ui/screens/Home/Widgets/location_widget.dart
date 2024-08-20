@@ -135,7 +135,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../utils/AppIcon.dart';
 import '../../../../utils/ui_utils.dart';
 
-
 class LocationWidget extends StatelessWidget {
   const LocationWidget({super.key});
 
@@ -183,7 +182,7 @@ class LocationWidget extends StatelessWidget {
           ValueListenableBuilder(
               valueListenable: Hive.box(HiveKeys.userDetailsBox).listenable(),
               builder: (context, value, child) {
-                print("area name****${HiveUtils.getAreaName()}");
+                // print("area name****${HiveUtils.getAreaName()}");
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,23 +195,17 @@ class LocationWidget extends StatelessWidget {
                     Text(
                       HiveUtils.getCityName() == null
                           ? "---"
-                          : (HiveUtils.getAreaName() ?? "") +
-                              ((HiveUtils.getAreaName() == null ||
-                                          HiveUtils.getAreaName() == ""
-                                      ? ""
-                                      : ",") +
-                                  (HiveUtils.getCityName() ?? "") +
-                                  (HiveUtils.getStateName() == null ||
-                                          HiveUtils.getStateName() == ""
-                                      ? ""
-                                      : ",") +
-                                  (HiveUtils.getStateName() ?? "") +
-                                  (HiveUtils.getCountryName() == null ||
-                                          HiveUtils.getCountryName() == ""
-                                      ? ""
-                                      : ",") +
-                                  (HiveUtils.getCountryName() ?? "")) +
-                              "",
+                          : ((HiveUtils.getCityName() ?? "") +
+                              (HiveUtils.getStateName() == null ||
+                                      HiveUtils.getStateName() == ""
+                                  ? ""
+                                  : ",") +
+                              (HiveUtils.getStateName() ?? "") +
+                              (HiveUtils.getCountryName() == null ||
+                                      HiveUtils.getCountryName() == ""
+                                  ? ""
+                                  : ",") +
+                              (HiveUtils.getCountryName() ?? "")),
                       maxLines: 1,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,

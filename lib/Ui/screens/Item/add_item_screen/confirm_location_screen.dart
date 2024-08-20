@@ -1227,7 +1227,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
       ));
     } else {
       currentLocation = [
-        HiveUtils.getCurrentAreaName(),
+        // HiveUtils.getCurrentAreaName(),
         HiveUtils.getCurrentCityName(),
         HiveUtils.getCurrentStateName(),
         HiveUtils.getCurrentCountryName()
@@ -1250,7 +1250,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
         longitude = position.longitude;
       } else {
         formatedAddress = AddressComponent(
-            area: HiveUtils.getCurrentAreaName(),
+            // area: HiveUtils.getCurrentAreaName(),
             areaId: null,
             city: HiveUtils.getCurrentCityName(),
             country: HiveUtils.getCurrentCountryName(),

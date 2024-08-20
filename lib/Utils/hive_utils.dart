@@ -89,9 +89,9 @@ class HiveUtils {
     return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.city);
   }
 
-  static dynamic getAreaName() {
-    return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.area);
-  }
+  // static dynamic getAreaName() {
+  //   return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.area);
+  // }
 
   static dynamic getAreaId() {
     return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.areaId);
@@ -109,9 +109,9 @@ class HiveUtils {
     return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.currentLocationCity);
   }
 
-  static dynamic getCurrentAreaName() {
-    return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.currentLocationArea);
-  }
+  // static dynamic getCurrentAreaName() {
+  //   return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.currentLocationArea);
+  // }
 
   static dynamic getCurrentStateName() {
     return Hive.box(HiveKeys.userDetailsBox).get(HiveKeys.currentLocationState);
@@ -186,7 +186,7 @@ class HiveUtils {
       HiveKeys.stateKey: state,
       HiveKeys.countryKey: country,
       HiveKeys.areaId: areaId,
-      HiveKeys.area: area,
+      // HiveKeys.area: area,
       HiveKeys.latitudeKey: latitude,
       HiveKeys.longitudeKey: longitude
     });

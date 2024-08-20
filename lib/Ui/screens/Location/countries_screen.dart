@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:eClassify/Ui/screens/Home/home_screen.dart';
+// import 'package:eClassify/Ui/screens/Home/home_screen.dart';
 import 'package:eClassify/data/cubits/Location/fetch_countries_cubit.dart';
 import 'package:eClassify/data/model/Location/countriesModel.dart';
 
@@ -15,7 +15,7 @@ import '../../../Utils/helper_utils.dart';
 import '../../../data/cubits/Home/fetch_home_all_items_cubit.dart';
 import '../../../data/cubits/Home/fetch_home_screen_cubit.dart';
 import '../../../exports/main_export.dart';
-import '../Widgets/Errors/no_data_found.dart';
+// import '../Widgets/Errors/no_data_found.dart';
 import '../Widgets/Errors/no_internet.dart';
 import '../widgets/AnimatedRoutes/blur_page_route.dart';
 import '../widgets/Errors/something_went_wrong.dart';
@@ -248,8 +248,9 @@ class CountriesScreenState extends State<CountriesScreen> {
   }
 
   defaultLocation() {
+    print(HiveUtils.getCurrentCityName());
     _currentLocation = [
-      HiveUtils.getCurrentAreaName(),
+      // HiveUtils.getCurrentAreaName(),
       HiveUtils.getCurrentCityName(),
       HiveUtils.getCurrentStateName(),
       HiveUtils.getCurrentCountryName()
@@ -315,8 +316,8 @@ class CountriesScreenState extends State<CountriesScreen> {
         if (mounted) {
           setState(() {
             _currentLocation = [
-              placemark.subLocality,
-              placemark.locality,
+              // placemark.subLocality,
+              placemark.subAdministrativeArea,
               placemark.administrativeArea,
               placemark.country,
             ].where((part) => part != null && part.isNotEmpty).join(', ');
@@ -327,8 +328,8 @@ class CountriesScreenState extends State<CountriesScreen> {
 
           // Store current location in Hive
           HiveUtils.setCurrentLocation(
-            area: placemark.subLocality,
-            city: placemark.locality!,
+            // area: placemark.subLocality,
+            city: placemark.subAdministrativeArea!,
             state: placemark.administrativeArea!,
             country: placemark.country!,
             latitude: position.latitude,
@@ -343,8 +344,8 @@ class CountriesScreenState extends State<CountriesScreen> {
               Navigator.pop(context);
             } else {
               HiveUtils.setLocation(
-                area: placemark.subLocality,
-                city: placemark.locality!,
+                // area: placemark.subLocality,
+                city: placemark.subAdministrativeArea!,
                 state: placemark.administrativeArea!,
                 country: placemark.country!,
                 latitude: position.latitude,
@@ -353,11 +354,11 @@ class CountriesScreenState extends State<CountriesScreen> {
 
               Future.delayed(Duration.zero, () {
                 context.read<FetchHomeScreenCubit>().fetch(
-                      city: placemark.locality!,
+                      city: placemark.subAdministrativeArea!,
                     );
                 context
                     .read<FetchHomeAllItemsCubit>()
-                    .fetch(city: placemark.locality!);
+                    .fetch(city: placemark.subAdministrativeArea!);
               });
               Navigator.pop(context);
             }
@@ -371,8 +372,8 @@ class CountriesScreenState extends State<CountriesScreen> {
                   arguments: {'from': "main"});*/
             } else {
               HiveUtils.setLocation(
-                area: placemark.subLocality,
-                city: placemark.locality!,
+                // area: placemark.subLocality,
+                city: placemark.subAdministrativeArea!,
                 state: placemark.administrativeArea!,
                 country: placemark.country!,
                 latitude: position.latitude,
@@ -386,8 +387,8 @@ class CountriesScreenState extends State<CountriesScreen> {
           } else {
             Map<String, dynamic> result = {
               'area_id': null,
-              'area': placemark.subLocality,
-              'city': placemark.locality!,
+              // 'area': placemark.subLocality,
+              'city': placemark.subAdministrativeArea!,
               'state': placemark.administrativeArea!,
               'country': placemark.country!,
               'latitude': position.latitude,

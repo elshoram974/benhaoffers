@@ -2,7 +2,7 @@ class HiveKeys {
   //Box
   static const String userDetailsBox = "userDetailsBox";
   static const String city = "cityKey";
-  static const String area = "areaKey";
+  // static const String area = "areaKey";
   static const String areaId = "areaIdKey";
   static const String stateKey = "stateKey";
   static const String countryKey = "countryKey";
