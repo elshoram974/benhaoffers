@@ -162,7 +162,7 @@ class NotificationService {
   @pragma('vm:entry-point')
   static Future<void> onBackgroundMessageHandler(RemoteMessage message) async {
     print("Background message received: ${message.data}");
-    handleNotification(message);
+    // handleNotification(message);
   }
 
   static forgroundNotificationHandler(BuildContext context) async {
@@ -185,7 +185,7 @@ class NotificationService {
     );
   }
 
-  static void onTapNotificationHandler(context) {
+  static void onTapNotificationHandler() {
     onMessageOpen = FirebaseMessaging.onMessageOpenedApp
         .listen((RemoteMessage message) async {
       print("message.data['type']****${message.data['type']}");
@@ -201,7 +201,7 @@ class NotificationService {
         var itemPrice = message.data['item_price'];
         var itemOfferPrice = message.data['item_offer_amount'];
         Future.delayed(
-          Duration.zero,
+          const Duration(seconds:1),
           () {
             Navigator.push(Constant.navigatorKey.currentContext!,
                 MaterialPageRoute(
@@ -236,7 +236,7 @@ class NotificationService {
           },
         );
       } else if (message.data['type'] == "item-update") {
-        Future.delayed(Duration.zero, () {
+        Future.delayed(const Duration(seconds:1), () {
           HelperUtils.goToNextPage(
             Routes.main,
             Constant.navigatorKey.currentContext!,
@@ -248,7 +248,7 @@ class NotificationService {
         String id = message.data["item_id"] ?? "";
         DataOutput<ItemModel> item =
             await ItemRepository().fetchItemFromItemId(int.parse(id));
-        Future.delayed(Duration.zero, () {
+        Future.delayed(const Duration(seconds:1), () {
           HelperUtils.goToNextPage(Routes.adDetailsScreen,
               Constant.navigatorKey.currentContext!, false,
               args: {
@@ -256,7 +256,7 @@ class NotificationService {
               });
         });
       } else {
-        Future.delayed(Duration.zero, () {
+        Future.delayed(const Duration(seconds:1), () {
           HelperUtils.goToNextPage(Routes.notificationPage,
               Constant.navigatorKey.currentContext!, false);
         });
@@ -277,7 +277,7 @@ class NotificationService {
         alert: true, badge: true, sound: true);
     await forgroundNotificationHandler(context);
     await terminatedStateNotificationHandler(context);
-    onTapNotificationHandler(context);
+    onTapNotificationHandler();
   }
 
   static void disposeListeners() {

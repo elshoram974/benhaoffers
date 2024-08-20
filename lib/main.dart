@@ -25,6 +25,8 @@ class EntryPointState extends State<EntryPoint> {
     super.initState();
     FirebaseMessaging.onBackgroundMessage(
         NotificationService.onBackgroundMessageHandler);
+
+    NotificationService.onTapNotificationHandler();
     ChatGlobals.init();
   }
 

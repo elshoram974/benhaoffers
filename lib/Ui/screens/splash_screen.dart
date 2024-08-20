@@ -115,13 +115,13 @@ class SplashScreenState extends State<SplashScreen>
             .read<FetchSystemSettingsCubit>()
             .getSetting(SystemSetting.maintenanceMode) ==
         "1") {
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(Duration.zero, () {
         if (mounted) {
           Navigator.of(context).pushReplacementNamed(Routes.maintenanceMode);
         }
       });
     } else if (HiveUtils.isUserFirstTime() == true) {
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(Duration.zero, () {
         if (mounted) {
           Navigator.of(context).pushReplacementNamed(Routes.onboarding);
         }
@@ -134,7 +134,7 @@ class SplashScreenState extends State<SplashScreen>
           (HiveUtils.getUserDetails().mobile == null ||
               HiveUtils.getUserDetails().mobile == "")) {
         Future.delayed(
-          const Duration(seconds: 1),
+          Duration.zero,
           () {
             Navigator.pushReplacementNamed(
               context,
@@ -147,7 +147,7 @@ class SplashScreenState extends State<SplashScreen>
         );
       } else {
         if (HiveUtils.getCityName() != null && HiveUtils.getCityName() != "") {
-          Future.delayed(const Duration(seconds: 1), () {
+          Future.delayed(Duration.zero, () {
             if (mounted) {
               Navigator.of(context).pushReplacementNamed(Routes.main,
                   arguments: {'from': "main"});
