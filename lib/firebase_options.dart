@@ -50,23 +50,23 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCzn-XycR20_eHh6xUYSAOafD3qtLry1JA',
-    appId: '1:831808483289:android:6522c178eb3269d2dcf3c8',
-    messagingSenderId: '831808483289',
-    projectId: 'benha-offers',
-    storageBucket: 'benha-offers.appspot.com',
+    apiKey: 'AIzaSyAMoF7bolf5G3bhLxe1EIzF_7k2cRpn7i0',
+    appId: '1:223851828128:android:935655f1e261374e200ac5',
+    messagingSenderId: '223851828128',
+    projectId: 'bsoraa-55c9d',
+    storageBucket: 'bsoraa-55c9d.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCD7CfJNODJa_fyV10GFpwLUWhZKdf473A',
-    appId: '1:831808483289:ios:4ca9dd3effca81b9dcf3c8',
-    messagingSenderId: '831808483289',
-    projectId: 'benha-offers',
-    storageBucket: 'benha-offers.appspot.com',
+    apiKey: 'AIzaSyA9l42179EM8sZ1IRQZjByT8nSoTtNtT34',
+    appId: '1:223851828128:ios:4eeffdcaf89570ae200ac5',
+    messagingSenderId: '223851828128',
+    projectId: 'bsoraa-55c9d',
+    storageBucket: 'bsoraa-55c9d.appspot.com',
     androidClientId:
-        '831808483289-18ibu20eu09qqts3eq791r2rk9rrlnq8.apps.googleusercontent.com',
+        '223851828128-rpchfe6mkbi0f65dn97dflavqmsdauvb.apps.googleusercontent.com',
     iosClientId:
-        '831808483289-g5k7dhkrpv63nhkgfo2ivjnsd6lkl4go.apps.googleusercontent.com',
+        '223851828128-rpchfe6mkbi0f65dn97dflavqmsdauvb.apps.googleusercontent.com',
     iosBundleId: 'com.deve.benhaoffers',
   );
 }

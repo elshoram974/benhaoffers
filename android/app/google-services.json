@@ -1,64 +1,76 @@
 {
   "project_info": {
-    "project_number": "831808483289",
-    "project_id": "benha-offers",
-    "storage_bucket": "benha-offers.appspot.com"
+    "project_number": "223851828128",
+    "project_id": "bsoraa-55c9d",
+    "storage_bucket": "bsoraa-55c9d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:831808483289:android:6522c178eb3269d2dcf3c8",
+        "mobilesdk_app_id": "1:223851828128:android:935655f1e261374e200ac5",
         "android_client_info": {
           "package_name": "com.deve.benhaoffers"
         }
       },
       "oauth_client": [
         {
-          "client_id": "831808483289-2n4rvkrqs08p9pcv5dl2et51hou1u626.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.deve.benhaoffers",
-            "certificate_hash": "1913eac6096f995c5c084c9036a015f9cb377aec"
-          }
-        },
-        {
-          "client_id": "831808483289-2un6c9b1fb9naqhcjohr4ucmlfttjga5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.deve.benhaoffers",
-            "certificate_hash": "b70b3f38e57599ab7e8c2b76f150aa68e0f75b57"
-          }
-        },
-        {
-          "client_id": "831808483289-s88bcm82vruqlvg25f4sgoaif9b7ronp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.deve.benhaoffers",
-            "certificate_hash": "a0a2b7173df10e877703b9f97445a72a14209cfb"
-          }
-        },
-        {
-          "client_id": "831808483289-q93ad5r3mkvmjb05snrqq4s931osonlv.apps.googleusercontent.com",
+          "client_id": "223851828128-qf9ht86a1881lplh1r3vqbb5hbq4upnb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCzn-XycR20_eHh6xUYSAOafD3qtLry1JA"
+          "current_key": "AIzaSyAMoF7bolf5G3bhLxe1EIzF_7k2cRpn7i0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "831808483289-q93ad5r3mkvmjb05snrqq4s931osonlv.apps.googleusercontent.com",
+              "client_id": "223851828128-qf9ht86a1881lplh1r3vqbb5hbq4upnb.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "831808483289-g5k7dhkrpv63nhkgfo2ivjnsd6lkl4go.apps.googleusercontent.com",
+              "client_id": "223851828128-gb4dikdsrlla516j57ee503n250kg2kp.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.deve.benhaoffers"
+                "bundle_id": "com.niletouch.bsoraa"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223851828128:android:9a11b8829b8aa799200ac5",
+        "android_client_info": {
+          "package_name": "com.niletouch.bsoraa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223851828128-qf9ht86a1881lplh1r3vqbb5hbq4upnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMoF7bolf5G3bhLxe1EIzF_7k2cRpn7i0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223851828128-qf9ht86a1881lplh1r3vqbb5hbq4upnb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "223851828128-gb4dikdsrlla516j57ee503n250kg2kp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.niletouch.bsoraa"
               }
             }
           ]
