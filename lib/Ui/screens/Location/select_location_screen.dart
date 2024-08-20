@@ -9,7 +9,7 @@ class SelectLocationScreen extends StatefulWidget {
 
 class _SelectLocationScreenState extends State<SelectLocationScreen> {
   String _currentLocation = 'Use current location';
-  bool _isLocationFetched = false;
+  // bool _isLocationFetched = false;
 
   Future<void> _getCurrentLocation() async {
     bool serviceEnabled;
@@ -61,8 +61,8 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
       print("placemark.country****${placemark.country}");
       setState(() {
         _currentLocation =
-        'Current location: ${placemark.subLocality}, ${placemark.locality}, ${placemark.administrativeArea}, ${placemark.country}';
-        _isLocationFetched = true;
+        'Current location: ${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}';
+        // _isLocationFetched = true;
       });
     }
   }

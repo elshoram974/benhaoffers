@@ -120,8 +120,8 @@ class LocationPermissionScreenState extends State<LocationPermissionScreen>
               isCurrent: false, isHomeUpdate: false, context: context);
         } else {
           HiveUtils.setLocation(
-            area: placemark.subLocality,
-            city: placemark.locality!,
+            // area: placemark.subLocality,
+            city: placemark.subAdministrativeArea!,
             state: placemark.administrativeArea!,
             country: placemark.country!,
             latitude: position.latitude,
