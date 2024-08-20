@@ -327,29 +327,31 @@ class _ItemCardState extends State<ItemCard> {
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_today_outlined,
-                                      size: widget.bigCard == true ? 13 : 11,
-                                      color: context.color.textDefaultColor
-                                          .withOpacity(0.5),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Expanded(
-                                      child: Text(
-                                              "${"daysRemining".translate(context)} ${widget.item?.views} ${"days".translate(context)}")
-                                          .size((widget.bigCard == true)
-                                              ? context.font.small
-                                              : context.font.smaller)
-                                          .color(context.color.textDefaultColor
-                                              .withOpacity(0.5))
-                                          .setMaxLines(lines: 2),
-                                    )
-                                  ],
+                              if (widget.item?.endDate != null)
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_today_outlined,
+                                        size: widget.bigCard == true ? 13 : 11,
+                                        color: context.color.textDefaultColor
+                                            .withOpacity(0.5),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Expanded(
+                                        child: Text(
+                                                "${"daysRemining".translate(context)} ${widget.item?.endDate?.difference(DateTime.now()).inDays.abs()} ${"days".translate(context)}")
+                                            .size((widget.bigCard == true)
+                                                ? context.font.small
+                                                : context.font.smaller)
+                                            .color(context
+                                                .color.textDefaultColor
+                                                .withOpacity(0.5))
+                                            .setMaxLines(lines: 2),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
                             ],
                           ),
                         ),
