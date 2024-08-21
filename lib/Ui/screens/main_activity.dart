@@ -422,54 +422,59 @@ class MainActivityState extends State<MainActivity>
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(
           context: context, statusBarColor: context.color.primaryColor),
-      child: PopScope(
-        canPop: isBack,
-        onPopInvoked: (didPop) {
-          if (currtab != 0) {
-            pageCntrlr.animateToPage(0,
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOut);
-            setState(() {
-              currtab = 0;
-              isBack = false;
-            });
-            return;
-          } else {
-            DateTime now = DateTime.now();
-            if (currentBackPressTime == null ||
-                now.difference(currentBackPressTime!) >
-                    const Duration(seconds: 2)) {
-              currentBackPressTime = now;
-
-              HelperUtils.showSnackBarMessage(
-                  context, "pressAgainToExit".translate(context));
-
+      child: SafeArea(
+        left: false,
+        right: false,
+        top: false,
+        child: PopScope(
+          canPop: isBack,
+          onPopInvoked: (didPop) {
+            if (currtab != 0) {
+              pageCntrlr.animateToPage(0,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut);
               setState(() {
+                currtab = 0;
                 isBack = false;
               });
               return;
+            } else {
+              DateTime now = DateTime.now();
+              if (currentBackPressTime == null ||
+                  now.difference(currentBackPressTime!) >
+                      const Duration(seconds: 2)) {
+                currentBackPressTime = now;
+
+                HelperUtils.showSnackBarMessage(
+                    context, "pressAgainToExit".translate(context));
+
+                setState(() {
+                  isBack = false;
+                });
+                return;
+              }
+              setState(() {
+                isBack = true;
+              });
+              return;
             }
-            setState(() {
-              isBack = true;
-            });
-            return;
-          }
-        },
-        child: Scaffold(
-          backgroundColor: context.color.primaryColor,
-          bottomNavigationBar:
-              Constant.maintenanceMode == "1" ? null : bottomBar(),
-          extendBody: true,
-          body: Stack(
-            children: <Widget>[
-              PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageCntrlr,
-                //onPageChanged: onItemSwipe,
-                children: pages,
-              ),
-              if (Constant.maintenanceMode == "1") const MaintenanceMode()
-            ],
+          },
+          child: Scaffold(
+            backgroundColor: context.color.primaryColor,
+            bottomNavigationBar:
+                Constant.maintenanceMode == "1" ? null : bottomBar(),
+            extendBody: true,
+            body: Stack(
+              children: <Widget>[
+                PageView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: pageCntrlr,
+                  //onPageChanged: onItemSwipe,
+                  children: pages,
+                ),
+                if (Constant.maintenanceMode == "1") const MaintenanceMode()
+              ],
+            ),
           ),
         ),
       ),

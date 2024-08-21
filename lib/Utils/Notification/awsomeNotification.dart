@@ -155,23 +155,29 @@ class LocalAwsomeNotification {
           NotificationPermission.Light
         ],
       );
-      await notification.requestPermissionToSendNotifications(
-        channelKey: "Chat Notification",
-        permissions: [
-          NotificationPermission.Alert,
-          NotificationPermission.Sound,
-          NotificationPermission.Badge,
-          NotificationPermission.Vibration,
-          NotificationPermission.Light
-        ],
-      );
+
+      notificationSettings =
+      await FirebaseMessaging.instance.getNotificationSettings();
 
       if (notificationSettings.authorizationStatus ==
               AuthorizationStatus.authorized ||
           notificationSettings.authorizationStatus ==
-              AuthorizationStatus.provisional) {}
+              AuthorizationStatus.provisional) {
+        await notification.requestPermissionToSendNotifications(
+          channelKey: "Chat Notification",
+          permissions: [
+            NotificationPermission.Alert,
+            NotificationPermission.Sound,
+            NotificationPermission.Badge,
+            NotificationPermission.Vibration,
+            NotificationPermission.Light
+          ],
+        );
+      }
     } else if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.denied) {
+      print("make permission of notificationmake permission of notification ------- denied");
+
       return;
     }
   }
