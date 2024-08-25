@@ -228,6 +228,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                       "video_link": adAdditionalDetailsController.text,
                       if (widget.isEdit == true)
                         "delete_item_image_id": deleteItemImageList.join(','),
+                      "end_date": endDateController.text,
                       "all_category_ids": widget.isEdit == true
                           ? item!.allCategoryIds
                           : selectedCategoryList.join(',')

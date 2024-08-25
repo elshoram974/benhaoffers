@@ -805,11 +805,38 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   children: [
                     Tooltip(
                       message: model.customFields![index].name,
-                      child: Text((model.customFields?[index].name) ?? "")
-                          .setMaxLines(lines: 1)
-                          .size(context.font.small)
-                          .color(
-                              context.color.textDefaultColor.withOpacity(0.5)),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 30.rw(context),
+                            height: 30.rh(context),
+                            decoration: BoxDecoration(
+                              color: context.color.territoryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: SizedBox(
+                              height: 12,
+                              width: 12,
+                              child: FittedBox(
+                                fit: BoxFit.none,
+                                child: UiUtils.imageType(model.customFields![index].image!,
+                                    width: 24,
+                                    height: 24,
+                                    fit: BoxFit.cover,
+                                    color: context.color.textDefaultColor),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10.rw(context)),
+                          Expanded(
+                            child: Text((model.customFields?[index].name) ?? "")
+                                .setMaxLines(lines: 1)
+                                .size(context.font.small)
+                                .color(
+                                    context.color.textDefaultColor.withOpacity(0.5)),
+                          ),
+                        ],
+                      ),
                     ),
                     valueContent(model.customFields![index]),
                     const SizedBox(
@@ -836,11 +863,38 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   children: [
                     Tooltip(
                       message: model.customFields![index].name,
-                      child: Text((model.customFields?[index].name) ?? "")
-                          .setMaxLines(lines: 1)
-                          .size(context.font.small)
-                          .color(
-                              context.color.textDefaultColor.withOpacity(0.5)),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 30.rw(context),
+                            height: 30.rh(context),
+                            decoration: BoxDecoration(
+                              color: context.color.territoryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: FittedBox(
+                                fit: BoxFit.none,
+                                child: UiUtils.imageType(model.customFields![index].image!,
+                                    width: 24,
+                                    height: 24,
+                                    fit: BoxFit.cover,
+                                    color: context.color.textDefaultColor),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10.rw(context)),
+                          Expanded(
+                            child: Text((model.customFields?[index].name) ?? "")
+                                .setMaxLines(lines: 1)
+                                .size(context.font.small)
+                                .color(
+                                    context.color.textDefaultColor.withOpacity(0.5)),
+                          ),
+                        ],
+                      ),
                     ),
                     valueContent(model.customFields![index]),
                     const SizedBox(
@@ -960,10 +1014,13 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
     }
 
     // Default text if not a supported format or not a URL
-    return Text(
-      value.length == 1 ? val : value.join(','),
-      style: TextStyle(
-        color: context.color.textDefaultColor,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 32.rw(context)),
+      child: Text(
+        value.length == 1 ? val : value.join(','),
+        style: TextStyle(
+          color: context.color.textDefaultColor,
+        ),
       ),
     );
   }
