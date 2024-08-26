@@ -1109,10 +1109,10 @@ class _ChatScreenState extends State<ChatScreen>
   Widget offerWidget() {
     if (int.parse(HiveUtils.getUserId()!) == int.parse(widget.buyerId!)) {
       return Align(
-        alignment: AlignmentDirectional.topEnd,
+        alignment: Alignment.topRight,
         child: Container(
-            height: 76,
-            margin: const EdgeInsetsDirectional.only(top: 15, bottom: 15, end: 15),
+            height: 81,
+            margin: const EdgeInsets.only(top: 15, bottom: 15, right: 15),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
                 border: Border.all(
@@ -1141,10 +1141,10 @@ class _ChatScreenState extends State<ChatScreen>
       );
     } else {
       return Align(
-        alignment: AlignmentDirectional.topStart,
+        alignment: Alignment.topLeft,
         child: Container(
-            height: 76,
-            margin: const EdgeInsetsDirectional.only(top: 15, bottom: 15, start: 15),
+            height: 81,
+            margin: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
                 border: Border.all(
