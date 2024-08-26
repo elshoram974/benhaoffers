@@ -29,18 +29,20 @@ class CategoryWidgetHome extends StatelessWidget {
               padding: const EdgeInsets.only(top: 12),
               child: SizedBox(
                 width: context.screenWidth,
-                height: AppSettings.makeHomeCategoryGridView ? null : 103.rw(context),
+                height: AppSettings.makeHomeCategoryGridView
+                    ? null
+                    : 85.rw(context),
                 child: GridView.builder(
                   gridDelegate: AppSettings.makeHomeCategoryGridView
                       ? const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
-                          childAspectRatio: 0.8,
+                          childAspectRatio: 0.75,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
                         )
                       : const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1,
-                          childAspectRatio: 1.45,
+                          childAspectRatio: 1.35,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
                         ),
@@ -56,7 +58,7 @@ class CategoryWidgetHome extends StatelessWidget {
                       : Axis.horizontal,
                   itemBuilder: (context, index) {
                     if (index == list.length) {
-                      if(list.length > 14) return moreCategory();
+                      if (list.length > 14) return moreCategory();
                       return null;
                     } else {
                       return CategoryHomeCard(
@@ -117,7 +119,7 @@ class CategoryWidgetHome extends StatelessWidget {
           );
         },
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(5),
           child: Column(
             children: [
               Expanded(
@@ -125,9 +127,17 @@ class CategoryWidgetHome extends StatelessWidget {
                 child: Container(
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(
                         color: context.color.borderColor.darken(60), width: 1),
+                    boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 0,
+                          blurRadius: 5,
+                          offset: const Offset(0, 1),
+                          color: Colors.black.withOpacity(0.25),
+                        ),
+                      ],
                     color: context.color.secondaryColor,
                   ),
                   child: Center(
@@ -148,6 +158,7 @@ class CategoryWidgetHome extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 9),
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.all(0.0),

@@ -27,7 +27,7 @@ class CategoryHomeCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(5),
         child: Container(
           child: Column(
             children: [
@@ -35,7 +35,7 @@ class CategoryHomeCard extends StatelessWidget {
                 Expanded(
                   flex: 4,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(5),
                     child: Container(
                       width: double.infinity,
                       color: context.color.secondaryColor,
@@ -50,11 +50,19 @@ class CategoryHomeCard extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                         color: context.color.borderColor.darken(60),
                         width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 0,
+                          blurRadius: 5,
+                          offset: const Offset(0, 1),
+                          color: Colors.black.withOpacity(0.25),
+                        ),
+                      ],
                       color: context.color.secondaryColor,
                     ),
                     child: Center(
@@ -69,6 +77,7 @@ class CategoryHomeCard extends StatelessWidget {
                   ),
                 ),
               ],
+              const SizedBox(height: 9),
               Expanded(
                 child: Text(title)
                     .centerAlign()
