@@ -154,6 +154,8 @@ class _SliderWidgetState extends State<SliderWidget>
 */
 
 import 'dart:async';
+import 'package:eClassify/Utils/Extensions/extensions.dart';
+import 'package:eClassify/data/model/home_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -170,21 +172,38 @@ import '../../../data/model/item/item_model.dart';
 import 'package:url_launcher/url_launcher.dart' as urllauncher;
 
 import '../home/home_screen.dart';
-// Import your SliderCubit and other necessary dependencies
 
-class SliderWidget extends StatefulWidget {
+class SliderWidget extends StatelessWidget {
   const SliderWidget({super.key});
 
   @override
-  State<SliderWidget> createState() => _SliderWidgetState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<SliderCubit, SliderState>(
+      builder: (context, state) {
+        if (state is SliderFetchSuccess && state.sliderlist.isNotEmpty) {
+          return _SliderWidget(state.sliderlist);
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+}
+// Import your SliderCubit and other necessary dependencies
+
+class _SliderWidget extends StatefulWidget {
+  const _SliderWidget(this.sliderlist);
+  final List<HomeSlider> sliderlist;
+
+  @override
+  State<_SliderWidget> createState() => _SliderWidgetState();
 }
 
-class _SliderWidgetState extends State<SliderWidget>
-    with AutomaticKeepAliveClientMixin {
+class _SliderWidgetState extends State<_SliderWidget>
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   final ValueNotifier<int> _bannerIndex = ValueNotifier(0);
   late Timer _timer;
   int bannersLength = 0;
-  final PageController _pageController = PageController();
+  late final TabController _tabController;
 
   @override
   bool get wantKeepAlive => true;
@@ -192,6 +211,11 @@ class _SliderWidgetState extends State<SliderWidget>
   @override
   void initState() {
     super.initState();
+    bannersLength = widget.sliderlist.length;
+    _tabController = TabController(length: bannersLength, vsync: this);
+    _tabController.addListener(
+      () => _bannerIndex.value = _tabController.index,
+    );
     _startAutoSlider();
   }
 
@@ -200,7 +224,7 @@ class _SliderWidgetState extends State<SliderWidget>
     super.dispose();
     _bannerIndex.dispose();
     _timer.cancel();
-    _pageController.dispose(); // Dispose the PageController
+    _tabController.dispose(); // Dispose the TabController
   }
 
   void _startAutoSlider() {
@@ -212,7 +236,8 @@ class _SliderWidgetState extends State<SliderWidget>
       } else {
         _bannerIndex.value = 0;
       }
-      _pageController.animateToPage(
+
+      _tabController.animateTo(
         _bannerIndex.value,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
@@ -224,54 +249,44 @@ class _SliderWidgetState extends State<SliderWidget>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return BlocConsumer<SliderCubit, SliderState>(
-      listener: (context, state) {
-        // Handle state changes if needed
-      },
-      builder: (context, SliderState state) {
-        if (state is SliderFetchSuccess && state.sliderlist.isNotEmpty) {
-          bannersLength = state.sliderlist.length; // Update bannersLength
-          return SizedBox(
-            height: 170,
-            child: PageView.builder(
-              itemCount: bannersLength,
-              controller: _pageController,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              onPageChanged: (index) {
-                _bannerIndex.value =
-                    index; // Update bannerIndex when page changes manually
-              },
-              itemBuilder: (context, index) {
-                return InkWell(
+    return Column(
+      children: [
+        AspectRatio(
+          aspectRatio: 389 / 194,
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              ...List.generate(
+                bannersLength,
+                (index) => InkWell(
                   onTap: () async {
-                    if (state.sliderlist[index].thirdPartyLink != "") {
+                    if (widget.sliderlist[index].thirdPartyLink != "") {
                       await urllauncher.launchUrl(
-                          Uri.parse(state.sliderlist[index].thirdPartyLink!),
+                          Uri.parse(widget.sliderlist[index].thirdPartyLink!),
                           mode: LaunchMode.externalApplication);
-                    } else if (state.sliderlist[index].modelType!
+                    } else if (widget.sliderlist[index].modelType!
                         .contains("Category")) {
-                      if (state.sliderlist[index].model!.subCategoriesCount! >
+                      if (widget.sliderlist[index].model!.subCategoriesCount! >
                           0) {
                         Navigator.pushNamed(context, Routes.subCategoryScreen,
                             arguments: {
                               "categoryList": <CategoryModel>[],
-                              "catName": state.sliderlist[index].model!.name,
-                              "catId": state.sliderlist[index].modelId,
+                              "catName": widget.sliderlist[index].model!.name,
+                              "catId": widget.sliderlist[index].modelId,
                               "categoryIds": [
-                                state.sliderlist[index].model!.parentCategoryId
+                                widget.sliderlist[index].model!.parentCategoryId
                                     .toString(),
-                                state.sliderlist[index].modelId.toString()
+                                widget.sliderlist[index].modelId.toString()
                               ]
                             });
                       } else {
                         Navigator.pushNamed(context, Routes.itemsList,
                             arguments: {
                               'catID':
-                                  state.sliderlist[index].modelId.toString(),
-                              'catName': state.sliderlist[index].model!.name,
+                                  widget.sliderlist[index].modelId.toString(),
+                              'catName': widget.sliderlist[index].model!.name,
                               "categoryIds": [
-                                state.sliderlist[index].modelId.toString()
+                                widget.sliderlist[index].modelId.toString()
                               ]
                             });
                       }
@@ -283,7 +298,7 @@ class _SliderWidgetState extends State<SliderWidget>
 
                         DataOutput<ItemModel> dataOutput =
                             await fetch.fetchItemFromItemId(
-                                state.sliderlist[index].modelId!);
+                                widget.sliderlist[index].modelId!);
 
                         Future.delayed(
                           Duration.zero,
@@ -311,18 +326,41 @@ class _SliderWidgetState extends State<SliderWidget>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: UiUtils.getImage(
-                          state.sliderlist[index].image ?? "",
+                          widget.sliderlist[index].image ?? "",
                           fit: BoxFit.fill),
                     ),
                   ),
-                );
-              },
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 4,
+          margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 7),
+          child: TabBar(
+            indicatorWeight: 4,
+            controller: _tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicator: BoxDecoration(
+              color: context.color.territoryColor,
+              borderRadius: BorderRadius.circular(50),
             ),
-          );
-        } else {
-          return const SizedBox.shrink();
-        }
-      },
+            unselectedLabelColor: const Color(0xffCAC8C8).withOpacity(0.65),
+            onTap: (value) {
+              _tabController.animateTo(
+                value,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            },
+            tabs: [
+              for (int i = 0; i < bannersLength; i++)
+                const Tab(height: 5, child: SizedBox.expand())
+            ],
+          ),
+        )
+      ],
     );
   }
 }
