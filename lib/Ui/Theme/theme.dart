@@ -13,6 +13,7 @@ const Color _backgroundColor = primaryColor_; //here you can change if you need
 const Color textDarkColor = Color(0xFF000000);
 Color lightTextColor = const Color(0xFF000000).withOpacity(0.5);
 Color widgetsBorderColorLight = const Color(0xffEEEEEE).withOpacity(0.6);
+Color widgetsCardBackgroundColorLight = const Color(0xffD9D9D9).withOpacity(0.3);
 Color senderChatColor = const Color.fromARGB(255, 233, 233, 233).darken(22);
 
 ///Dark Theme Colors
@@ -82,6 +83,10 @@ extension ColorPrefs on ColorScheme {
   Color get borderColor => _getColor(brightness,
       lightColor: widgetsBorderColorLight,
       darkColor: secondaryColorDark.withOpacity(0.2));
+
+    Color get cardBackgroundColor => _getColor(brightness,
+      lightColor: widgetsCardBackgroundColorLight,
+      darkColor: secondaryColorDark.withOpacity(0.2).darken(-30));
 
   Color get chatSenderColor => _getColor(brightness,
       lightColor: senderChatColor, darkColor: darkSenderChatColor);

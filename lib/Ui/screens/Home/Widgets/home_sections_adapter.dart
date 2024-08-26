@@ -244,7 +244,7 @@ class _ItemCardState extends State<ItemCard> {
       child: Container(
         width: widget.width ?? 250,
         decoration: BoxDecoration(
-          color: context.color.borderColor.darken(30),
+          color: context.color.cardBackgroundColor,
           borderRadius: BorderRadius.circular(18),
         ),
         child: Stack(
@@ -285,7 +285,7 @@ class _ItemCardState extends State<ItemCard> {
                               horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: context.color.territoryColor,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(500),
                           ),
                           child: Text("${widget.item?.user?.name}")
                               .bold()
