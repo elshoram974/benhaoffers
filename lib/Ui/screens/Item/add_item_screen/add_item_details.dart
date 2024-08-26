@@ -121,7 +121,6 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       if (item?.endDate != null) {
         endDateController.text = item!.endDate!.toIso8601String();
         dateToShow = DateFormat.yMMMd().format(item!.endDate!);
-        _tempEndDate = item!.endDate;
       }
       titleImageURL = item?.image ?? "";
 
@@ -557,7 +556,6 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         BlocConsumer<FetchAdsListingSubscriptionPackagesCubit,
                             FetchAdsListingSubscriptionPackagesState>(
                           listener: (context, state) {
-                            if (item?.endDate != null) return;
 
                             if (state
                                 is FetchAdsListingSubscriptionPackagesSuccess) {
@@ -576,7 +574,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                   _tempEndDate = e.endDate!;
                                 }
                               }
-
+                              if (item?.endDate != null) return;
                               if (farthestEndDate != null) {
                                 dateToShow =
                                     DateFormat.yMMMd().format(farthestEndDate);
@@ -600,20 +598,20 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
+                                        final initialDate= DateTime.tryParse(endDateController.text);
                                         showDatePicker(
                                           context: context,
-                                          firstDate: DateTime.now(),
+                                          firstDate: !(DateTime.now().isAfter(initialDate ?? DateTime.now())) ? DateTime.now() : initialDate!,
                                           lastDate:
                                               _tempEndDate ?? DateTime(2100),
-                                          initialDate: DateTime.tryParse(
-                                            endDateController.text,
-                                          ),
+                                          initialDate: initialDate,
                                         ).then((e) {
                                           if (e != null) {
                                             dateToShow =
                                                 DateFormat.yMMMd().format(e);
                                             endDateController.text =
-                                                e.toIso8601String();
+                                                e.copyWith(hour: 23,minute: 59,second: 59).toIso8601String();
+                                                print("ddd ${DateTime.parse(endDateController.text)}");
                                             state.didChange(
                                                 endDateController.text);
                                           }
