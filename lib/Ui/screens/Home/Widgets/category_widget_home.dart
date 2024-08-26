@@ -10,6 +10,7 @@ import '../../../../exports/main_export.dart';
 import '../../Widgets/Errors/no_data_found.dart';
 import '../../main_activity.dart';
 import 'category_home_card.dart';
+import 'home_sections_adapter.dart';
 
 class CategoryWidgetHome extends StatelessWidget {
   const CategoryWidgetHome({super.key});
@@ -27,67 +28,86 @@ class CategoryWidgetHome extends StatelessWidget {
           if (list.isNotEmpty) {
             return Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: SizedBox(
-                width: context.screenWidth,
-                height: AppSettings.makeHomeCategoryGridView
-                    ? null
-                    : 85.rw(context),
-                child: GridView.builder(
-                  gridDelegate: AppSettings.makeHomeCategoryGridView
-                      ? const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          childAspectRatio: 0.75,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        )
-                      : const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          childAspectRatio: 1.35,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                  physics: AppSettings.makeHomeCategoryGridView
-                      ? const NeverScrollableScrollPhysics()
-                      : const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: sidePadding,
-                  ),
-                  shrinkWrap: true,
-                  scrollDirection: AppSettings.makeHomeCategoryGridView
-                      ? Axis.vertical
-                      : Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    if (index == list.length) {
-                      if (list.length > 14) return moreCategory();
-                      return null;
-                    } else {
-                      return CategoryHomeCard(
-                        title: list[index].name!,
-                        url: list[index].url!,
-                        onTap: () {
-                          if (list[index].children!.isNotEmpty) {
-                            Navigator.pushNamed(
-                                context, Routes.subCategoryScreen,
-                                arguments: {
-                                  "categoryList": list[index].children,
-                                  "catName": list[index].name,
-                                  "catId": list[index].id,
-                                  "categoryIds": [list[index].id.toString()]
-                                });
-                          } else {
-                            Navigator.pushNamed(context, Routes.itemsList,
-                                arguments: {
-                                  'catID': list[index].id.toString(),
-                                  'catName': list[index].name,
-                                  "categoryIds": [list[index].id.toString()]
-                                });
+              child: Column(
+                children: [
+                  TitleHeader(
+                    title: "categoriesLbl".translate(context),
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.categories,
+                          arguments: {"from": Routes.home}).then(
+                        (dynamic value) {
+                          if (value != null) {
+                            selectedCategory = value;
+                            //setState(() {});
                           }
                         },
                       );
-                    }
-                  },
-                  itemCount: list.length + 1,
-                ),
+                    },
+                    // section: section,
+                  ),
+                  SizedBox(
+                    width: context.screenWidth,
+                    height: AppSettings.makeHomeCategoryGridView
+                        ? null
+                        : 85.rw(context),
+                    child: GridView.builder(
+                      gridDelegate: AppSettings.makeHomeCategoryGridView
+                          ? const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              childAspectRatio: 0.75,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                            )
+                          : const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              childAspectRatio: 1.35,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                            ),
+                      physics: AppSettings.makeHomeCategoryGridView
+                          ? const NeverScrollableScrollPhysics()
+                          : const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: sidePadding,
+                      ),
+                      shrinkWrap: true,
+                      scrollDirection: AppSettings.makeHomeCategoryGridView
+                          ? Axis.vertical
+                          : Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        if (index == list.length) {
+                          if (list.length > 14) return moreCategory();
+                          return null;
+                        } else {
+                          return CategoryHomeCard(
+                            title: list[index].name!,
+                            url: list[index].url!,
+                            onTap: () {
+                              if (list[index].children!.isNotEmpty) {
+                                Navigator.pushNamed(
+                                    context, Routes.subCategoryScreen,
+                                    arguments: {
+                                      "categoryList": list[index].children,
+                                      "catName": list[index].name,
+                                      "catId": list[index].id,
+                                      "categoryIds": [list[index].id.toString()]
+                                    });
+                              } else {
+                                Navigator.pushNamed(context, Routes.itemsList,
+                                    arguments: {
+                                      'catID': list[index].id.toString(),
+                                      'catName': list[index].name,
+                                      "categoryIds": [list[index].id.toString()]
+                                    });
+                              }
+                            },
+                          );
+                        }
+                      },
+                      itemCount: list.length + 1,
+                    ),
+                  ),
+                ],
               ),
             );
           } else {
