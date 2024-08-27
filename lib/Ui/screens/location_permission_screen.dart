@@ -198,3 +198,38 @@ class LocationPermissionScreenState extends State<LocationPermissionScreen>
     );
   }
 }
+
+Future<void> getBenhaLocationAndNavigate(BuildContext context) async {
+  try {
+    // Position position = await Geolocator.getCurrentPosition(
+    //     desiredAccuracy: LocationAccuracy.high);
+    const double lat = 30.46601309987906;
+    const double long = 31.185332783716976;
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+
+    if (placemarks.isNotEmpty) {
+      Placemark placemark = placemarks[0];
+      if (Constant.isDemoModeOn) {
+        if (context.mounted) {
+          UiUtils.setDefaultLocationValue(
+              isCurrent: false, isHomeUpdate: false, context: context);
+        }
+      } else {
+        HiveUtils.setLocation(
+          // area: placemark.subLocality,
+          city: placemark.subAdministrativeArea!,
+          state: placemark.administrativeArea!,
+          country: placemark.country!,
+          latitude: lat,
+          longitude: long,
+        );
+      }
+      if (context.mounted) {
+        HelperUtils.killPreviousPages(context, Routes.main, {"from": "login"});
+      }
+    }
+  } catch (e) {
+    print("Error getting current location: $e");
+  }
+}

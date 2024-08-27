@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../exports/main_export.dart';
 import '../../../utils/helper_utils.dart';
+import '../location_permission_screen.dart';
 import '../widgets/AnimatedRoutes/blur_page_route.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -648,8 +649,9 @@ class UserProfileScreenState extends State<UserProfileScreen> {
               HelperUtils.killPreviousPages(
                   context, Routes.main, {"from": widget.from});
             } else {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  Routes.locationPermissionScreen, (route) => false);
+              getBenhaLocationAndNavigate(context);
+              // Navigator.of(context).pushNamedAndRemoveUntil(
+              //     Routes.locationPermissionScreen, (route) => false);
             }
           },
         );

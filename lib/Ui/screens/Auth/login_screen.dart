@@ -5,6 +5,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:device_region/device_region.dart';
 import 'package:eClassify/Ui/screens/Home/home_screen.dart';
 import 'package:eClassify/Ui/screens/Widgets/custom_text_form_field.dart';
+import 'package:eClassify/Ui/screens/location_permission_screen.dart';
 import 'package:eClassify/Utils/Login/lib/login_status.dart';
 import 'package:eClassify/Utils/api.dart';
 import 'package:eClassify/data/cubits/auth/authentication_cubit.dart';
@@ -298,9 +299,10 @@ class LoginScreenState extends State<LoginScreen> {
                           HelperUtils.killPreviousPages(
                               context, Routes.main, {"from": "login"});
                         } else {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              Routes.locationPermissionScreen,
-                              (route) => false);
+                          getBenhaLocationAndNavigate(context);
+                          // Navigator.of(context).pushNamedAndRemoveUntil(
+                          //     Routes.locationPermissionScreen,
+                          //     (route) => false);
                         }
                       } else {
                         Navigator.pushReplacementNamed(

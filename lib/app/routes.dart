@@ -16,7 +16,7 @@ import 'package:eClassify/Ui/screens/Location/countries_screen.dart';
 import 'package:eClassify/Ui/screens/Location/states_screen.dart';
 import 'package:eClassify/Ui/screens/SubCategory/SubCategoryScreen.dart';
 import 'package:eClassify/Ui/screens/ad_details_screen.dart';
-import 'package:eClassify/Ui/screens/location_permission_screen.dart';
+// import 'package:eClassify/Ui/screens/location_permission_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Ui/screens/Advertisement/my_advertisment_screen.dart';
@@ -95,7 +95,7 @@ class Routes {
   static const categoryFilterScreen = '/categoryFilterScreen';
   static const subCategoryFilterScreen = '/subCategoryFilterScreen';
   static const postedSinceFilterScreen = '/postedSinceFilterScreen';
-  static const locationPermissionScreen = '/locationPermissionScreen';
+  // static const locationPermissionScreen = '/locationPermissionScreen';
 
   static const myAdvertisment = '/myAdvertisment';
   static const transactionHistory = '/transactionHistory';
@@ -210,8 +210,8 @@ class Routes {
 
       case contactUs:
         return ContactUs.route(routeSettings);
-      case locationPermissionScreen:
-        return LocationPermissionScreen.route(routeSettings);
+      // case locationPermissionScreen:
+      //   return LocationPermissionScreen.route(routeSettings);
       case profileSettings:
         return ProfileSettings.route(routeSettings);
       case filterScreen:

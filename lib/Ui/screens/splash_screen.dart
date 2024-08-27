@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../exports/main_export.dart';
+import 'location_permission_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -156,8 +157,9 @@ class SplashScreenState extends State<SplashScreen>
         } else {
           Future.delayed(const Duration(seconds: 1), () {
             if (mounted) {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  Routes.locationPermissionScreen, (route) => false);
+              getBenhaLocationAndNavigate(context);
+              // Navigator.of(context).pushNamedAndRemoveUntil(
+              //     Routes.locationPermissionScreen, (route) => false);
             }
           });
         }
