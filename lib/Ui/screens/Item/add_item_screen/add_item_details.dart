@@ -601,6 +601,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                         final initialDate= DateTime.tryParse(endDateController.text);
                                         showDatePicker(
                                           context: context,
+                                          initialEntryMode: DatePickerEntryMode.calendarOnly,
                                           firstDate: !(DateTime.now().isAfter(initialDate ?? DateTime.now())) ? DateTime.now() : initialDate!,
                                           lastDate:
                                               _tempEndDate ?? DateTime(2100),
