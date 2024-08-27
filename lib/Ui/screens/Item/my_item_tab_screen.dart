@@ -145,15 +145,21 @@ class _MyItemTabState extends CloudState<MyItemTab> {
       //margin: EdgeInsetsDirectional.only(end: 4, start: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: _getStatusColor(model.status),
+        color: model.isExpired
+            ? soldOutButtonColor.withOpacity(0.07)
+            : _getStatusColor(model.status),
       ),
-      child: Text(
-        model.status == "review"
-            ? "Under Review"
-            : model.status!.firstUpperCase(),
-      ).size(context.font.small).color(
-            _getStatusTextColor(model.status),
-          ),
+      child: model.isExpired
+          ? Text("expired".translate(context))
+              .size(context.font.small)
+              .color(soldOutButtonColor)
+          : Text(
+              model.status == "review"
+                  ? "underReview".translate(context)
+                  : model.status!.firstUpperCase(),
+            ).size(context.font.small).color(
+                _getStatusTextColor(model.status),
+              ),
     );
   }
 

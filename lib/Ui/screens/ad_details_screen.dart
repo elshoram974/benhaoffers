@@ -811,7 +811,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                             width: 30.rw(context),
                             height: 30.rh(context),
                             decoration: BoxDecoration(
-                              color: context.color.territoryColor.withOpacity(0.1),
+                              color:
+                                  context.color.territoryColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: SizedBox(
@@ -819,7 +820,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                               width: 12,
                               child: FittedBox(
                                 fit: BoxFit.none,
-                                child: UiUtils.imageType(model.customFields![index].image!,
+                                child: UiUtils.imageType(
+                                    model.customFields![index].image!,
                                     width: 24,
                                     height: 24,
                                     fit: BoxFit.cover,
@@ -832,8 +834,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                             child: Text((model.customFields?[index].name) ?? "")
                                 .setMaxLines(lines: 1)
                                 .size(context.font.small)
-                                .color(
-                                    context.color.textDefaultColor.withOpacity(0.5)),
+                                .color(context.color.textDefaultColor
+                                    .withOpacity(0.5)),
                           ),
                         ],
                       ),
@@ -869,7 +871,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                             width: 30.rw(context),
                             height: 30.rh(context),
                             decoration: BoxDecoration(
-                              color: context.color.territoryColor.withOpacity(0.1),
+                              color:
+                                  context.color.territoryColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: SizedBox(
@@ -877,7 +880,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                               width: 18,
                               child: FittedBox(
                                 fit: BoxFit.none,
-                                child: UiUtils.imageType(model.customFields![index].image!,
+                                child: UiUtils.imageType(
+                                    model.customFields![index].image!,
                                     width: 24,
                                     height: 24,
                                     fit: BoxFit.cover,
@@ -890,8 +894,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                             child: Text((model.customFields?[index].name) ?? "")
                                 .setMaxLines(lines: 1)
                                 .size(context.font.small)
-                                .color(
-                                    context.color.textDefaultColor.withOpacity(0.5)),
+                                .color(context.color.textDefaultColor
+                                    .withOpacity(0.5)),
                           ),
                         ],
                       ),
@@ -1174,7 +1178,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
       }*/
       else if (model.status == "sold out" ||
           model.status == "inactive" ||
-          model.status == "rejected") {
+          model.status == "rejected" ||
+          model.isExpired) {
         return BlocProvider(
           create: (context) => DeleteItemCubit(),
           child: Builder(builder: (context) {
@@ -1895,15 +1900,21 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             padding: const EdgeInsets.fromLTRB(18, 4, 18, 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: _getStatusColor(model.status),
+              color: model.isExpired
+                  ? soldOutButtonColor.withOpacity(0.07)
+                  : _getStatusColor(model.status),
             ),
-            child: Text(
-              model.status == "review"
-                  ? "Under Review"
-                  : model.status!.firstUpperCase(),
-            ).size(context.font.normal).color(
-                  _getStatusTextColor(model.status),
-                ),
+            child: model.isExpired
+                ? Text("expired".translate(context))
+                    .size(context.font.normal)
+                    .color(soldOutButtonColor)
+                : Text(
+                    model.status == "review"
+                        ? "underReview".translate(context)
+                        : model.status!.firstUpperCase(),
+                  ).size(context.font.normal).color(
+                      _getStatusTextColor(model.status),
+                    ),
           )
 
         //TODO: change color according to status - confirm,pending,etc..
@@ -2198,11 +2209,11 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
         isAcceptContainesPush: true,
         onAccept: () => Future.value().then((_) {
           // if (_offerFormKey.currentState!.validate()) {
-            context.read<MakeAnOfferItemCubit>().makeAnOfferItem(
-                widget.model.id!,
-                widget.model.price!);
-            Navigator.pop(context);
-            return;
+          context
+              .read<MakeAnOfferItemCubit>()
+              .makeAnOfferItem(widget.model.id!, widget.model.price!);
+          Navigator.pop(context);
+          return;
           // }
         }),
       ),
@@ -2314,7 +2325,6 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             //                 BorderSide(color: context.color.territoryColor))),
             //   ),
             // ),
-          
           ],
         ),
       ),
@@ -2372,14 +2382,15 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 tag: model.user!.profile ?? model.user!.email!,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: model.user!.profile != null &&
-                            model.user!.profile != ""
-                        ? UiUtils.getImage(model.user!.profile!, fit: BoxFit.fill)
-                        : UiUtils.getSvg(
-                            AppIcons.defaultPersonLogo,
-                            color: context.color.territoryColor,
-                            fit: BoxFit.none,
-                          )),
+                    child:
+                        model.user!.profile != null && model.user!.profile != ""
+                            ? UiUtils.getImage(model.user!.profile!,
+                                fit: BoxFit.fill)
+                            : UiUtils.getSvg(
+                                AppIcons.defaultPersonLogo,
+                                color: context.color.territoryColor,
+                                fit: BoxFit.none,
+                              )),
               )),
           Expanded(
             child: Padding(

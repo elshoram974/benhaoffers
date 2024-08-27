@@ -1162,7 +1162,8 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
   TextEditingController countryTextController = TextEditingController();
   String currentLocation = '';
   AddressComponent? formatedAddress;
-  final double latitude = 30.46601309987906, longitude = 31.185332783716976; // benha location
+  final double latitude = 30.46601309987906,
+      longitude = 31.185332783716976; // benha location
   CameraPosition? _cameraPosition;
   final Set<Marker> _markers = Set();
   // late GoogleMapController _mapController;
@@ -1454,8 +1455,9 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                   cloudData['country'] = formatedAddress!.country;
                   cloudData['city'] = formatedAddress!.city;
                   cloudData['state'] = formatedAddress!.state;
-                  if (formatedAddress!.areaId != null)
+                  if (formatedAddress!.areaId != null) {
                     cloudData['area_id'] = formatedAddress!.areaId;
+                  }
 
                   if (widget.isEdit == true) {
                     context.read<ManageItemCubit>().manage(ManageItemType.edit,
@@ -1589,7 +1591,7 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                 // const SizedBox(
                 //   height: 20,
                 // ),
-                
+
                 Expanded(
                   child: Stack(
                     children: <Widget>[

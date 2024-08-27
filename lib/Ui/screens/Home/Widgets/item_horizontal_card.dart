@@ -258,6 +258,7 @@ class ItemHorizontalCard extends StatelessWidget {
                 // ...addBottom ?? []
               ],
             ),
+            
             if (showDeleteButton ?? false)
               PositionedDirectional(
                 top: 32 * 2,

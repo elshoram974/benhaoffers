@@ -513,5 +513,6 @@
   "somewhereElseLbl": "Somewhere else",
   "englishOnlyLbl": "English only",
   "selectLbl": "Select",
-  "benhaCity":"Benha city"
+  "expired": "Expired",
+  "benhaCity": "Benha city"
 }

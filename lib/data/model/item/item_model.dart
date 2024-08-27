@@ -42,6 +42,8 @@ class ItemModel {
   String? country;
   DateTime? endDate;
 
+  bool get isExpired => endDate?.isBefore(DateTime.now()) == true ;
+
   double? get latitude => _latitude;
 
   set latitude(dynamic value) {
