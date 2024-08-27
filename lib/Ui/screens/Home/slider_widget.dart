@@ -213,9 +213,7 @@ class _SliderWidgetState extends State<_SliderWidget>
     super.initState();
     bannersLength = widget.sliderlist.length;
     _tabController = TabController(length: bannersLength, vsync: this);
-    _tabController.addListener(
-      () => _bannerIndex.value = _tabController.index,
-    );
+    _tabController.addListener(() => _bannerIndex.value = _tabController.index);
     _startAutoSlider();
   }
 
@@ -224,6 +222,7 @@ class _SliderWidgetState extends State<_SliderWidget>
     super.dispose();
     _bannerIndex.dispose();
     _timer.cancel();
+    _tabController.removeListener(() {}); // Remove the listener
     _tabController.dispose(); // Dispose the TabController
   }
 
@@ -342,11 +341,13 @@ class _SliderWidgetState extends State<_SliderWidget>
             indicatorWeight: 4,
             controller: _tabController,
             indicatorSize: TabBarIndicatorSize.tab,
-            indicator: BoxDecoration(
-              color: context.color.territoryColor,
+            indicatorPadding: const EdgeInsets.symmetric(horizontal: 8),
+            indicator: UnderlineTabIndicator(
               borderRadius: BorderRadius.circular(50),
+              borderSide: BorderSide(color: context.color.territoryColor, width: 4),
             ),
             unselectedLabelColor: const Color(0xffCAC8C8).withOpacity(0.65),
+            splashBorderRadius: BorderRadius.circular(50),
             onTap: (value) {
               _tabController.animateTo(
                 value,
@@ -356,7 +357,7 @@ class _SliderWidgetState extends State<_SliderWidget>
             },
             tabs: [
               for (int i = 0; i < bannersLength; i++)
-                const Tab(height: 5, child: SizedBox.expand())
+                const Tab(height: 5, child: SizedBox.shrink())
             ],
           ),
         )
