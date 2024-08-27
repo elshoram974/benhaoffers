@@ -3,6 +3,7 @@ import 'dart:async';
 
 //import 'package:app_links/app_links.dart';
 import 'package:eClassify/Ui/screens/Home/Widgets/grid_list_adapter.dart';
+import 'package:eClassify/Utils/AppIcon.dart';
 import 'package:eClassify/data/cubits/Home/fetch_home_all_items_cubit.dart';
 import 'package:eClassify/data/cubits/Home/fetch_home_screen_cubit.dart';
 import 'package:eClassify/data/cubits/favorite/favoriteCubit.dart';
@@ -32,7 +33,6 @@ import 'Widgets/category_widget_home.dart';
 import 'Widgets/home_search.dart';
 import 'Widgets/home_sections_adapter.dart';
 import 'Widgets/home_shimmers.dart';
-import 'Widgets/location_widget.dart';
 import 'slider_widget.dart';
 
 const double sidePadding = 18;
@@ -145,14 +145,11 @@ class HomeScreenState extends State<HomeScreen>
         appBar: AppBar(
           elevation: 0,
           leadingWidth: double.maxFinite,
-          leading: Padding(
-              padding: EdgeInsetsDirectional.only(
-                  start: sidePadding.rw(context), end: sidePadding.rw(context)),
-              child: const LocationWidget()),
+          leading: const _HomeAppBar(),
           /* HiveUtils.getCityName() != null
                     ? const LocationWidget()
                     : const SizedBox.shrink()),*/
-          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+          backgroundColor: context.color.primaryColor,
         ),
         backgroundColor: context.color.primaryColor,
         body: RefreshIndicator(
@@ -448,6 +445,41 @@ class HomeScreenState extends State<HomeScreen>
         }
         return Container();
       },
+    );
+  }
+}
+
+class _HomeAppBar extends StatelessWidget {
+  const _HomeAppBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsetsDirectional.only(
+          start: sidePadding.rw(context), end: sidePadding.rw(context)),
+      child: Row(
+        children: [
+          SizedBox.square(
+            dimension: 59,
+            child: Image.asset(AppIcons.logoWithShadow),
+          ),
+          const Spacer(),
+          Container(
+            height: 27,
+            width: 90,
+            margin: const EdgeInsets.only(bottom: 5),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: context.color.territoryColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text("benhaCity".translate(context))
+                .bold(weight: FontWeight.w500)
+                .color(Colors.white)
+                .size(context.font.normal),
+          )
+        ],
+      ),
     );
   }
 }

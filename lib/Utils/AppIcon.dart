@@ -12,6 +12,7 @@ class AppIcons {
 
   //
   //** */
+  static String logoWithShadow ="assets/svg/Logo/logoWithShadow.png";
   static String splashLogo = _svgPath("Logo/splashlogo");
   static String bin = _svgPath("bin");
   static String update = _svgPath("update");
