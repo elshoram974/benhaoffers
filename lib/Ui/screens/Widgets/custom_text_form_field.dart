@@ -17,7 +17,7 @@ enum CustomTextFieldValidator {
   adTitle
 }
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
   final String? hintText;
   final TextEditingController? controller;
   final int? minLine;
@@ -28,6 +28,8 @@ class CustomTextFormField extends StatelessWidget {
   final Color? fillColor;
   final Function(String value)? onChange;
   final Widget? prefix;
+  final Widget? prefixWithBorder;
+  final Widget? suffixWithBorder;
   final TextInputAction? action;
   final TextInputType? keyboard;
   final Widget? suffix;
@@ -50,6 +52,8 @@ class CustomTextFormField extends StatelessWidget {
     this.formaters,
     this.isReadOnly,
     this.validator,
+    this.prefixWithBorder,
+    this.suffixWithBorder,
     this.fillColor,
     this.onChange,
     this.prefix,
@@ -68,117 +72,227 @@ class CustomTextFormField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  final FocusNode focusNode = FocusNode();
+  bool isFocused = false;
+
+  late final bool iconWithBorder;
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode.addListener(changeFocus);
+    iconWithBorder =
+        widget.prefixWithBorder != null || widget.suffixWithBorder != null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    focusNode.removeListener(changeFocus);
+    focusNode.dispose();
+  }
+
+  void changeFocus() => {isFocused = focusNode.hasFocus, setState(() {})};
+
+  @override
   Widget build(BuildContext context) {
+    final Color borderColor = isFocused
+        ? context.color.territoryColor
+        : widget.borderColor ?? context.color.borderColor.darken(50);
+    return Container(
+      clipBehavior: iconWithBorder ? Clip.hardEdge : Clip.none,
+      decoration: iconWithBorder
+          ? BoxDecoration(
+              color: widget.fillColor ?? context.color.secondaryColor,
+              border: Border.all(width: 1.5, color: borderColor),
+              borderRadius: BorderRadius.circular(5),
+            )
+          : null,
+      child: Row(
+        children: [
+          if (widget.prefixWithBorder != null)
+            prefSufWithBorder(borderColor, widget.prefixWithBorder!),
+          Expanded(
+            child: Container(
+              decoration: iconWithBorder
+                  ? BoxDecoration(
+                      borderRadius: widget.prefixWithBorder != null
+                          ? const BorderRadiusDirectional.horizontal(
+                              end: Radius.circular(5),
+                            )
+                          : const BorderRadiusDirectional.horizontal(
+                              start: Radius.circular(5),
+                            ),
+                      border: widget.prefixWithBorder != null
+                          ? BorderDirectional(
+                              start: BorderSide(width: 1.5, color: borderColor),
+                            )
+                          : BorderDirectional(
+                              end: BorderSide(width: 1.5, color: borderColor),
+                            ),
+                    )
+                  : null,
+              child: TextFormField(
+                focusNode: focusNode,
+                controller: widget.controller,
+                inputFormatters: widget.formaters,
+                obscureText: widget.obscureText ?? false,
+                textInputAction: widget.action,
+                enabled: widget.enabled,
+                keyboardAppearance: Brightness.light,
+                textCapitalization:
+                    widget.capitalization ?? TextCapitalization.none,
+                readOnly: widget.isReadOnly ?? false,
+                style: TextStyle(
+                    fontSize: context.font.large,
+                    color: context.color.textDefaultColor),
+                minLines: widget.minLine ?? 1,
+                maxLines: widget.maxLine ?? 1,
+                onChanged: widget.onChange,
+                validator: (String? value) {
+                  if (widget.validator == CustomTextFieldValidator.nullCheck) {
+                    return Validator.nullCheckValidator(value,
+                        context: context);
+                  }
 
-    return TextFormField(
-      controller: controller,
-      inputFormatters: formaters,
-      obscureText: obscureText ?? false,
-      textInputAction: action,
-      enabled: enabled,
-      keyboardAppearance: Brightness.light,
-      textCapitalization: capitalization ?? TextCapitalization.none,
-      readOnly: isReadOnly ?? false,
-      style: TextStyle(
-          fontSize: context.font.large, color: context.color.textDefaultColor),
-      minLines: minLine ?? 1,
-      maxLines: maxLine ?? 1,
-      onChanged: onChange,
-      validator: (String? value) {
-        if (validator == CustomTextFieldValidator.nullCheck) {
-          return Validator.nullCheckValidator(value, context: context);
-        }
+                  if (widget.validator == CustomTextFieldValidator.maxFifty) {
+                    if ((value ??= "").length > 50) {
+                      return "youCanEnter50LettersMax".translate(context);
+                    } else {
+                      return null;
+                    }
+                  }
 
-        if (validator == CustomTextFieldValidator.maxFifty) {
-          if ((value ??= "").length > 50) {
-            return "youCanEnter50LettersMax".translate(context);
-          } else {
-            return null;
-          }
-        }
+                  /* if (validator == CustomTextFieldValidator.minAndMixLen) {
+                    if ((value == "") ||
+                        (value!.length > maxLength!) ||
+                        (value.length < minLength!)) {
+                      return "${"youCanAddMinimum".translate(context)} \t $minLength \t ${"toMaximum".translate(context)} \t ${maxLength!} \t ${"numbersOnly".translate(context)}";
+                    } else if (maxLength != null) {
+                    } else {
+                      return null;
+                    }
+                  }*/
 
-        /* if (validator == CustomTextFieldValidator.minAndMixLen) {
-          if ((value == "") ||
-              (value!.length > maxLength!) ||
-              (value.length < minLength!)) {
-            return "${"youCanAddMinimum".translate(context)} \t $minLength \t ${"toMaximum".translate(context)} \t ${maxLength!} \t ${"numbersOnly".translate(context)}";
-          } else if (maxLength != null) {
-          } else {
-            return null;
-          }
-        }*/
+                  // Check if maxLength is not null and value length exceeds maxLength
+                  if (widget.validator ==
+                      CustomTextFieldValidator.minAndMixLen) {
+                    // Check if the value is empty
+                    if (value == "") {
+                      return Validator.nullCheckValidator(value,
+                          context: context);
+                    }
 
-        // Check if maxLength is not null and value length exceeds maxLength
-        if (validator == CustomTextFieldValidator.minAndMixLen) {
-          // Check if the value is empty
-          if (value == "") {
-            return Validator.nullCheckValidator(value, context: context);
-          }
+                    if (widget.maxLength != null &&
+                        value!.length > widget.maxLength!) {
+                      return "${"youCanAdd".translate(context)} \t ${widget.maxLength} \t ${"maximumNumbersOnly".translate(context)}";
+                    }
 
-          if (maxLength != null && value!.length > maxLength!) {
-            return "${"youCanAdd".translate(context)} \t $maxLength \t ${"maximumNumbersOnly".translate(context)}";
-          }
+                    // Check if minLength is not null and value length is less than minLength
+                    if (widget.minLength != null &&
+                        value!.length < widget.minLength!) {
+                      return "${widget.minLength} \t ${"numMinRequired".translate(context)}";
+                    }
+                    return null;
+                  }
 
-          // Check if minLength is not null and value length is less than minLength
-          if (minLength != null && value!.length < minLength!) {
-            return "$minLength \t ${"numMinRequired".translate(context)}";
-          }
-          return null;
-        }
+                  if (widget.validator == CustomTextFieldValidator.otpSix) {
+                    if ((value ??= "").length != 6) {
+                      return 'pleaseEnterSixDigits'.translate(context);
+                    }
+                    return null;
+                  }
+                  if (widget.validator == CustomTextFieldValidator.email) {
+                    return Validator.validateEmail(
+                        email: value, context: context);
+                  }
+                  if (widget.validator == CustomTextFieldValidator.slug) {
+                    return Validator.validateSlug(value, context: context);
+                  } else if (widget.validator ==
+                      CustomTextFieldValidator.adTitle) {
+                    return Validator.validateAdTitle(value, context: context);
+                  }
+                  if (widget.validator ==
+                      CustomTextFieldValidator.phoneNumber) {
+                    return Validator.validatePhoneNumber(
+                        value: value, context: context);
+                  }
+                  if (widget.validator == CustomTextFieldValidator.url) {
+                    return Validator.urlValidation(
+                        value: value, context: context);
+                  }
+                  if (widget.validator == CustomTextFieldValidator.password) {
+                    return Validator.validatePassword(value, context: context);
+                  }
+                  return null;
+                },
+                keyboardType: widget.keyboard,
+                maxLength: widget.maxLength,
+                decoration: InputDecoration(
+                  prefix: widget.prefix,
+                  isDense: widget.dense,
+                  prefixIcon: widget.fixedPrefix,
+                  suffixIcon: widget.suffix,
+                  hintText: widget.hintText,
+                  hintStyle: widget.hintTextStyle ??
+                      TextStyle(
+                          color: context.color.textColorDark.withOpacity(0.7),
+                          fontSize: context.font.large),
+                  filled: true,
+                  fillColor: widget.fillColor ?? context.color.secondaryColor,
+                  /*contentPadding: EdgeInsets.symmetric(vertical: 20,horizontal: 14),*/
+                  focusedBorder: iconWithBorder
+                      ? _noBorder()
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1.5, color: context.color.territoryColor),
+                          borderRadius: BorderRadius.circular(10)),
+                  enabledBorder: iconWithBorder
+                      ? _noBorder()
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1.5,
+                              color: widget.borderColor ??
+                                  context.color.borderColor.darken(50)),
+                          borderRadius: BorderRadius.circular(10)),
+                  border: iconWithBorder
+                      ? _noBorder()
+                      : OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 1.5,
+                              color: widget.borderColor ??
+                                  context.color.borderColor),
+                          borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ),
+          ),
+          if (widget.suffixWithBorder != null)
+            prefSufWithBorder(borderColor, widget.suffixWithBorder!),
+        ],
+      ),
+    );
+  }
 
-        if (validator == CustomTextFieldValidator.otpSix) {
-          if ((value ??= "").length != 6) {
-            return 'pleaseEnterSixDigits'.translate(context);
-          }
-          return null;
-        }
-        if (validator == CustomTextFieldValidator.email) {
-          return Validator.validateEmail(email: value, context: context);
-        }
-        if (validator == CustomTextFieldValidator.slug) {
-          return Validator.validateSlug(value, context: context);
-        }else if(validator == CustomTextFieldValidator.adTitle){
-          return Validator.validateAdTitle(value, context: context);
-        }
-        if (validator == CustomTextFieldValidator.phoneNumber) {
-          return Validator.validatePhoneNumber(value: value, context: context);
-        }
-        if (validator == CustomTextFieldValidator.url) {
-          return Validator.urlValidation(value: value, context: context);
-        }
-        if (validator == CustomTextFieldValidator.password) {
-          return Validator.validatePassword(value, context: context);
-        }
-        return null;
-      },
-      keyboardType: keyboard,
-      maxLength: maxLength,
-      decoration: InputDecoration(
-          prefix: prefix,
-          isDense: dense,
-          prefixIcon: fixedPrefix,
-          suffixIcon: suffix,
-          hintText: hintText,
-          hintStyle: hintTextStyle ??
-              TextStyle(
-                  color: context.color.textColorDark.withOpacity(0.7),
-                  fontSize: context.font.large),
-          filled: true,
-          fillColor: fillColor ?? context.color.secondaryColor,
-          /*contentPadding: EdgeInsets.symmetric(vertical: 20,horizontal: 14),*/
-          focusedBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(width: 1.5, color: context.color.territoryColor),
-              borderRadius: BorderRadius.circular(10)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  width: 1.5,
-                  color: borderColor ?? context.color.borderColor.darken(50)),
-              borderRadius: BorderRadius.circular(10)),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(
-                  width: 1.5, color: borderColor ?? context.color.borderColor),
-              borderRadius: BorderRadius.circular(10))),
+  OutlineInputBorder _noBorder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5),
+      borderSide: BorderSide.none,
+    );
+  }
+
+  ColorFiltered prefSufWithBorder(Color borderColor, Widget icon) {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(borderColor.darken(30), BlendMode.srcIn),
+      child: Container(
+        width: 40,
+        alignment: Alignment.center,
+        child: icon,
+      ),
     );
   }
 }

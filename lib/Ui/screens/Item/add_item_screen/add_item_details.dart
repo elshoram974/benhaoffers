@@ -431,7 +431,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         CustomTextFormField(
                           controller: adPriceController,
                           action: TextInputAction.next,
-                          prefix: Text("${Constant.currencySymbol} "),
+                          prefixWithBorder: Text(Constant.currencySymbol),
                           // controller: _priceController,
                           formaters: [
                             FilteringTextInputFormatter.allow(
@@ -446,13 +446,9 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                   .withOpacity(0.5),
                               fontSize: context.font.large),
                         ),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
+                        SizedBox(height: 10.rh(context)),
                         Text("phoneNumber".translate(context)),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
+                        SizedBox(height: 10.rh(context)),
                         CustomTextFormField(
                           controller: adPhoneNumberController,
                           action: TextInputAction.next,
@@ -461,6 +457,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                 RegExp(r'^\d+\.?\d*')),
                           ],
                           isReadOnly: false,
+                          suffixWithBorder: Icon(Icons.call_outlined),
                           keyboard: TextInputType.phone,
                           validator: adPhoneNumberController.text.isEmpty
                               ? null
