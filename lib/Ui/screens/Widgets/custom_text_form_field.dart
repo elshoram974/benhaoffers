@@ -13,7 +13,8 @@ enum CustomTextFieldValidator {
   otpSix,
   minAndMixLen,
   url,
-  slug
+  slug,
+  adTitle
 }
 
 class CustomTextFormField extends StatelessWidget {
@@ -136,6 +137,8 @@ class CustomTextFormField extends StatelessWidget {
         }
         if (validator == CustomTextFieldValidator.slug) {
           return Validator.validateSlug(value, context: context);
+        }else if(validator == CustomTextFieldValidator.adTitle){
+          return Validator.validateAdTitle(value, context: context);
         }
         if (validator == CustomTextFieldValidator.phoneNumber) {
           return Validator.validatePhoneNumber(value: value, context: context);

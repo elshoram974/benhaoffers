@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
-
 class Validator {
   static String emailPattern =
       r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
@@ -88,6 +87,23 @@ class Validator {
     return null;
   }
 
+  static String? validateAdTitle(String? slug,
+      {required BuildContext context}) {
+    final RegExp slugRegExp = RegExp(
+      r'(?=.*[a-zA-Z])|(?=.*[\u0600-\u06FF])|(?=.*\d)|(?=.*[\u0660-\u0669]).*',
+      caseSensitive: false,
+    );
+    print("object ${slugRegExp.hasMatch(slug?? "ss")}");
+
+    if (slug == null || slug.trim().isEmpty) {
+      return "fieldMustNotBeEmpty".translate(context);
+    } else if (!slugRegExp.hasMatch(slug)) {
+      return "slugWarning".translate(context);
+    }
+
+    return null;
+  }
+
 //byAnish
   static String? validatePassword(String? password,
       {String? secondFieldValue, required BuildContext context}) {
@@ -118,11 +134,10 @@ class Validator {
         r'((http|https|ftp):\/\/[^\s/$.?#].[^\s]*)',
         caseSensitive: false,
         multiLine: false,
-        );
-      if(!urlPattern.hasMatch(value)){
+      );
+      if (!urlPattern.hasMatch(value)) {
         return 'plzValidUrlLbl'.translate(context);
       }
-
     } else {
       return 'plzValidUrlLbl'.translate(context);
     }

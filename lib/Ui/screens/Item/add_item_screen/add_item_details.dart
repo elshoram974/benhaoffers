@@ -77,6 +77,22 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
   DateTime? _tempEndDate;
   late String dateToShow = "chooseDate".translate(context);
 
+  ScrollController scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    adTitleController.dispose();
+    adSlugController.dispose();
+    adDescriptionController.dispose();
+    adPriceController.dispose();
+    adPhoneNumberController.dispose();
+    adAdditionalDetailsController.dispose();
+    endDateController.dispose();
+    scrollController.dispose();
+  }
+
   void _onBreadCrumbItemTap(int index) {
     int popTimes = (widget.breadCrumbItems!.length - 1) - index;
     int current = index;
@@ -195,9 +211,15 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         context,
                         dialoge: BlurredDialogBox(
                           title: "imageRequired".translate(context),
-                          content: Text(
-                            "selectImageYourItem".translate(context),
-                          ),
+                          content:
+                              Text("selectImageYourItem".translate(context)),
+                          onAccept: () async {
+                            scrollController.animateTo(
+                              100,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.bounceIn,
+                            );
+                          },
                         ),
                       );
                       return;
@@ -297,6 +319,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
               child: RefreshIndicator(
                 onRefresh: fetchPackages,
                 child: SingleChildScrollView(
+                  controller: scrollController,
                   physics: const BouncingScrollPhysics(),
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
@@ -347,7 +370,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         CustomTextFormField(
                           controller: adTitleController,
                           // controller: _itemNameController,
-                          validator: CustomTextFieldValidator.nullCheck,
+                          validator: CustomTextFieldValidator.adTitle,
                           action: TextInputAction.next,
                           capitalization: TextCapitalization.sentences,
                           hintText: "adTitleHere".translate(context),
@@ -364,23 +387,23 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                             adSlugController.text = text;
                           },
                         ),
-                        SizedBox(height: 15.rh(context)),
-                        Text(
-                            "${"adSlug".translate(context)}\t(${"englishOnlyLbl".translate(context)})"),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
-                        CustomTextFormField(
-                          controller: adSlugController,
-                          // controller: _itemNameController,
-                          validator: CustomTextFieldValidator.slug,
-                          enabled: false,
-                          hintText: "adSlugHere".translate(context),
-                          hintTextStyle: TextStyle(
-                              color: context.color.textDefaultColor
-                                  .withOpacity(0.5),
-                              fontSize: context.font.large),
-                        ),
+                        // SizedBox(height: 15.rh(context)),
+                        // Text(
+                        //     "${"adSlug".translate(context)}\t(${"englishOnlyLbl".translate(context)})"),
+                        // SizedBox(
+                        //   height: 10.rh(context),
+                        // ),
+                        // CustomTextFormField(
+                        //   controller: adSlugController,
+                        //   // controller: _itemNameController,
+                        //   validator: CustomTextFieldValidator.slug,
+                        //   enabled: false,
+                        //   hintText: "adSlugHere".translate(context),
+                        //   hintTextStyle: TextStyle(
+                        //       color: context.color.textDefaultColor
+                        //           .withOpacity(0.5),
+                        //       fontSize: context.font.large),
+                        // ),
                         SizedBox(height: 15.rh(context)),
                         Text("descriptionLbl".translate(context)),
                         SizedBox(height: 15.rh(context)),
@@ -544,6 +567,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                             state.didChange(
                                                 endDateController.text);
                                           }
+                                          HelperUtils.unfocus();
                                         });
                                       },
                                       child: Container(
@@ -1135,7 +1159,7 @@ class _AddImages extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
+                Flexible(
                   child: Text(
                     "${"maximumImageSizeExtensions".translate(context)}\n$dimensionsText",
                     textAlign: TextAlign.center,
