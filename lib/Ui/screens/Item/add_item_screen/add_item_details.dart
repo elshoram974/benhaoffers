@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:eClassify/Ui/screens/Item/add_item_screen/Widgets/ImageAdapter.dart';
 import 'package:eClassify/Ui/screens/Item/add_item_screen/select_category.dart';
 import 'package:eClassify/Ui/screens/widgets/blurred_dialoge_box.dart';
+import 'package:eClassify/Utils/AppIcon.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/responsiveSize.dart';
 
@@ -316,13 +317,33 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                             breadCrumbItems: widget.breadCrumbItems,
                             onTapCat: _onBreadCrumbItemTap,
                           ),
-                        SizedBox(
-                          height: 18.rh(context),
+                        SizedBox(height: 18.rh(context)),
+                        Row(
+                          children: [
+                            Text("mainPicture".translate(context)),
+                            const SizedBox(width: 3),
+                            Text("maxSize".translate(context))
+                                .italic()
+                                .size(context.font.small),
+                          ],
                         ),
+                        SizedBox(height: 10.rh(context)),
+                        Wrap(children: [titleImageListener()]),
+                        SizedBox(height: 13.rh(context)),
+                        Row(
+                          children: [
+                            Text("otherPictures".translate(context)),
+                            const SizedBox(width: 3),
+                            Text("max5Images".translate(context))
+                                .italic()
+                                .size(context.font.small),
+                          ],
+                        ),
+                        SizedBox(height: 10.rh(context)),
+                        itemImagesListener(),
+                        SizedBox(height: 10.rh(context)),
                         Text("adTitle".translate(context)),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
+                        SizedBox(height: 10.rh(context)),
                         CustomTextFormField(
                           controller: adTitleController,
                           // controller: _itemNameController,
@@ -343,9 +364,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                             adSlugController.text = text;
                           },
                         ),
-                        SizedBox(
-                          height: 15.rh(context),
-                        ),
+                        SizedBox(height: 15.rh(context)),
                         Text(
                             "${"adSlug".translate(context)}\t(${"englishOnlyLbl".translate(context)})"),
                         SizedBox(
@@ -362,13 +381,9 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                   .withOpacity(0.5),
                               fontSize: context.font.large),
                         ),
-                        SizedBox(
-                          height: 15.rh(context),
-                        ),
+                        SizedBox(height: 15.rh(context)),
                         Text("descriptionLbl".translate(context)),
-                        SizedBox(
-                          height: 15.rh(context),
-                        ),
+                        SizedBox(height: 15.rh(context)),
                         CustomTextFormField(
                           controller: adDescriptionController,
 
@@ -385,53 +400,7 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                   .withOpacity(0.5),
                               fontSize: context.font.large),
                         ),
-                        SizedBox(
-                          height: 15.rh(context),
-                        ),
-                        Row(
-                          children: [
-                            Text("mainPicture".translate(context)),
-                            const SizedBox(
-                              width: 3,
-                            ),
-                            Text("maxSize".translate(context))
-                                .italic()
-                                .size(context.font.small),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
-                        Wrap(
-                          children: [
-                            if (_pickTitleImage.pickedFile != null)
-                              ...[]
-                            else
-                              ...[],
-                            titleImageListener(),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
-                        Row(
-                          children: [
-                            Text("otherPictures".translate(context)),
-                            const SizedBox(
-                              width: 3,
-                            ),
-                            Text("max5Images".translate(context))
-                                .italic()
-                                .size(context.font.small),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
-                        itemImagesListener(),
-                        SizedBox(
-                          height: 10.rh(context),
-                        ),
+                        SizedBox(height: 15.rh(context)),
                         Text("price".translate(context)),
                         SizedBox(
                           height: 10.rh(context),
@@ -842,13 +811,13 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       return Wrap(
         children: [
           if (file == null && titleImageURL.isEmpty)
-            DottedBorder(
-              color: context.color.textLightColor,
-              borderType: BorderType.RRect,
-              radius: const Radius.circular(12),
-              child: GestureDetector(
-                onTap: () {
-                  showImageSourceDialog(context, (source) {
+            _AddImages(
+              mainTitle: "addMainPicture".translate(context),
+              dimensionsText: "mainImageDimensions".translate(context),
+              onTapAdd: () {
+                showImageSourceDialog(
+                  context,
+                  (source) {
                     _pickTitleImage.resumeSubscription();
                     _pickTitleImage.pick(
                       pickMultiple: false,
@@ -858,23 +827,9 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                     _pickTitleImage.pauseSubscription();
                     titleImageURL = "";
                     setState(() {});
-                  });
-                },
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  alignment: AlignmentDirectional.center,
-                  height: 48.rh(context),
-                  child: Text(
-                    "addMainPicture".translate(context),
-                    style: TextStyle(
-                      color: context.color.textDefaultColor,
-                      fontSize: context.font.large,
-                    ),
-                  ),
-                ),
-              ),
+                  },
+                );
+              },
             ),
           Stack(
             children: [
@@ -952,38 +907,27 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       return Wrap(
         runAlignment: WrapAlignment.start,
         children: [
-          if ((files == null || files.isEmpty) && mixedItemImageList.isEmpty)
-            DottedBorder(
-              color: context.color.textLightColor,
-              borderType: BorderType.RRect,
-              radius: const Radius.circular(12),
-              child: GestureDetector(
-                onTap: () {
-                  showImageSourceDialog(context, (source) {
+          if ((files == null || files.isEmpty) || mixedItemImageList.isEmpty)
+            _AddImages(
+              mainTitle: "addOtherPicture".translate(context),
+              dimensionsText: "otherImagesDimensions".translate(context),
+              onTapAdd: () {
+                showImageSourceDialog(
+                  context,
+                  (source) {
                     itemImagePicker.pick(
                         pickMultiple: source == ImageSource.gallery,
                         context: context,
                         imageLimit: 5,
                         maxLength: mixedItemImageList.length,
                         source: source);
-                  });
-                },
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  alignment: AlignmentDirectional.center,
-                  height: 48.rh(context),
-                  child: Text("addOtherPicture".translate(context),
-                      style: TextStyle(
-                          color: context.color.textDefaultColor,
-                          fontSize: context.font.large)),
-                ),
-              ),
+                  },
+                );
+              },
             ),
           current,
           if (mixedItemImageList.length < 5)
-            if (files != null && files.isNotEmpty ||
+            if ((files != null && files.isNotEmpty) &&
                 mixedItemImageList.isNotEmpty)
               uploadPhotoCard(context, onTap: () {
                 showImageSourceDialog(context, (source) {
@@ -1139,6 +1083,69 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
               alignment: AlignmentDirectional.center,
               child: Text("uploadPhoto".translate(context)),
             )),
+      ),
+    );
+  }
+}
+
+class _AddImages extends StatelessWidget {
+  const _AddImages({
+    required this.mainTitle,
+    required this.dimensionsText,
+    required this.onTapAdd,
+  });
+  final String mainTitle;
+  final String dimensionsText;
+  final void Function() onTapAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      child: DottedBorder(
+        color: context.color.borderColor.darken(60),
+        padding: EdgeInsets.zero,
+        borderType: BorderType.RRect,
+        radius: const Radius.circular(5),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(5),
+          onTap: onTapAdd,
+          child: Container(
+            height: 181,
+            width: double.maxFinite,
+            constraints: const BoxConstraints(maxWidth: 390),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                UiUtils.getSvg(AppIcons.addImagesIcon),
+                GestureDetector(
+                  onTap: onTapAdd,
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: context.color.territoryColor),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      mainTitle,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: context.font.small),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    "${"maximumImageSizeExtensions".translate(context)}\n$dimensionsText",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: context.font.small),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

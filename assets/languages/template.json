@@ -299,7 +299,7 @@
   "days": "Days",
   "yourPackageReachedLimit": "This package has reached its limit",
   "yourPackageReachedLimitDescription": "You have used all of the available units for this package",
-  "maxSize": "(Max 3MB)",
+  "maxSize": "(Max 5MB)",
   "max5Images": "(Max 5 images)",
   "maxSizePerImage": "(Max 3MB per image)",
   "Monthly": "Monthly",
@@ -514,5 +514,9 @@
   "englishOnlyLbl": "English only",
   "selectLbl": "Select",
   "expired": "Expired",
+  "addTheMainDisplayImage": "Add the main display image",
+  "maximumImageSizeExtensions": "The maximum image size is 5 MB.\n The image file extensions must be .jpg, .jpeg, or .png.",
+  "mainImageDimensions": "*Image dimensions: Width 170px - Height 170px",
+  "otherImagesDimensions": "*Images dimensions: Width 400px - Height 210px",
   "benhaCity": "Benha city"
 }
