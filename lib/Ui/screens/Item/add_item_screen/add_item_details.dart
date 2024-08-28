@@ -223,7 +223,9 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         "category_id": selectedCategoryList.last,
                       if (widget.isEdit == true) "id": item?.id,
                       "price": adPriceController.text,
-                      "contact": adPhoneNumberController.text,
+                      "contact": adPhoneNumberController.text.trim().isEmpty
+                          ? null
+                          : adPhoneNumberController.text.trim(),
                       "video_link": adAdditionalDetailsController.text,
                       if (widget.isEdit == true)
                         "delete_item_image_id": deleteItemImageList.join(','),
@@ -244,7 +246,9 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                           "category_id": selectedCategoryList.last,
                         if (widget.isEdit == true) "id": item?.id,
                         "price": adPriceController.text,
-                        "contact": adPhoneNumberController.text,
+                        "contact": adPhoneNumberController.text.trim().isEmpty
+                            ? null
+                            : adPhoneNumberController.text.trim(),
                         "video_link": adAdditionalDetailsController.text,
                         "all_category_ids": widget.isEdit == true
                             ? item!.allCategoryIds
@@ -308,66 +312,9 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                           height: 16.rh(context),
                         ),
                         if (widget.breadCrumbItems != null)
-                          SizedBox(
-                            height: 20,
-                            width: context.screenWidth,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    bool isNotLast =
-                                        (widget.breadCrumbItems!.length - 1) !=
-                                            index;
-
-                                    return Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            _onBreadCrumbItemTap(index);
-                                          },
-                                          child: Text(widget
-                                                  .breadCrumbItems![index]
-                                                  .name!)
-                                              .firstUpperCaseWidget()
-                                              .color(
-                                                isNotLast
-                                                    ? context
-                                                        .color.textColorDark
-                                                    : context
-                                                        .color.territoryColor,
-                                              ),
-                                        ),
-                                        if (index <
-                                            widget.breadCrumbItems!.length - 1)
-                                          const Text(" > ").color(
-                                              context.color.territoryColor),
-
-                                        /*InkWell(
-                                      onTap: () {
-                                        _onBreadCrumbItemTap(index);
-                                      },
-                                      child: Text(widget
-                                              .breadCrumbItems[index].name)
-                                          .firstUpperCaseWidget()
-                                          .color(
-                                            isNotLast
-                                                ? context.color.teritoryColor
-                                                : context.color.textColorDark,
-                                          ),
-                                    ),
-                
-                                    ///if it is not last
-                                    if (isNotLast)
-                                      const Text(" > ")
-                                          .color(context.color.teritoryColor)*/
-                                      ],
-                                    );
-                                  },
-                                  itemCount: widget.breadCrumbItems!.length),
-                            ),
+                          _AlmostHereWidget(
+                            breadCrumbItems: widget.breadCrumbItems,
+                            onTapCat: _onBreadCrumbItemTap,
                           ),
                         SizedBox(
                           height: 18.rh(context),
@@ -523,7 +470,9 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                           ],
                           isReadOnly: false,
                           keyboard: TextInputType.phone,
-                          validator: CustomTextFieldValidator.phoneNumber,
+                          validator: adPhoneNumberController.text.isEmpty
+                              ? null
+                              : CustomTextFieldValidator.phoneNumber,
                           hintText: "9876543210",
                           hintTextStyle: TextStyle(
                               color: context.color.textDefaultColor
@@ -556,7 +505,6 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                         BlocConsumer<FetchAdsListingSubscriptionPackagesCubit,
                             FetchAdsListingSubscriptionPackagesState>(
                           listener: (context, state) {
-
                             if (state
                                 is FetchAdsListingSubscriptionPackagesSuccess) {
                               DateTime? farthestEndDate = DateTime(2001);
@@ -598,11 +546,17 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        final initialDate= DateTime.tryParse(endDateController.text);
+                                        final initialDate = DateTime.tryParse(
+                                            endDateController.text);
                                         showDatePicker(
                                           context: context,
-                                          initialEntryMode: DatePickerEntryMode.calendarOnly,
-                                          firstDate: !(DateTime.now().isAfter(initialDate ?? DateTime.now())) ? DateTime.now() : initialDate!,
+                                          initialEntryMode:
+                                              DatePickerEntryMode.calendarOnly,
+                                          firstDate: !(DateTime.now().isAfter(
+                                                  initialDate ??
+                                                      DateTime.now()))
+                                              ? DateTime.now()
+                                              : initialDate!,
                                           lastDate:
                                               _tempEndDate ?? DateTime(2100),
                                           initialDate: initialDate,
@@ -610,9 +564,14 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                           if (e != null) {
                                             dateToShow =
                                                 DateFormat.yMMMd().format(e);
-                                            endDateController.text =
-                                                e.copyWith(hour: 23,minute: 59,second: 59).toIso8601String();
-                                                print("ddd ${DateTime.parse(endDateController.text)}");
+                                            endDateController.text = e
+                                                .copyWith(
+                                                    hour: 23,
+                                                    minute: 59,
+                                                    second: 59)
+                                                .toIso8601String();
+                                            print(
+                                                "ddd ${DateTime.parse(endDateController.text)}");
                                             state.didChange(
                                                 endDateController.text);
                                           }
@@ -1180,6 +1139,100 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
               alignment: AlignmentDirectional.center,
               child: Text("uploadPhoto".translate(context)),
             )),
+      ),
+    );
+  }
+}
+
+class _AlmostHereWidget extends StatelessWidget {
+  const _AlmostHereWidget({
+    required this.breadCrumbItems,
+    required this.onTapCat,
+  });
+
+  final List<CategoryModel>? breadCrumbItems;
+  final void Function(int) onTapCat;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      width: context.screenWidth,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              bool isNotLast = (breadCrumbItems!.length - 1) != index;
+
+              return Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (breadCrumbItems![index].url != null)
+                    Container(
+                      height: 50,
+                      width: 50,
+                      clipBehavior: Clip.antiAlias,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: context.color.borderColor,
+                          width: 1,
+                        ),
+                        color: const Color(0x7FFDCCCC),
+                      ),
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: UiUtils.imageType(
+                              breadCrumbItems![index].url!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(width: 5),
+                  InkWell(
+                    onTap: () => onTapCat(index),
+                    child: Text(breadCrumbItems![index].name!)
+                        .firstUpperCaseWidget()
+                        .color(
+                          isNotLast
+                              ? context.color.textColorDark
+                              : context.color.territoryColor,
+                        ),
+                  ),
+                  if (index < breadCrumbItems!.length - 1)
+                    const Text(" > ").color(context.color.territoryColor),
+
+                  /*InkWell(
+                                      onTap: () {
+                                        _onBreadCrumbItemTap(index);
+                                      },
+                                      child: Text(widget
+                                              .breadCrumbItems[index].name)
+                                          .firstUpperCaseWidget()
+                                          .color(
+                                            isNotLast
+                                                ? context.color.teritoryColor
+                                                : context.color.textColorDark,
+                                          ),
+                                    ),
+                
+                                    ///if it is not last
+                                    if (isNotLast)
+                                      const Text(" > ")
+                                          .color(context.color.teritoryColor)*/
+                ],
+              );
+            },
+            itemCount: breadCrumbItems!.length),
       ),
     );
   }
