@@ -798,7 +798,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           if (model.customFields![index].value!.isNotEmpty) {
             if (model.customFields![index].type != "textbox") {
               return SizedBox(
-                width: (context.screenWidth / 2) - (sidePadding / 2) - 5,
+                width:
+                    ((context.screenWidth - sidePadding) / 2) - 17.rw(context),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -841,9 +842,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                       ),
                     ),
                     valueContent(model.customFields![index]),
-                    const SizedBox(
-                      height: 12,
-                    )
+                    const SizedBox(height: 12)
                   ],
                 ),
               );
@@ -858,7 +857,8 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           if (model.customFields![index].value!.isNotEmpty) {
             if (model.customFields![index].type == "textbox") {
               return SizedBox(
-                width: (context.screenWidth / 2) - (sidePadding / 2) - 5,
+                width:
+                    ((context.screenWidth - sidePadding) / 2) - 17.rw(context),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -978,7 +978,13 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 context, "unable_to_open".translate(context));
           }
         },
-        child: Text(val),
+        child: Padding(
+          padding: EdgeInsetsDirectional.only(start: 40.rw(context)),
+          child: Text(
+            val,
+            style: TextStyle(fontSize: context.font.small),
+          ),
+        ),
       );
     } else if (field.type == CustomFieldWhatsapp().type) {
       return Align(
@@ -1019,7 +1025,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
 
     // Default text if not a supported format or not a URL
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 32.rw(context)),
+      padding: EdgeInsetsDirectional.only(start: 40.rw(context)),
       child: Text(
         value.length == 1 ? val : value.join(','),
         style: TextStyle(
