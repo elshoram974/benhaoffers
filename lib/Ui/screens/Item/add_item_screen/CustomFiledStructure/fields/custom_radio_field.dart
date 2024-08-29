@@ -1,4 +1,3 @@
-
 import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/responsiveSize.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +36,9 @@ class CustomRadioField extends CustomField {
       });
     }*/
 
-    validation?.didChange((selectedCustomFieldValue[0]));
+    // validation?.didChange((selectedCustomFieldValue[0]));
 
-    update(() {});
+    // update(() {});
 
     // selectedRadio.value = widget.radioValues?[index];
 
@@ -49,7 +48,7 @@ class CustomRadioField extends CustomField {
   @override
   Widget render() {
     return CustomValidator<String>(
-      initialValue: values![0],
+      initialValue: selectedRadioValue,
       builder: (FormFieldState<String> state) {
         if (validation == null) {
           validation = state;
@@ -104,7 +103,7 @@ class CustomRadioField extends CustomField {
                     alignment: WrapAlignment.start,
                     runAlignment: WrapAlignment.start,
                     crossAxisAlignment: WrapCrossAlignment.start,
-                    children: List.generate(values!.length ?? 0, (index) {
+                    children: List.generate(values?.length ?? 0, (index) {
                       var element = values![index];
 
                       return Padding(
@@ -161,13 +160,14 @@ class CustomRadioField extends CustomField {
         );
       },
       validator: (String? value) {
-        ///This will check only when the filed is required so we should validate
-        if (parameters['required'] != 1) {
-          return null;
-        }
-        if (value != null) return null;
+        print("${parameters['name']} :- $parameters ... $value");
 
-        return "Selecting this is required";
+        ///This will check only when the filed is required so we should validate
+        if (parameters['required'] != 1) return null;
+
+        if (value?.isNotEmpty == true) return null;
+
+        return "pleaseSelectValue".translate(context);
       },
     );
   }
