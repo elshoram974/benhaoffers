@@ -1,3 +1,4 @@
+import 'package:eClassify/Utils/AppIcon.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/responsiveSize.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,7 @@ class CustomFieldWebsite extends CustomField {
           hintText: "Ex: https://examble.com",
           maxLine: 1,
           capitalization: TextCapitalization.none,
+          suffixWithBorder: UiUtils.getSvg(AppIcons.websiteIcon),
           fillColor: context.color.secondaryColor,
           borderColor: context.color.borderColor.darken(30),
           keyboard: TextInputType.url,

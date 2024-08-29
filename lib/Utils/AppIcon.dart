@@ -16,6 +16,7 @@ class AppIcons {
   static String splashLogo = _svgPath("Logo/splashlogo");
   static String addImagesIcon = _svgPath("add_images_icon");
   static String whatsappIcon = _svgPath("whatsappIcon");
+  static String websiteIcon = _svgPath("websiteIcon");
   static String bin = _svgPath("bin");
   static String update = _svgPath("update");
   static String companyLogo = _svgPath("Logo/company_logo");
