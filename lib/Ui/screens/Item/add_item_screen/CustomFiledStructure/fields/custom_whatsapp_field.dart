@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:device_region/device_region.dart';
+import 'package:eClassify/Utils/AppIcon.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/responsiveSize.dart';
 import 'package:flutter/material.dart';
@@ -63,9 +64,7 @@ class CustomFieldWhatsapp extends CustomField {
                 ),
               ),
             ),
-            SizedBox(
-              width: 10.rw(context),
-            ),
+            SizedBox(width: 10.rw(context)),
             Text(parameters['name'])
                 .size(context.font.large)
                 .bold(weight: FontWeight.w500)
@@ -79,6 +78,7 @@ class CustomFieldWhatsapp extends CustomField {
           action: TextInputAction.next,
           fillColor: context.color.secondaryColor,
           borderColor: context.color.borderColor.darken(30),
+          suffixWithBorder: UiUtils.getSvg(AppIcons.whatsappIcon),
           formaters: [FilteringTextInputFormatter.digitsOnly],
           keyboard: TextInputType.phone,
           validator: parameters['required'] == 1 || phone?.isNotEmpty == true
@@ -116,7 +116,9 @@ class CustomFieldWhatsapp extends CustomField {
 
   void setData() {
     AbstractField.fieldsData.addAll(Map<String, dynamic>.from({
-      parameters['id'].toString(): ["https://api.whatsapp.com/send/?phone=$countryCode$phone&text=Hello%21&type=phone_number&app_absent=0"]
+      parameters['id'].toString(): [
+        "https://api.whatsapp.com/send/?phone=$countryCode$phone&text=Hello%21&type=phone_number&app_absent=0"
+      ]
     }));
   }
 
