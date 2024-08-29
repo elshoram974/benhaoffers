@@ -10,6 +10,7 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:device_preview/device_preview.dart';
 import '../data/model/Personalized/personalized_settings.dart';
 import '../firebase_options.dart';
 import '../main.dart';
@@ -64,8 +65,13 @@ void initApp() async {
     (_) async {
       SystemChrome.setSystemUIOverlayStyle(
           const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-
-      runApp(const EntryPoint());
+          
+      runApp(
+        DevicePreview(
+          enabled: !kReleaseMode,
+          builder: (context) => const EntryPoint(),
+        ),
+      );
     },
   );
 }

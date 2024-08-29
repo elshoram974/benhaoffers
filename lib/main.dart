@@ -1,5 +1,6 @@
 import 'package:eClassify/app/register_cubits.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'exports/main_export.dart';
@@ -117,14 +118,9 @@ class _AppState extends State<App> {
                 child: Directionality(
                   textDirection: direction,
                   //This will convert app direction according to language
-                  child: DevicePreview(
-                    enabled: false,
-
-                    /// Turn on this if you want to test the app in different screen sizes
-                    builder: (context) {
-                      return child!;
-                    },
-                  ),
+                  child: kReleaseMode
+                      ? child ?? const SizedBox()
+                      : DevicePreview.appBuilder(context, child),
                 ),
               ); /*MediaQuery(
                 data: MediaQuery.of(context).copyWith(
