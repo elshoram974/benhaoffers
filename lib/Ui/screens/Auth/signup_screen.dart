@@ -5,6 +5,9 @@ import 'package:eClassify/Ui/screens/Widgets/custom_text_form_field.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/cloudState/cloud_state.dart';
 import 'package:eClassify/Utils/helper_utils.dart';
+import 'package:eClassify/Utils/responsiveSize.dart';
+import 'package:eClassify/Utils/validator.dart';
+import 'package:eClassify/data/Repositories/category_repository.dart';
 import 'package:eClassify/exports/main_export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,7 @@ import '../../../Utils/Login/lib/payloads.dart';
 import '../../../Utils/api.dart';
 import '../../../Utils/ui_utils.dart';
 import '../../../data/cubits/auth/authentication_cubit.dart';
+import '../../../data/model/category_model.dart';
 import 'email_verification_screen.dart';
 
 enum UserType {
@@ -59,8 +63,38 @@ class _SignupScreenState extends CloudState<SignupScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _projectNameController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isObscure = true;
+
+  CategoryModel? _tempSelectedCat;
+
+  List<CategoryModel> categories = [];
+
+  @override
+  void initState() {
+    if (UserType.vendor == widget.userType) getAllCategories();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _projectNameController.dispose();
+    _categoryController.dispose();
+    _passwordController.dispose();
+  }
+
+  void getAllCategories() async {
+    await CategoryRepository().fetchAllCategories().then((value) {
+      setState(() {
+        categories = value.modelList;
+      });
+    });
+  }
 
   void onTapSignup() async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -144,9 +178,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 66,
-                      ),
+                      const SizedBox(height: 66),
                       Text("welcome".translate(context))
                           .size(context.font.extraLarge),
                       const SizedBox(
@@ -164,22 +196,69 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                         controller: _usernameController,
                         fillColor: context.color.secondaryColor,
                         validator: CustomTextFieldValidator.nullCheck,
+                        action: TextInputAction.next,
                         hintText: "userName".translate(context),
                         borderColor: context.color.borderColor.darken(10),
                       ),
-                      const SizedBox(
-                        height: 14,
-                      ),
+                      const SizedBox(height: 14),
+                      if (UserType.vendor == widget.userType) ...[
+                        CustomTextFormField(
+                          controller: _projectNameController,
+                          fillColor: context.color.secondaryColor,
+                          validator: CustomTextFieldValidator.nullCheck,
+                          action: TextInputAction.next,
+                          hintText:
+                              "projectName_store_company".translate(context),
+                          borderColor: context.color.borderColor.darken(10),
+                        ),
+                        const SizedBox(height: 14),
+                        DropdownButtonFormField<CategoryModel>(
+                          value: _tempSelectedCat,
+                          validator: (val) => Validator.nullCheckValidator(
+                            val?.name,
+                            context: context,
+                          ),
+                          menuMaxHeight: 300.rh(context),
+                          dropdownColor: context.color.secondaryColor,
+                          itemHeight: 50,
+                          icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                          hint: Text("chooseCategory".translate(context)),
+                          elevation: 0,
+                          decoration: InputDecoration(
+                            fillColor: context.color.secondaryColor,
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                          onChanged: (CategoryModel? newValue) {
+                            setState(() {
+                              _tempSelectedCat = newValue!;
+                              _categoryController.text = newValue.id.toString();
+                            });
+                          },
+                          items: categories
+                              .map<DropdownMenuItem<CategoryModel>>(
+                                  (CategoryModel value) {
+                            return DropdownMenuItem<CategoryModel>(
+                              value: value,
+                              child: Text(value.name!),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 14),
+                      ],
                       CustomTextFormField(
                         controller: _emailController,
                         fillColor: context.color.secondaryColor,
+                        action: TextInputAction.next,
                         validator: CustomTextFieldValidator.email,
                         hintText: "emailAddress".translate(context),
                         borderColor: context.color.borderColor.darken(10),
                       ),
-                      const SizedBox(
-                        height: 14,
-                      ),
+                      const SizedBox(height: 14),
                       CustomTextFormField(
                         controller: _passwordController,
                         fillColor: context.color.secondaryColor,
@@ -198,11 +277,10 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                         ),
                         hintText: "password".translate(context),
                         validator: CustomTextFieldValidator.password,
+                        onEditingComplete: onTapSignup,
                         borderColor: context.color.borderColor.darken(10),
                       ),
-                      const SizedBox(
-                        height: 36,
-                      ),
+                      const SizedBox(height: 36),
                       UiUtils.buildButton(context,
                           onPressed: onTapSignup,
                           buttonTitle: "verifyEmailAddress".translate(context),

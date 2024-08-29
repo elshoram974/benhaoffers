@@ -30,4 +30,21 @@ class CategoryRepository {
       rethrow;
     }
   }
+
+  Future<DataOutput<CategoryModel>> fetchAllCategories() async {
+    try {
+      Map<String, dynamic> response = await Api.get(url: Api.getCategoriesApi);
+
+      List<CategoryModel> modelList = (response['data']['data'] as List).map(
+        (e) {
+          return CategoryModel.fromJson(e);
+        },
+      ).toList();
+      return DataOutput(
+          total: response['data']['total'] ?? 0, modelList: modelList);
+      // return (total: response['total'] ?? 0, modelList: modelList);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -62,10 +62,10 @@ class Validator {
 
   static String? nullCheckValidator(String? value,
       {int? requiredLength, required BuildContext context}) {
-    if (value!.isEmpty) {
+    if (value?.isEmpty != false) {
       return "fieldMustNotBeEmpty".translate(context);
     } else if (requiredLength != null) {
-      if (value.length < requiredLength) {
+      if ((value?.length ?? 0) < requiredLength) {
         return "${"textMustBe".translate(context)} $requiredLength ${"characterLong".translate(context)}";
       } else {
         return null;

@@ -520,5 +520,7 @@
     "otherImagesDimensions": "*مقاس الصورة: العرض 400px - ارتفاع 210px",
     "benhaCity": "مدينة بنها",
     "user": "مستخدم",
-    "vendor_businessOwner": "تاجر / صاحب مشروع"
+    "vendor_businessOwner": "تاجر / صاحب مشروع",
+    "projectName_store_company": "اسم المشروع/المتجر/الشركة/...",
+    "chooseCategory": "اختر القسم"
 }

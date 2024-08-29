@@ -520,5 +520,7 @@
   "otherImagesDimensions": "*Images dimensions: Width 400px - Height 210px",
   "benhaCity": "Benha city",
   "user":"User",
-  "vendor_businessOwner":"Vendor / Business Owner"
+  "vendor_businessOwner":"Vendor / Business Owner",
+  "projectName_store_company":"Project name/store/company/...",
+  "chooseCategory":"Choose category"
 }

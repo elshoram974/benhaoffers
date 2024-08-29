@@ -42,7 +42,7 @@ class CustomTextFormField extends StatefulWidget {
   final int? minLength;
   final TextStyle? hintTextStyle;
   final TextCapitalization? capitalization;
-
+  final void Function()? onEditingComplete;
   const CustomTextFormField({
     super.key,
     this.hintText,
@@ -69,6 +69,7 @@ class CustomTextFormField extends StatefulWidget {
     this.hintTextStyle,
     this.minLength,
     this.capitalization,
+    this.onEditingComplete,
   });
 
   @override
@@ -156,6 +157,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                             : null,
                         child: TextFormField(
                           focusNode: focusNode,
+                          onEditingComplete: widget.onEditingComplete,
                           controller: widget.controller,
                           inputFormatters: widget.formaters,
                           obscureText: widget.obscureText ?? false,
@@ -198,7 +200,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                                     borderSide: BorderSide(
                                         width: 1.5,
                                         color: context.color.territoryColor),
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(5)),
                             enabledBorder: iconWithBorder
                                 ? _noBorder()
                                 : OutlineInputBorder(
@@ -207,7 +209,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                                         color: widget.borderColor ??
                                             context.color.borderColor
                                                 .darken(50)),
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(5)),
                             border: iconWithBorder
                                 ? _noBorder()
                                 : OutlineInputBorder(
@@ -215,7 +217,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                                         width: 1.5,
                                         color: widget.borderColor ??
                                             context.color.borderColor),
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(5)),
                           ),
                         ),
                       ),
