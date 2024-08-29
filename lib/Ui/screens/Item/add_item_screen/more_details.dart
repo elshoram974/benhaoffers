@@ -199,7 +199,7 @@ class _AddMoreDetailsScreenState extends CloudState<AddMoreDetailsScreen> {
                           );
                         },
                       ),
-                      SizedBox(height: 10,width: 10),
+                      const SizedBox(height: 10,width: 10),
                     ],
                   ),
                 ),
