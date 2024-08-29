@@ -518,5 +518,7 @@
   "maximumImageSizeExtensions": "The maximum image size is 5 MB.\n The image file extensions must be .jpg, .jpeg, or .png.",
   "mainImageDimensions": "*Image dimensions: Width 170px - Height 170px",
   "otherImagesDimensions": "*Images dimensions: Width 400px - Height 210px",
-  "benhaCity": "Benha city"
+  "benhaCity": "Benha city",
+  "user":"User",
+  "vendor_businessOwner":"Vendor / Business Owner"
 }

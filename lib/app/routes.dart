@@ -1,4 +1,5 @@
 
+import 'package:eClassify/Ui/screens/Auth/choose_account_type_screen.dart';
 import 'package:eClassify/Ui/screens/Auth/forgot_password.dart';
 import 'package:eClassify/Ui/screens/Auth/signup_screen.dart';
 import 'package:eClassify/Ui/screens/Chat/blocked_user_list_screen.dart';
@@ -60,6 +61,7 @@ class Routes {
   static const onboarding = 'onboarding';
   static const login = 'login';
   static const forgotPassword = 'forgotPassword';
+  static const chooseAccountType = 'chooseAccountType';
   static const signup = 'signup';
   static const completeProfile = 'complete_profile';
   static const main = 'main';
@@ -184,6 +186,8 @@ class Routes {
         return LoginScreen.route(routeSettings);
       case forgotPassword:
         return ForgotPasswordScreen.route(routeSettings);
+      case chooseAccountType:
+        return ChooseAccountTypeScreen.route(routeSettings);
       case signup:
         return SignupScreen.route(routeSettings);
 

@@ -510,12 +510,10 @@ class LoginScreenState extends State<LoginScreen> {
                     children: [
                       Text("dontHaveAcc".translate(context))
                           .color(context.color.textColorDark.brighten(50)),
-                      const SizedBox(
-                        width: 12,
-                      ),
+                      const SizedBox(width: 12),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, Routes.signup);
+                          Navigator.pushNamed(context, Routes.chooseAccountType);
                         },
                         child: Text("signUp".translate(context))
                             .underline()
@@ -594,7 +592,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget termAndPolicyTxt() {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: 15.0, start: 25.0, end: 25.0),
+      padding: const EdgeInsetsDirectional.only(
+          bottom: 15.0, start: 25.0, end: 25.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,

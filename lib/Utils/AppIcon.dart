@@ -12,11 +12,13 @@ class AppIcons {
 
   //
   //** */
-  static String logoWithShadow ="assets/svg/Logo/logoWithShadow.png";
+  static String logoWithShadow = "assets/svg/Logo/logoWithShadow.png";
   static String splashLogo = _svgPath("Logo/splashlogo");
   static String addImagesIcon = _svgPath("add_images_icon");
   static String whatsappIcon = _svgPath("whatsappIcon");
   static String websiteIcon = _svgPath("websiteIcon");
+  static String userIcon = _svgPath("userIcon");
+  static String vendorIcon = _svgPath("vendorIcon");
   static String bin = _svgPath("bin");
   static String update = _svgPath("update");
   static String companyLogo = _svgPath("Logo/company_logo");
@@ -108,7 +110,6 @@ class AppIcons {
   static String myAdsNavActive = _svgPath("bottomnav/myads_active");
   static String profileNav = _svgPath("bottomnav/profile");
   static String profileNavActive = _svgPath("bottomnav/profile_active");
-
 
   ///
   static String _svgPath(String name) {

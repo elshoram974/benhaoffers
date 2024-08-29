@@ -17,13 +17,36 @@ import '../../../Utils/ui_utils.dart';
 import '../../../data/cubits/auth/authentication_cubit.dart';
 import 'email_verification_screen.dart';
 
+enum UserType {
+  user("user"),
+  vendor("vendor");
+
+  final String typeString;
+
+  const UserType(this.typeString);
+
+  factory UserType.fromString(String typeString) {
+    switch (typeString) {
+      case "vendor":
+        return UserType.vendor;
+      default:
+        return UserType.user;
+    }
+  }
+}
+
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  const SignupScreen({super.key, required this.userType});
+
+  final UserType userType;
 
   static BlurredRouter route(RouteSettings settings) {
+    final Map arguments = settings.arguments as Map;
     return BlurredRouter(
       builder: (context) {
-        return const SignupScreen();
+        return SignupScreen(
+          userType: UserType.fromString(arguments['user_type'] as String),
+        );
       },
     );
   }
@@ -103,7 +126,8 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                           fit: BoxFit.none,
                           child: MaterialButton(
                             onPressed: () {
-                              HelperUtils.killPreviousPages(context, Routes.main, {
+                              HelperUtils.killPreviousPages(
+                                  context, Routes.main, {
                                 "from": "login",
                                 "isSkipped": true,
                               });
@@ -200,7 +224,11 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, Routes.login);
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                Routes.login,
+                                (route) => route.isFirst,
+                              );
                             },
                             child: Text("login".translate(context))
                                 .underline()
@@ -221,7 +249,8 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                       ),
                       UiUtils.buildButton(context,
                           prefixWidget: Padding(
-                            padding: const EdgeInsetsDirectional.only(end: 10.0),
+                            padding:
+                                const EdgeInsetsDirectional.only(end: 10.0),
                             child: UiUtils.getSvg(AppIcons.googleIcon,
                                 width: 22, height: 22),
                           ),
@@ -249,7 +278,8 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                       if (Platform.isIOS)
                         UiUtils.buildButton(context,
                             prefixWidget: Padding(
-                              padding: const EdgeInsetsDirectional.only(end: 10.0),
+                              padding:
+                                  const EdgeInsetsDirectional.only(end: 10.0),
                               child: UiUtils.getSvg(AppIcons.appleIcon,
                                   width: 22, height: 22),
                             ),
@@ -285,7 +315,8 @@ class _SignupScreenState extends CloudState<SignupScreen> {
 
   Widget termAndPolicyTxt() {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: 15.0, start: 25.0, end: 25.0),
+      padding: const EdgeInsetsDirectional.only(
+          bottom: 15.0, start: 25.0, end: 25.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,

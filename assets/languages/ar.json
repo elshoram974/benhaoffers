@@ -518,5 +518,7 @@
     "maximumImageSizeExtensionsDimensions": "الحد الأقصى لحجم الصورة 5 ميجابايت\n يجب ان يكون امتداد الصور .jpg .jpeg .png",
     "mainImageDimensions": "*مقاس الصورة: العرض 170px - ارتفاع 170px",
     "otherImagesDimensions": "*مقاس الصورة: العرض 400px - ارتفاع 210px",
-    "benhaCity": "مدينة بنها"
+    "benhaCity": "مدينة بنها",
+    "user": "مستخدم",
+    "vendor_businessOwner": "تاجر / صاحب مشروع"
 }
