@@ -125,11 +125,11 @@ class _AddMoreDetailsScreenState extends CloudState<AddMoreDetailsScreen> {
                 Map itemDetailsScreenData = getCloudData("item_details");
                 itemDetailsScreenData['custom_fields'] =
                     json.encode(AbstractField.fieldsData);
-          
+
                 itemDetailsScreenData.addAll(AbstractField.files);
-          
+
                 addCloudData("with_more_details", itemDetailsScreenData);
-          // itemDetailsScreenData
+                // itemDetailsScreenData
                 screenStack++;
                 Navigator.pushNamed(
                   context,
@@ -141,7 +141,7 @@ class _AddMoreDetailsScreenState extends CloudState<AddMoreDetailsScreen> {
                   },
                 ).then((value) {
                   screenStack--;
-          
+
                   if (value == "success") {
                     screenStack = 0;
                   }
@@ -198,7 +198,8 @@ class _AddMoreDetailsScreenState extends CloudState<AddMoreDetailsScreen> {
                             child: field.build(context),
                           );
                         },
-                      )
+                      ),
+                      SizedBox(height: 10,width: 10),
                     ],
                   ),
                 ),
