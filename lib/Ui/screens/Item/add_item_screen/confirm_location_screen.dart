@@ -1121,6 +1121,7 @@ import '../../Widgets/AnimatedRoutes/blur_page_route.dart';
 
 import '../../widgets/blurred_dialoge_box.dart';
 import '../my_item_tab_screen.dart';
+import 'add_item_details.dart';
 
 class ConfirmLocationScreen extends StatefulWidget {
   final bool? isEdit;
@@ -1419,68 +1420,68 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
           }, showBackButton: true, title: "confirmLocation".translate(context)),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.only(bottom: 12, left: 18.0, right: 18),
-            child: UiUtils.buildButton(context, onPressed: () async {
-              if (formatedAddress == null ||
-                  (formatedAddress!.city == "" ||
-                      formatedAddress!.city == null)) {
-                HelperUtils.showSnackBarMessage(
-                    context, "cityRequired".translate(context));
-                Future.delayed(const Duration(seconds: 2), () {
-                  dialogueBottomSheet(
-                      controller: cityTextController,
-                      title: "enterCity".translate(context),
-                      hintText: "city".translate(context),
-                      from: 1);
-                });
-              } else if (formatedAddress == null ||
-                  (formatedAddress!.country == "" ||
-                      formatedAddress!.country == null)) {
-                HelperUtils.showSnackBarMessage(
-                    context, "countryRequired".translate(context));
-                Future.delayed(const Duration(seconds: 2), () {
-                  dialogueBottomSheet(
-                      controller: countryTextController,
-                      title: "enterCountry".translate(context),
-                      hintText: "country".translate(context),
-                      from: 3);
-                });
-              } else {
-                try {
-                  Map<String, dynamic> cloudData =
-                      getCloudData("with_more_details") ?? {};
+            child: InkWell(
+              onTap: () async {
+                if (formatedAddress == null ||
+                    (formatedAddress!.city == "" ||
+                        formatedAddress!.city == null)) {
+                  HelperUtils.showSnackBarMessage(
+                      context, "cityRequired".translate(context));
+                  Future.delayed(const Duration(seconds: 2), () {
+                    dialogueBottomSheet(
+                        controller: cityTextController,
+                        title: "enterCity".translate(context),
+                        hintText: "city".translate(context),
+                        from: 1);
+                  });
+                } else if (formatedAddress == null ||
+                    (formatedAddress!.country == "" ||
+                        formatedAddress!.country == null)) {
+                  HelperUtils.showSnackBarMessage(
+                      context, "countryRequired".translate(context));
+                  Future.delayed(const Duration(seconds: 2), () {
+                    dialogueBottomSheet(
+                        controller: countryTextController,
+                        title: "enterCountry".translate(context),
+                        hintText: "country".translate(context),
+                        from: 3);
+                  });
+                } else {
+                  try {
+                    Map<String, dynamic> cloudData =
+                        getCloudData("with_more_details") ?? {};
 
-                  cloudData['address'] = formatedAddress?.mixed;
-                  cloudData['latitude'] = latitude;
-                  cloudData['longitude'] = longitude;
-                  cloudData['country'] = formatedAddress!.country;
-                  cloudData['city'] = formatedAddress!.city;
-                  cloudData['state'] = formatedAddress!.state;
-                  if (formatedAddress!.areaId != null) {
-                    cloudData['area_id'] = formatedAddress!.areaId;
-                  }
+                    cloudData['address'] = formatedAddress?.mixed;
+                    cloudData['latitude'] = latitude;
+                    cloudData['longitude'] = longitude;
+                    cloudData['country'] = formatedAddress!.country;
+                    cloudData['city'] = formatedAddress!.city;
+                    cloudData['state'] = formatedAddress!.state;
+                    if (formatedAddress!.areaId != null) {
+                      cloudData['area_id'] = formatedAddress!.areaId;
+                    }
 
-                  if (widget.isEdit == true) {
-                    context.read<ManageItemCubit>().manage(ManageItemType.edit,
-                        cloudData, widget.mainImage, widget.otherImage!);
-                    return;
-                  } else {
-                    context.read<ManageItemCubit>().manage(ManageItemType.add,
-                        cloudData, widget.mainImage!, widget.otherImage!);
-                    return;
+                    if (widget.isEdit == true) {
+                      context.read<ManageItemCubit>().manage(
+                          ManageItemType.edit,
+                          cloudData,
+                          widget.mainImage,
+                          widget.otherImage!);
+                      return;
+                    } else {
+                      context.read<ManageItemCubit>().manage(ManageItemType.add,
+                          cloudData, widget.mainImage!, widget.otherImage!);
+                      return;
+                    }
+                  } catch (e, st) {
+                    throw st;
                   }
-                } catch (e, st) {
-                  throw st;
                 }
-              }
 
-              return;
-            },
-                height: 48.rh(context),
-                fontSize: context.font.large,
-                autoWidth: false,
-                radius: 8,
-                width: double.maxFinite,
-                buttonTitle: "postNow".translate(context)),
+                return;
+              },
+              child: UIButtonBottomBar(title: "postNow".translate(context)),
+            ),
           ),
           body: bodyData()),
     );

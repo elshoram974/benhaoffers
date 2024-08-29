@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:eClassify/Ui/screens/Item/add_item_screen/select_category.dart';
 import 'package:eClassify/Ui/screens/Widgets/AnimatedRoutes/blur_page_route.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
-import 'package:eClassify/Utils/responsiveSize.dart';
 import 'package:eClassify/data/cubits/CustomField/fetch_custom_fields_cubit.dart';
 import 'package:eClassify/data/model/CustomField/custom_field_model.dart';
 import 'package:eClassify/data/model/item/item_model.dart';
@@ -15,6 +14,7 @@ import '../../../../Utils/cloudState/cloud_state.dart';
 import '../../../../Utils/ui_utils.dart';
 import '../../Widgets/DynamicField/dynamic_field.dart';
 import 'CustomFiledStructure/custom_field.dart';
+import 'add_item_details.dart';
 
 class AddMoreDetailsScreen extends StatefulWidget {
   final bool? isEdit;
@@ -119,42 +119,36 @@ class _AddMoreDetailsScreenState extends CloudState<AddMoreDetailsScreen> {
             showBackButton: true, title: "AdDetails".translate(context)),
         bottomNavigationBar: Container(
           color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-            child: UiUtils.buildButton(
-              context,
-              onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  Map itemDetailsScreenData = getCloudData("item_details");
-                  itemDetailsScreenData['custom_fields'] =
-                      json.encode(AbstractField.fieldsData);
-
-                  itemDetailsScreenData.addAll(AbstractField.files);
-
-                  addCloudData("with_more_details", itemDetailsScreenData);
-// itemDetailsScreenData
-                  screenStack++;
-                  Navigator.pushNamed(
-                    context,
-                    Routes.confirmLocationScreen,
-                    arguments: {
-                      "isEdit": widget.isEdit == true,
-                      "mainImage": widget.mainImage,
-                      "otherImage": widget.otherImage
-                    },
-                  ).then((value) {
-                    screenStack--;
-
-                    if (value == "success") {
-                      screenStack = 0;
-                    }
-                  });
-                }
-              },
-              height: 48.rh(context),
-              fontSize: context.font.large,
-              buttonTitle: "next".translate(context),
-            ),
+          child: InkWell(
+            onTap: () {
+              if (_formKey.currentState?.validate() ?? false) {
+                Map itemDetailsScreenData = getCloudData("item_details");
+                itemDetailsScreenData['custom_fields'] =
+                    json.encode(AbstractField.fieldsData);
+          
+                itemDetailsScreenData.addAll(AbstractField.files);
+          
+                addCloudData("with_more_details", itemDetailsScreenData);
+          // itemDetailsScreenData
+                screenStack++;
+                Navigator.pushNamed(
+                  context,
+                  Routes.confirmLocationScreen,
+                  arguments: {
+                    "isEdit": widget.isEdit == true,
+                    "mainImage": widget.mainImage,
+                    "otherImage": widget.otherImage
+                  },
+                ).then((value) {
+                  screenStack--;
+          
+                  if (value == "success") {
+                    screenStack = 0;
+                  }
+                });
+              }
+            },
+            child: UIButtonBottomBar(title: "next".translate(context)),
           ),
         ),
         body: BlocConsumer<FetchCustomFieldsCubit, FetchCustomFieldState>(

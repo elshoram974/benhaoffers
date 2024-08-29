@@ -192,53 +192,72 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
           child: Scaffold(
             appBar: UiUtils.buildAppBar(context,
                 showBackButton: true, title: "AdDetails".translate(context)),
-            bottomNavigationBar: Container(
-              color: Colors.transparent,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: UiUtils.buildButton(context, onPressed: () {
-                  ///File to
+            bottomNavigationBar: InkWell(
+              onTap: () {
+                ///File to
 
-                  if (_formKey.currentState?.validate() ?? false) {
-                    List<File>? galleryImages = mixedItemImageList
-                        .where((element) => element != null && element is File)
-                        .map((element) => element as File)
-                        .toList();
+                if (_formKey.currentState?.validate() ?? false) {
+                  List<File>? galleryImages = mixedItemImageList
+                      .where((element) => element != null && element is File)
+                      .map((element) => element as File)
+                      .toList();
 
-                    if (_pickTitleImage.pickedFile == null &&
-                        titleImageURL == "") {
-                      UiUtils.showBlurredDialoge(
-                        context,
+                  if (_pickTitleImage.pickedFile == null &&
+                      titleImageURL == "") {
+                    UiUtils.showBlurredDialoge(
+                      context,
+                      dialoge: BlurredDialogBox(
+                        title: "imageRequired".translate(context),
+                        content: Text("selectImageYourItem".translate(context)),
+                        onAccept: () async {
+                          scrollController.animateTo(
+                            100,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.bounceIn,
+                          );
+                        },
+                      ),
+                    );
+                    return;
+                  }
+
+                  /* if (galleryImages.isEmpty && mixedItemImageList.isEmpty) {
+                    UiUtils.showBlurredDialoge(context,
                         dialoge: BlurredDialogBox(
-                          title: "imageRequired".translate(context),
-                          content:
-                              Text("selectImageYourItem".translate(context)),
-                          onAccept: () async {
-                            scrollController.animateTo(
-                              100,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.bounceIn,
-                            );
-                          },
-                        ),
-                      );
-                      return;
-                    }
+                          title: "atLeastOneImageRequired".translate(context),
+                          content: Text(
+                            "selectUpTOOneImage".translate(context),
+                          ),
+                        ));
+                    return;
+                  }*/
 
-                    /* if (galleryImages.isEmpty && mixedItemImageList.isEmpty) {
-                      UiUtils.showBlurredDialoge(context,
-                          dialoge: BlurredDialogBox(
-                            title: "atLeastOneImageRequired".translate(context),
-                            content: Text(
-                              "selectUpTOOneImage".translate(context),
-                            ),
-                          ));
-                      return;
-                    }*/
+                  print("deleteItemImageList*****$deleteItemImageList");
 
-                    print("deleteItemImageList*****$deleteItemImageList");
-
-                    addCloudData("item_details", {
+                  addCloudData("item_details", {
+                    "name": adTitleController.text,
+                    "slug": adSlugController.text,
+                    "description": adDescriptionController.text,
+                    if (widget.isEdit != true)
+                      "category_id": selectedCategoryList.last,
+                    if (widget.isEdit == true) "id": item?.id,
+                    "price": adPriceController.text,
+                    "contact": adPhoneNumberController.text.trim().isEmpty
+                        ? null
+                        : adPhoneNumberController.text.trim(),
+                    "video_link": adAdditionalDetailsController.text,
+                    if (widget.isEdit == true)
+                      "delete_item_image_id": deleteItemImageList.join(','),
+                    "end_date": endDateController.text,
+                    "all_category_ids": widget.isEdit == true
+                        ? item!.allCategoryIds
+                        : selectedCategoryList.join(',')
+                    /*"image": _pickTitleImage.pickedFile,
+                    "gallery_images": galleryImages,*/
+                  });
+                  screenStack++;
+                  if (context.read<FetchCustomFieldsCubit>().isEmpty()!) {
+                    addCloudData("with_more_details", {
                       "name": adTitleController.text,
                       "slug": adSlugController.text,
                       "description": adDescriptionController.text,
@@ -250,69 +269,43 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                           ? null
                           : adPhoneNumberController.text.trim(),
                       "video_link": adAdditionalDetailsController.text,
-                      if (widget.isEdit == true)
-                        "delete_item_image_id": deleteItemImageList.join(','),
-                      "end_date": endDateController.text,
                       "all_category_ids": widget.isEdit == true
                           ? item!.allCategoryIds
-                          : selectedCategoryList.join(',')
-                      /*"image": _pickTitleImage.pickedFile,
+                          : selectedCategoryList.join(','),
+                      if (widget.isEdit == true)
+                        "delete_item_image_id": deleteItemImageList.join(','),
+                      "end_date": endDateController.text
+
+                      //missing in API
+                      /* "image": _pickTitleImage.pickedFile,
                       "gallery_images": galleryImages,*/
                     });
-                    screenStack++;
-                    if (context.read<FetchCustomFieldsCubit>().isEmpty()!) {
-                      addCloudData("with_more_details", {
-                        "name": adTitleController.text,
-                        "slug": adSlugController.text,
-                        "description": adDescriptionController.text,
-                        if (widget.isEdit != true)
-                          "category_id": selectedCategoryList.last,
-                        if (widget.isEdit == true) "id": item?.id,
-                        "price": adPriceController.text,
-                        "contact": adPhoneNumberController.text.trim().isEmpty
-                            ? null
-                            : adPhoneNumberController.text.trim(),
-                        "video_link": adAdditionalDetailsController.text,
-                        "all_category_ids": widget.isEdit == true
-                            ? item!.allCategoryIds
-                            : selectedCategoryList.join(','),
-                        if (widget.isEdit == true)
-                          "delete_item_image_id": deleteItemImageList.join(','),
-                        "end_date": endDateController.text
-
-                        //missing in API
-                        /* "image": _pickTitleImage.pickedFile,
-                        "gallery_images": galleryImages,*/
-                      });
-                      print(
-                          "_pickTitleImage.pickedFile***${_pickTitleImage.pickedFile}");
-                      print("otherImage***${galleryImages}");
-                      Navigator.pushNamed(context, Routes.confirmLocationScreen,
-                          arguments: {
-                            "isEdit": widget.isEdit,
-                            "mainImage": _pickTitleImage.pickedFile,
-                            "otherImage": galleryImages
-                          });
-                    } else {
-                      print(
-                          "_pickTitleImage.pickedFile11***${_pickTitleImage.pickedFile}");
-                      print("otherImage11***${galleryImages}");
-                      Navigator.pushNamed(context, Routes.addMoreDetailsScreen,
-                          arguments: {
-                            "context": context,
-                            "isEdit": widget.isEdit == true,
-                            "mainImage": _pickTitleImage.pickedFile,
-                            "otherImage": galleryImages
-                          }).then((value) {
-                        screenStack--;
-                      });
-                    }
+                    print(
+                        "_pickTitleImage.pickedFile***${_pickTitleImage.pickedFile}");
+                    print("otherImage***${galleryImages}");
+                    Navigator.pushNamed(context, Routes.confirmLocationScreen,
+                        arguments: {
+                          "isEdit": widget.isEdit,
+                          "mainImage": _pickTitleImage.pickedFile,
+                          "otherImage": galleryImages
+                        });
+                  } else {
+                    print(
+                        "_pickTitleImage.pickedFile11***${_pickTitleImage.pickedFile}");
+                    print("otherImage11***${galleryImages}");
+                    Navigator.pushNamed(context, Routes.addMoreDetailsScreen,
+                        arguments: {
+                          "context": context,
+                          "isEdit": widget.isEdit == true,
+                          "mainImage": _pickTitleImage.pickedFile,
+                          "otherImage": galleryImages
+                        }).then((value) {
+                      screenStack--;
+                    });
                   }
-                },
-                    height: 48.rh(context),
-                    fontSize: context.font.large,
-                    buttonTitle: "next".translate(context)),
-              ),
+                }
+              },
+              child: UIButtonBottomBar(title: "next".translate(context)),
             ),
             body: Form(
               key: _formKey,
@@ -1104,6 +1097,29 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
               alignment: AlignmentDirectional.center,
               child: Text("uploadPhoto".translate(context)),
             )),
+      ),
+    );
+  }
+}
+
+class UIButtonBottomBar extends StatelessWidget {
+  const UIButtonBottomBar({super.key, required this.title});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 56.rh(context),
+      color: context.color.territoryColor,
+      padding: EdgeInsets.only(top: 3.rh(context)),
+      alignment: Alignment.center,
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 20.rf(context),
+          color: context.color.buttonColor,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
