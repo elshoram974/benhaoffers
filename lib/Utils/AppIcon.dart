@@ -14,6 +14,7 @@ class AppIcons {
   //** */
   static String logoWithShadow = "assets/svg/Logo/logoWithShadow.png";
   static String splashLogo = _svgPath("Logo/splashlogo");
+  static String authWaitingIcon = _svgPath("authWaitingIcon");
   static String addImagesIcon = _svgPath("add_images_icon");
   static String whatsappIcon = _svgPath("whatsappIcon");
   static String websiteIcon = _svgPath("websiteIcon");

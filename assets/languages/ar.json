@@ -522,5 +522,8 @@
     "user": "مستخدم",
     "vendor_businessOwner": "تاجر / صاحب مشروع",
     "projectName_store_company": "اسم المشروع/المتجر/الشركة/...",
-    "chooseCategory": "اختر القسم"
+    "chooseCategory": "اختر القسم",
+    "accountCreatedSuccessfully": "تم إنشاء الحساب بنجاح",
+    "yourAccountWillApprovedSoon": "سيتم الموافقه على الحساب قريباً",
+    "patienceFoundationOfSuccess": "الصبر اساس النجاح"
 }

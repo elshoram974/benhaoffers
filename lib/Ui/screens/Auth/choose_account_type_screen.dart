@@ -8,7 +8,7 @@ import 'package:eClassify/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'signup_screen.dart';
+import '../../../data/model/user_model.dart';
 
 class ChooseAccountTypeScreen extends StatelessWidget {
   const ChooseAccountTypeScreen({super.key});

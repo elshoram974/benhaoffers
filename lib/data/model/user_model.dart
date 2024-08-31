@@ -1,6 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:eClassify/Utils/Extensions/lib/adaptive_type.dart';
 
+enum UserType {
+  user("user"),
+  vendor("vendor");
+
+  final String typeString;
+
+  const UserType(this.typeString);
+
+  factory UserType.fromString(String typeString) {
+    switch (typeString) {
+      case "vendor":
+        return UserType.vendor;
+      default:
+        return UserType.user;
+    }
+  }
+}
+
 class UserModel {
   String? address;
   String? createdAt;
@@ -19,26 +37,36 @@ class UserModel {
   String? profile;
   String? token;
   String? updatedAt;
+  String? categoryId;
+  String? projectName;
+  UserType? userType;
 
-  UserModel(
-      {this.address,
-      this.createdAt,
-      this.customertotalpost,
-      this.email,
-      this.fcmId,
-      this.firebaseId,
-      this.id,
-      this.isActive,
-      this.isProfileCompleted,
-      this.type,
-      this.mobile,
-      this.name,
-      this.notification,
-      this.profile,
-      this.token,
-      this.updatedAt});
+  UserModel({
+    this.projectName,
+    this.categoryId,
+    this.userType,
+    this.address,
+    this.createdAt,
+    this.customertotalpost,
+    this.email,
+    this.fcmId,
+    this.firebaseId,
+    this.id,
+    this.isActive,
+    this.isProfileCompleted,
+    this.type,
+    this.mobile,
+    this.name,
+    this.notification,
+    this.profile,
+    this.token,
+    this.updatedAt,
+  });
 
   UserModel.fromJson(Map<String, dynamic> json) {
+    categoryId = json[' category_id'];
+    projectName = json['project_name'];
+    userType = UserType.fromString(json['user_type']);
     address = json['address'];
     createdAt = json['created_at'];
     customertotalpost = Adapter.forceInt(json['customertotalpost']);
@@ -53,9 +81,9 @@ class UserModel {
     name = json['name'];
     //notification = json['notification'];
 
-     notification = (json['notification'] is int)
-         ? json['notification']
-         : int.parse((json['notification']));
+    notification = (json['notification'] is int)
+        ? json['notification']
+        : int.parse((json['notification']));
     profile = json['profile'];
     token = json['token'];
     updatedAt = json['updated_at'];
@@ -63,6 +91,9 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_type'] = userType?.typeString;
+    data['category_id'] = categoryId;
+    data['project_name'] = projectName;
     data['address'] = address;
     data['created_at'] = createdAt;
     data['customertotalpost'] = customertotalpost;
@@ -84,6 +115,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(address: $address, createdAt: $createdAt, customertotalpost: $customertotalpost, email: $email, fcmId: $fcmId, firebaseId: $firebaseId, id: $id, isActive: $isActive, isProfileCompleted: $isProfileCompleted, type: $type, mobile: $mobile, name: $name, profile: $profile, token: $token, updatedAt: $updatedAt,notification:$notification)';
+    return 'UserModel(address: $address, createdAt: $createdAt, customertotalpost: $customertotalpost, email: $email, fcmId: $fcmId, firebaseId: $firebaseId, id: $id, isActive: $isActive, isProfileCompleted: $isProfileCompleted, type: $type, mobile: $mobile, name: $name, profile: $profile, token: $token, updatedAt: $updatedAt,notification:$notification, userType: ${userType?.typeString}, projectName: $projectName, categoryId: $categoryId)';
   }
 }

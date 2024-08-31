@@ -19,25 +19,8 @@ import '../../../Utils/api.dart';
 import '../../../Utils/ui_utils.dart';
 import '../../../data/cubits/auth/authentication_cubit.dart';
 import '../../../data/model/category_model.dart';
+import '../../../data/model/user_model.dart';
 import 'email_verification_screen.dart';
-
-enum UserType {
-  user("user"),
-  vendor("vendor");
-
-  final String typeString;
-
-  const UserType(this.typeString);
-
-  factory UserType.fromString(String typeString) {
-    switch (typeString) {
-      case "vendor":
-        return UserType.vendor;
-      default:
-        return UserType.user;
-    }
-  }
-}
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key, required this.userType});
@@ -98,14 +81,49 @@ class _SignupScreenState extends CloudState<SignupScreen> {
 
   void onTapSignup() async {
     if (_formKey.currentState?.validate() ?? false) {
-      addCloudData("signup_details", {"username": _usernameController.text});
-      context.read<AuthenticationCubit>().setData(
-          payload: EmailLoginPayload(
-              email: _emailController.text,
-              password: _passwordController.text,
-              type: EmailLoginType.signup),
-          type: AuthenticationType.email);
-      context.read<AuthenticationCubit>().authenticate();
+      final Map<String, String> map = {};
+      map['email'] = _emailController.text;
+      map['password'] = _passwordController.text;
+      map['username'] = _usernameController.text;
+      map['user_type'] = UserType.user.typeString;
+
+      if (UserType.vendor == widget.userType) {
+        map['project_name'] = _projectNameController.text;
+        map['category_id'] = _categoryController.text;
+        map['user_type'] = UserType.vendor.typeString;
+      }
+
+      Map? result = await context.read<AuthenticationCubit>().signUp(map);
+      if (result != null) _navigateTo();
+
+      // if (UserType.vendor == widget.userType) {
+      //   context.read<AuthenticationCubit>().signUp();
+      // } else {
+      //   addCloudData("signup_details", {"username": _usernameController.text});
+      //   context.read<AuthenticationCubit>().setData(
+      //       payload: EmailLoginPayload(
+      //           email: _emailController.text,
+      //           password: _passwordController.text,
+      //           type: EmailLoginType.signup),
+      //       type: AuthenticationType.email);
+      //   context.read<AuthenticationCubit>().authenticate();
+      // }
+    }
+  }
+
+  void _navigateTo() {
+    HelperUtils.showSnackBarMessage(
+      context,
+      "accountCreatedSuccessfully".translate(context),
+    );
+    if (UserType.vendor == widget.userType) {
+      Navigator.pushReplacementNamed(context, Routes.authWaiting);
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        Routes.login,
+        (route) => route.isFirst,
+      );
     }
   }
 
@@ -186,12 +204,8 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                       ),
                       Text("signUpToeClassify".translate(context))
                           .size(context.font.large)
-                          .color(
-                            context.color.textColorDark.brighten(50),
-                          ),
-                      const SizedBox(
-                        height: 24,
-                      ),
+                          .color(context.color.textColorDark.brighten(50)),
+                      const SizedBox(height: 24),
                       CustomTextFormField(
                         controller: _usernameController,
                         fillColor: context.color.secondaryColor,
@@ -220,10 +234,9 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                           ),
                           menuMaxHeight: 300.rh(context),
                           dropdownColor: context.color.secondaryColor,
-                          itemHeight: 50,
                           icon: const Icon(Icons.keyboard_arrow_down_outlined),
                           hint: Text("chooseCategory".translate(context)),
-                          elevation: 0,
+                          elevation: 11,
                           decoration: InputDecoration(
                             fillColor: context.color.secondaryColor,
                             filled: true,
@@ -256,6 +269,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                         action: TextInputAction.next,
                         validator: CustomTextFieldValidator.email,
                         hintText: "emailAddress".translate(context),
+                        keyboard: TextInputType.emailAddress,
                         borderColor: context.color.borderColor.darken(10),
                       ),
                       const SizedBox(height: 14),
@@ -322,15 +336,16 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                             .color(context.color.textDefaultColor)
                             .centerAlign(),
                       ),
-                      const SizedBox(
-                        height: 24,
-                      ),
+                      const SizedBox(height: 24),
                       UiUtils.buildButton(context,
                           prefixWidget: Padding(
                             padding:
                                 const EdgeInsetsDirectional.only(end: 10.0),
-                            child: UiUtils.getSvg(AppIcons.googleIcon,
-                                width: 22, height: 22),
+                            child: UiUtils.getSvg(
+                              AppIcons.googleIcon,
+                              width: 22,
+                              height: 22,
+                            ),
                           ),
                           showElevation: false,
                           buttonColor: secondaryColor_,
@@ -339,7 +354,8 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                                       AppTheme.dark
                                   ? BorderSide(
                                       color: context.color.textDefaultColor
-                                          .withOpacity(0.5))
+                                          .withOpacity(0.5),
+                                    )
                                   : null,
                           textColor: textDarkColor, onPressed: () {
                         context.read<AuthenticationCubit>().setData(
@@ -358,8 +374,11 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                             prefixWidget: Padding(
                               padding:
                                   const EdgeInsetsDirectional.only(end: 10.0),
-                              child: UiUtils.getSvg(AppIcons.appleIcon,
-                                  width: 22, height: 22),
+                              child: UiUtils.getSvg(
+                                AppIcons.appleIcon,
+                                width: 22,
+                                height: 22,
+                              ),
                             ),
                             showElevation: false,
                             buttonColor: secondaryColor_,

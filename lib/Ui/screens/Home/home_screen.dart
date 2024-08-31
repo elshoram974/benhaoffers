@@ -283,17 +283,17 @@ class HomeScreenState extends State<HomeScreen>
                             width: 66,
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 5,
                         ),
                         CustomShimmer(
                           height: 10,
                           width: 48,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 2,
                         ),
-                        const CustomShimmer(
+                        CustomShimmer(
                           height: 10,
                           width: 60,
                         ),
@@ -342,24 +342,24 @@ class HomeScreenState extends State<HomeScreen>
                             width: 250,
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 8,
                         ),
                         CustomShimmer(
                           height: 15,
                           width: 90,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 8,
                         ),
-                        const CustomShimmer(
+                        CustomShimmer(
                           height: 14,
                           width: 230,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 8,
                         ),
-                        const CustomShimmer(
+                        CustomShimmer(
                           height: 14,
                           width: 200,
                         ),
@@ -386,23 +386,23 @@ class HomeScreenState extends State<HomeScreen>
                           height: 147,
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 8,
                       ),
                       CustomShimmer(
                         height: 15,
                         width: 70,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 8,
                       ),
-                      const CustomShimmer(
+                      CustomShimmer(
                         height: 14,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 8,
                       ),
-                      const CustomShimmer(
+                      CustomShimmer(
                         height: 14,
                         width: 130,
                       ),

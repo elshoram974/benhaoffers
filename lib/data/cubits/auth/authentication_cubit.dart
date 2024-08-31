@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/Login/AppleLogin/apple_login.dart';
 import 'package:eClassify/Utils/Login/EmailLogin/email_login.dart';
 import 'package:eClassify/Utils/Login/GoogleLogin/google_login.dart';
 import 'package:eClassify/Utils/Login/PhoneLogin/phone_login.dart';
 import 'package:eClassify/Utils/Login/lib/login_system.dart';
-import 'package:eClassify/Utils/helper_utils.dart';
+import 'package:eClassify/Utils/api.dart';
 import 'package:eClassify/exports/main_export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -58,6 +57,22 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     mMultiAuthentication.init();
   }
 
+  Future<Map?> signUp(Map<String,String> parameters) async {
+    try {
+      emit(AuthenticationInProcess(type!));
+      Map<String, dynamic> response = await Api.post(
+        url: Api.signUpApi,
+        parameter: parameters,
+      );
+
+      return response;
+      // var status = await repo.signUp();
+    } catch (e) {
+      emit(AuthenticationFail(e));
+    }
+    return null;
+  }
+
   void setData(
       {required LoginPayload payload, required AuthenticationType type}) {
     this.type = type;
@@ -84,16 +99,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       if (payloadData is EmailLoginPayload &&
           payloadData.type == EmailLoginType.login) {
         if (credential != null) {
-          User? user = credential.user;
-          if (user != null && !user.emailVerified) {
-            // Handle the case when the user's email is not verified
-            emit(AuthenticationFail(HelperUtils.showSnackBarMessage(
-                Constant.navigatorKey.currentContext,
-                "pleaseFirstVerifyUser"
-                    .translate(Constant.navigatorKey.currentContext!))));
-          } else {
-            emit(AuthenticationSuccess(type!, credential));
-          }
+          emit(AuthenticationSuccess(type!, credential));
         }
       } else {
         emit(AuthenticationSuccess(type!, credential!));

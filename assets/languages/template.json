@@ -519,8 +519,11 @@
   "mainImageDimensions": "*Image dimensions: Width 170px - Height 170px",
   "otherImagesDimensions": "*Images dimensions: Width 400px - Height 210px",
   "benhaCity": "Benha city",
-  "user":"User",
-  "vendor_businessOwner":"Vendor / Business Owner",
-  "projectName_store_company":"Project name/store/company/...",
-  "chooseCategory":"Choose category"
+  "user": "User",
+  "vendor_businessOwner": "Vendor / Business Owner",
+  "projectName_store_company": "Project name/store/company/...",
+  "chooseCategory": "Choose category",
+  "accountCreatedSuccessfully": "User created successfully",
+  "yourAccountWillApprovedSoon": "Your account will be approved soon.",
+  "patienceFoundationOfSuccess": "Patience is the foundation of success."
 }
