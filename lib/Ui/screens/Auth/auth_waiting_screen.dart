@@ -43,81 +43,89 @@ class _AuthWaitingScreenState extends State<AuthWaitingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.color.backgroundColor,
-      body: AnnotatedRegion(
-        value: SystemUiOverlayStyle(
-          statusBarColor: context.color.backgroundColor,
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 18.0, right: 18, top: 23),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 94),
-                Align(
-                  alignment: AlignmentDirectional.center,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10.0.rh(context)),
-                    child: SizedBox(
-                      width: 150.rw(context),
-                      height: 150.rw(context),
-                      child: UiUtils.getSvg(AppIcons.splashLogo),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) => _navigateToLogin(),
+      child: Scaffold(
+        backgroundColor: context.color.backgroundColor,
+        body: AnnotatedRegion(
+          value: SystemUiOverlayStyle(
+            statusBarColor: context.color.backgroundColor,
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 18.0, right: 18, top: 23),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 94),
+                  Align(
+                    alignment: AlignmentDirectional.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0.rh(context)),
+                      child: SizedBox(
+                        width: 150.rw(context),
+                        height: 150.rw(context),
+                        child: UiUtils.getSvg(AppIcons.splashLogo),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 75),
-                Text("yourAccountWillApprovedSoon".translate(context))
-                    .size(context.font.extraLarge)
-                    .color(context.color.textDefaultColor)
-                    .centerAlign(),
-                const SizedBox(height: 80),
-                Align(
-                  alignment: AlignmentDirectional.center,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10.0.rh(context)),
-                    child: Container(
-                      width: 100.rw(context),
-                      height: 100.rw(context),
-                      padding: EdgeInsets.all(15.rw(context)),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 4),
-                        shape: BoxShape.circle,
-                      ),
-                      child: AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, child) => RotationTransition(
-                          turns: _controller,
-                          child: child!,
+                  const SizedBox(height: 75),
+                  Text("yourAccountWillApprovedSoon".translate(context))
+                      .size(context.font.extraLarge)
+                      .color(context.color.textDefaultColor)
+                      .centerAlign(),
+                  const SizedBox(height: 80),
+                  Align(
+                    alignment: AlignmentDirectional.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0.rh(context)),
+                      child: Container(
+                        width: 100.rw(context),
+                        height: 100.rw(context),
+                        padding: EdgeInsets.all(15.rw(context)),
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 4),
+                          shape: BoxShape.circle,
                         ),
-                        child: UiUtils.getSvg(AppIcons.authWaitingIcon),
+                        child: AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) => RotationTransition(
+                            turns: _controller,
+                            child: child!,
+                          ),
+                          child: UiUtils.getSvg(AppIcons.authWaitingIcon),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 30),
-                Text("patienceFoundationOfSuccess".translate(context))
-                    .size(context.font.extraLarge)
-                    .color(context.color.textDefaultColor)
-                    .centerAlign(),
-                const SizedBox(height: 40),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routes.login,
-                    (route) => route.isFirst,
+                  const SizedBox(height: 30),
+                  Text("patienceFoundationOfSuccess".translate(context))
+                      .size(context.font.extraLarge)
+                      .color(context.color.textDefaultColor)
+                      .centerAlign(),
+                  const SizedBox(height: 40),
+                  GestureDetector(
+                    onTap: _navigateToLogin,
+                    child: Text("backToHome".translate(context))
+                        .underline()
+                        .color(context.color.territoryColor),
                   ),
-                  child: Text("backToHome".translate(context))
-                      .underline()
-                      .color(context.color.territoryColor),
-                ),
-                const SizedBox(height: 40),
-              ],
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void _navigateToLogin() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      Routes.login,
+      (route) => route.isFirst,
     );
   }
 }
