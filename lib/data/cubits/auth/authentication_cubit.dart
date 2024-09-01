@@ -5,7 +5,6 @@ import 'package:eClassify/Utils/Login/EmailLogin/email_login.dart';
 import 'package:eClassify/Utils/Login/GoogleLogin/google_login.dart';
 import 'package:eClassify/Utils/Login/PhoneLogin/phone_login.dart';
 import 'package:eClassify/Utils/Login/lib/login_system.dart';
-import 'package:eClassify/Utils/api.dart';
 import 'package:eClassify/exports/main_export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -57,25 +56,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     mMultiAuthentication.init();
   }
 
-  Future<Map?> signUp(Map<String,String> parameters) async {
-    try {
-      emit(AuthenticationInProcess(AuthenticationType.email));
-      Map<String, dynamic> response = await Api.post(
-        url: Api.loginApi,
-        parameter: parameters,
-      );
-      print("object $response");
-
-
-      return response;
-      // var status = await repo.signUp();
-    } catch (e) {
-      print("object e $e");
-      emit(AuthenticationFail(e));
-    }
-    return null;
-  }
-
   void setData(
       {required LoginPayload payload, required AuthenticationType type}) {
     this.type = type;
@@ -105,6 +85,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           emit(AuthenticationSuccess(type!, credential));
         }
       } else {
+        // ToDo: make the request of sign up here
         emit(AuthenticationSuccess(type!, credential!));
       }
       /*if (credential != null) {

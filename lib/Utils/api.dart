@@ -123,6 +123,9 @@ class Api {
   static String address = "address";
   static String clientAddress = "client_address";
   static String email = "email";
+  static String password = "password";
+  static String categoryId = "category_id";
+  static String projectName = "project_name";
   static String name = "name";
   static String userType = "user_type";
   static String amount = "amount";
@@ -135,7 +138,6 @@ class Api {
   static String typeids = "typeids";
   static String userid = "userid";
   static String measurement = "measurement";
-  static String categoryId = "category_id";
   static String sellerId = "seller_id";
   static String title = "title";
   static String carpetArea = "carpet_area";

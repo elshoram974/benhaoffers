@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../utils/api.dart';
@@ -8,6 +7,34 @@ class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static int? forceResendingToken;
 
+  Future<Map<String, dynamic>> signUpWithApi({
+    String? phone,
+    required String uid,
+    required String type,
+    String? fcmId,
+    required String email,
+    required String name,
+    String? profile,
+    String? countryCode,
+  }) async {
+    Map<String, String> parameters = {
+      if (phone != null) Api.mobile: phone,
+      Api.firebaseId: uid,
+      Api.type: type,
+      if (fcmId != null) Api.fcmId: fcmId,
+      Api.email: email,
+      Api.name: name,
+      if (countryCode != null) Api.countryCode: countryCode,
+    };
+
+    Map<String, dynamic> response = await Api.post(
+      url: Api.loginApi,
+      parameter: parameters, /* useAuthToken: false*/
+    );
+
+    return {"token": response['token'], "data": response['data']};
+  }
+
   Future<Map<String, dynamic>> numberLoginWithApi(
       {String? phone,
       required String uid,
@@ -15,7 +42,8 @@ class AuthRepository {
       String? fcmId,
       String? email,
       String? name,
-      String? profile,String? countryCode}) async {
+      String? profile,
+      String? countryCode}) async {
     Map<String, String> parameters = {
       if (phone != null) Api.mobile: phone,
       Api.firebaseId: uid,
@@ -26,8 +54,6 @@ class AuthRepository {
       if (countryCode != null) Api.countryCode: countryCode,
       //if (profile != null) Api.profile: profile
     };
-
-
 
     Map<String, dynamic> response = await Api.post(
       url: Api.loginApi,
@@ -95,7 +121,6 @@ class MultiAuthRepository {
 
       return credentials;
     } catch (e) {
-
       rethrow;
     }
   }

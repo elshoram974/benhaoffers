@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:eClassify/Ui/screens/Widgets/AnimatedRoutes/blur_page_route.dart';
 import 'package:eClassify/Ui/screens/Widgets/custom_text_form_field.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
+import 'package:eClassify/Utils/Login/lib/payloads.dart';
 import 'package:eClassify/Utils/cloudState/cloud_state.dart';
 import 'package:eClassify/Utils/helper_utils.dart';
 import 'package:eClassify/Utils/responsiveSize.dart';
@@ -14,13 +16,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../Utils/AppIcon.dart';
-import '../../../Utils/Login/lib/payloads.dart';
 import '../../../Utils/api.dart';
 import '../../../Utils/ui_utils.dart';
 import '../../../data/cubits/auth/authentication_cubit.dart';
 import '../../../data/model/category_model.dart';
 import '../../../data/model/user_model.dart';
-import 'email_verification_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key, required this.userType});
@@ -77,49 +77,34 @@ class _SignupScreenState extends CloudState<SignupScreen> {
         .then((value) {
       setState(() {
         categories = value.modelList;
-        print("+++ ${categories.length} categories");
       });
     });
   }
 
   void onTapSignup() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // print(widget.userType.name);
-      // Map<String, String> parameters = {};
-      // parameters = {
-      //   Api.firebaseId: _emailController.text,
-      //   Api.type: AuthenticationType.email.name,
-      //   Api.email: _emailController.text,
-      //   Api.name: _usernameController.text,
-      //   'password': _passwordController.text,
-      //   Api.userType: '0',
-      // };
+      final Map<String, String> map = {};
+      map[Api.type] = AuthenticationType.email.name;
+      map[Api.email] = _emailController.text;
+      map[Api.password] = _passwordController.text;
+      map[Api.name] = _usernameController.text;
+      map[Api.userType] = widget.userType.name;
 
-      // final Map<String, String> map = {};
-      // map[Api.email] = _emailController.text;
-      // map['password'] = _passwordController.text;
-      // map[Api.name] = _usernameController.text;
-      // map[Api.userType] = widget.userType.name;
+      if (UserType.provider == widget.userType) {
+        map[Api.projectName] = _projectNameController.text;
+        map[Api.categoryId] = _categoryController.text;
+      }
 
-      // if (UserType.provider == widget.userType) {
-      //   map['project_name'] = _projectNameController.text;
-      //   map['category_id'] = _categoryController.text;
-      //   parameters['project_name'] = _projectNameController.text;
-      //   parameters['category_id'] = _categoryController.text;
-      // }
-
-      addCloudData("signup_details", {"username": _usernameController.text});
+      addCloudData("signup_details", map);
       context.read<AuthenticationCubit>().setData(
-          payload: EmailLoginPayload(
+            payload: EmailLoginPayload(
               email: _emailController.text,
               password: _passwordController.text,
-              type: EmailLoginType.signup),
-          type: AuthenticationType.email);
+              type: EmailLoginType.signup,
+            ),
+            type: AuthenticationType.email,
+          );
       context.read<AuthenticationCubit>().authenticate();
-
-      // Map? result =
-      //     await context.read<AuthenticationCubit>().signUp(parameters);
-      // if (result != null) _navigateTo();
     }
   }
 
@@ -151,26 +136,20 @@ class _SignupScreenState extends CloudState<SignupScreen> {
         child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
           listener: (context, state) {
             if (state is AuthenticationSuccess) {
-              if (state.type == AuthenticationType.email) {
-                FirebaseAuth.instance.currentUser?.sendEmailVerification();
-
-                // Navigator.pushReplacementNamed(context, Routes.);
-                Navigator.push<dynamic>(context, BlurredRouter(
-                  builder: (context) {
-                    return EmailVerificationScreen(
-                      username: _usernameController.text,
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-                  },
-                ));
-              }
+              if (state.type == AuthenticationType.email) _navigateTo();
             }
 
             if (state is AuthenticationFail) {
               if (state.error is FirebaseAuthException) {
                 HelperUtils.showSnackBarMessage(
-                    context, (state.error as FirebaseAuthException).message!);
+                  context,
+                  (state.error as FirebaseAuthException).message!,
+                );
+              } else if (state.error is DioException) {
+                HelperUtils.showSnackBarMessage(
+                  context,
+                  (state.error as DioException).message!,
+                );
               }
             }
           },
