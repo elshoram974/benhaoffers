@@ -13,7 +13,7 @@ import FirebaseMessaging
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GMSServices.provideAPIKey("AIzaSyDQgdcDWlNJ6o8BU3972EF8P3SKLltqFj8")
+    GMSServices.provideAPIKey("AIzaSyCPgq1i9E46vUK1dpOA46UjiJyOpJSXmzw")
 
     GeneratedPluginRegistrant.register(with: self)
       

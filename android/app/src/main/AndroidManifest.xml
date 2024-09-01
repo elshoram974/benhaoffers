@@ -41,7 +41,7 @@
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDQgdcDWlNJ6o8BU3972EF8P3SKLltqFj8"/>
+            android:value="AIzaSyCPgq1i9E46vUK1dpOA46UjiJyOpJSXmzw"/>
      
 
 
