@@ -2,19 +2,16 @@
 import 'package:eClassify/Utils/Extensions/lib/adaptive_type.dart';
 
 enum UserType {
-  user("user"),
-  vendor("vendor");
+  customer,
+  provider;
 
-  final String typeString;
 
-  const UserType(this.typeString);
-
-  factory UserType.fromString(String typeString) {
+  factory UserType.fromString(String? typeString) {
     switch (typeString) {
-      case "vendor":
-        return UserType.vendor;
+      case "provider":
+        return UserType.provider;
       default:
-        return UserType.user;
+        return UserType.customer;
     }
   }
 }
@@ -91,7 +88,7 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['user_type'] = userType?.typeString;
+    data['user_type'] = userType?.name;
     data['category_id'] = categoryId;
     data['project_name'] = projectName;
     data['address'] = address;
@@ -115,6 +112,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(address: $address, createdAt: $createdAt, customertotalpost: $customertotalpost, email: $email, fcmId: $fcmId, firebaseId: $firebaseId, id: $id, isActive: $isActive, isProfileCompleted: $isProfileCompleted, type: $type, mobile: $mobile, name: $name, profile: $profile, token: $token, updatedAt: $updatedAt,notification:$notification, userType: ${userType?.typeString}, projectName: $projectName, categoryId: $categoryId)';
+    return 'UserModel(address: $address, createdAt: $createdAt, customertotalpost: $customertotalpost, email: $email, fcmId: $fcmId, firebaseId: $firebaseId, id: $id, isActive: $isActive, isProfileCompleted: $isProfileCompleted, type: $type, mobile: $mobile, name: $name, profile: $profile, token: $token, updatedAt: $updatedAt,notification:$notification, userType: ${userType?.name}, projectName: $projectName, categoryId: $categoryId)';
   }
 }

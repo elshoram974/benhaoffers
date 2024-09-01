@@ -86,7 +86,7 @@ class ChooseAccountTypeScreen extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             Routes.signup,
-                            arguments: {'user_type': UserType.user.typeString},
+                            arguments: {'user_type': UserType.customer.name},
                           );
                         },
                       ),
@@ -100,7 +100,7 @@ class ChooseAccountTypeScreen extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             Routes.signup,
-                            arguments: {'user_type': UserType.vendor.typeString},
+                            arguments: {'user_type': UserType.provider.name},
                           );
                         },
                       ),

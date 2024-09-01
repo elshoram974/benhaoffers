@@ -184,20 +184,24 @@ class LoginScreenState extends State<LoginScreen> {
 
   void _onTapContinue() {
     if (isMobileNumberField) {
+      final String number =
+          emailMobileTextController.text.replaceAll(RegExp(r'^0+'), '');
+      emailMobileTextController.text = "+$countryCode$number";
       // isOtpSent = true;
-      phoneLoginPayload =
-          PhoneLoginPayload(emailMobileTextController.text, countryCode!);
+      // phoneLoginPayload =
+      //     PhoneLoginPayload(emailMobileTextController.text, countryCode!);
 
-      context
-          .read<AuthenticationCubit>()
-          .setData(payload: phoneLoginPayload, type: AuthenticationType.phone);
-      context.read<AuthenticationCubit>().verify();
+      // context
+      //     .read<AuthenticationCubit>()
+      //     .setData(payload: phoneLoginPayload, type: AuthenticationType.phone);
+      // context.read<AuthenticationCubit>().verify();
 
-      setState(() {});
-    } else {
-      sendMailClicked = true;
-      setState(() {});
+      // setState(() {});
     }
+    // else {
+    sendMailClicked = true;
+    setState(() {});
+    // }
   }
 
   Future<void> sendVerificationCode() async {
@@ -377,13 +381,16 @@ class LoginScreenState extends State<LoginScreen> {
                     builder: (context, state) {
                       return Builder(builder: (context) {
                         return Form(
-                          key: _formKey,
-                          child: isOtpSent
-                              ? verifyOTPWidget()
-                              : sendMailClicked
-                                  ? enterPasswordWidget()
-                                  : buildLoginWidget(),
-                        );
+                            key: _formKey,
+                            child: sendMailClicked
+                                ? enterPasswordWidget()
+                                : buildLoginWidget()
+                            // isOtpSent
+                            //     ? verifyOTPWidget()
+                            //     : sendMailClicked
+                            //         ? enterPasswordWidget()
+                            //         : buildLoginWidget(),
+                            );
                       });
                     },
                   ),
@@ -435,7 +442,7 @@ class LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(
-                height: 66,
+                height: 66
               ),
               Text("welcomeback".translate(context))
                   .size(context.font.extraLarge)
@@ -490,18 +497,14 @@ class LoginScreenState extends State<LoginScreen> {
                     : null,
                 hintText: "emailOrPhone".translate(context),
               ),
-              const SizedBox(
-                height: 46,
-              ),
+              const SizedBox(height: 46),
               UiUtils.buildButton(context,
                   onPressed: sendVerificationCode,
                   buttonTitle: "continue".translate(context),
                   radius: 10,
                   disabled: numberOrEmail.isEmpty,
                   disabledColor: const Color.fromARGB(255, 104, 102, 106)),
-              const SizedBox(
-                height: 68,
-              ),
+              const SizedBox(height: 68),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -513,7 +516,8 @@ class LoginScreenState extends State<LoginScreen> {
                       const SizedBox(width: 12),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, Routes.chooseAccountType);
+                          Navigator.pushNamed(
+                              context, Routes.chooseAccountType);
                         },
                         child: Text("signUp".translate(context))
                             .underline()

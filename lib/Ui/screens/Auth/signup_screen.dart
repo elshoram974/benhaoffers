@@ -57,7 +57,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
 
   @override
   void initState() {
-    if (UserType.vendor == widget.userType) getAllCategories();
+    if (UserType.provider == widget.userType) getAllCategories();
     super.initState();
   }
 
@@ -72,42 +72,54 @@ class _SignupScreenState extends CloudState<SignupScreen> {
   }
 
   void getAllCategories() async {
-    await CategoryRepository().fetchAllCategories().then((value) {
+    await CategoryRepository()
+        .fetchCategories(page: 0, limit: 500)
+        .then((value) {
       setState(() {
         categories = value.modelList;
+        print("+++ ${categories.length} categories");
       });
     });
   }
 
   void onTapSignup() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final Map<String, String> map = {};
-      map['email'] = _emailController.text;
-      map['password'] = _passwordController.text;
-      map['username'] = _usernameController.text;
-      map['user_type'] = UserType.user.typeString;
+      // print(widget.userType.name);
+      // Map<String, String> parameters = {};
+      // parameters = {
+      //   Api.firebaseId: _emailController.text,
+      //   Api.type: AuthenticationType.email.name,
+      //   Api.email: _emailController.text,
+      //   Api.name: _usernameController.text,
+      //   'password': _passwordController.text,
+      //   Api.userType: '0',
+      // };
 
-      if (UserType.vendor == widget.userType) {
-        map['project_name'] = _projectNameController.text;
-        map['category_id'] = _categoryController.text;
-        map['user_type'] = UserType.vendor.typeString;
-      }
+      // final Map<String, String> map = {};
+      // map[Api.email] = _emailController.text;
+      // map['password'] = _passwordController.text;
+      // map[Api.name] = _usernameController.text;
+      // map[Api.userType] = widget.userType.name;
 
-      Map? result = await context.read<AuthenticationCubit>().signUp(map);
-      if (result != null) _navigateTo();
-
-      // if (UserType.vendor == widget.userType) {
-      //   context.read<AuthenticationCubit>().signUp();
-      // } else {
-      //   addCloudData("signup_details", {"username": _usernameController.text});
-      //   context.read<AuthenticationCubit>().setData(
-      //       payload: EmailLoginPayload(
-      //           email: _emailController.text,
-      //           password: _passwordController.text,
-      //           type: EmailLoginType.signup),
-      //       type: AuthenticationType.email);
-      //   context.read<AuthenticationCubit>().authenticate();
+      // if (UserType.provider == widget.userType) {
+      //   map['project_name'] = _projectNameController.text;
+      //   map['category_id'] = _categoryController.text;
+      //   parameters['project_name'] = _projectNameController.text;
+      //   parameters['category_id'] = _categoryController.text;
       // }
+
+      addCloudData("signup_details", {"username": _usernameController.text});
+      context.read<AuthenticationCubit>().setData(
+          payload: EmailLoginPayload(
+              email: _emailController.text,
+              password: _passwordController.text,
+              type: EmailLoginType.signup),
+          type: AuthenticationType.email);
+      context.read<AuthenticationCubit>().authenticate();
+
+      // Map? result =
+      //     await context.read<AuthenticationCubit>().signUp(parameters);
+      // if (result != null) _navigateTo();
     }
   }
 
@@ -116,7 +128,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
       context,
       "accountCreatedSuccessfully".translate(context),
     );
-    if (UserType.vendor == widget.userType) {
+    if (UserType.provider == widget.userType) {
       Navigator.pushReplacementNamed(context, Routes.authWaiting);
     } else {
       Navigator.pushNamedAndRemoveUntil(
@@ -215,7 +227,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                         borderColor: context.color.borderColor.darken(10),
                       ),
                       const SizedBox(height: 14),
-                      if (UserType.vendor == widget.userType) ...[
+                      if (UserType.provider == widget.userType) ...[
                         CustomTextFormField(
                           controller: _projectNameController,
                           fillColor: context.color.secondaryColor,
@@ -328,9 +340,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                           )
                         ],
                       ),
-                      const SizedBox(
-                        height: 24,
-                      ),
+                      const SizedBox(height: 24),
                       Center(
                         child: Text("orSignInWith".translate(context))
                             .color(context.color.textDefaultColor)
@@ -366,9 +376,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                           radius: 8,
                           height: 46,
                           buttonTitle: "continueWithGoogle".translate(context)),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       if (Platform.isIOS)
                         UiUtils.buildButton(context,
                             prefixWidget: Padding(

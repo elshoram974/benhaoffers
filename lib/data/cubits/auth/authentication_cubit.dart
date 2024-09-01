@@ -59,15 +59,18 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<Map?> signUp(Map<String,String> parameters) async {
     try {
-      emit(AuthenticationInProcess(type!));
+      emit(AuthenticationInProcess(AuthenticationType.email));
       Map<String, dynamic> response = await Api.post(
-        url: Api.signUpApi,
+        url: Api.loginApi,
         parameter: parameters,
       );
+      print("object $response");
+
 
       return response;
       // var status = await repo.signUp();
     } catch (e) {
+      print("object e $e");
       emit(AuthenticationFail(e));
     }
     return null;

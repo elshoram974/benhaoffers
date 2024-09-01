@@ -57,7 +57,6 @@ class Api {
 
   //api fun
   static String loginApi = "user-signup";
-  static String signUpApi = "signUp";
   static String updateProfileApi = "update-profile";
   static String getSliderApi = "get-slider";
   static String getCategoriesApi = "get-categories";
@@ -125,6 +124,7 @@ class Api {
   static String clientAddress = "client_address";
   static String email = "email";
   static String name = "name";
+  static String userType = "user_type";
   static String amount = "amount";
   static String error = "error";
   static String message = "message";
@@ -201,6 +201,7 @@ class Api {
   static String postedSince = "posted_since";
   static String item = "item";
   static String page = "page";
+  static String limit = "limit";
   static String topRated = "top_rated";
   static String promoted = "promoted";
   static String packageId = "package_id";
