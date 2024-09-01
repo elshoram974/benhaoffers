@@ -17,7 +17,7 @@ class LoginInProgress extends LoginState {}
 
 class LoginSuccess extends LoginState {
   final bool isProfileCompleted;
-  final UserCredential credential;
+  final UserCredential? credential;
   final Map<String, dynamic> apiResponse;
 
   LoginSuccess({
@@ -69,8 +69,8 @@ class LoginCubit extends Cubit<LoginState> {
         email: credential.user!.providerData[0].email,
         name: type == AuthenticationType.apple.name
             ? updatedUser?.displayName ??
-            credential.user!.displayName ??
-            credential.user!.providerData[0].displayName
+                credential.user!.displayName ??
+                credential.user!.providerData[0].displayName
             : credential.user!.providerData[0].displayName,
         profile: credential.user!.providerData[0].photoURL,
         countryCode: countryCode,
@@ -105,6 +105,61 @@ class LoginCubit extends Cubit<LoginState> {
       }
     } catch (e) {
       if (e is ApiException) {}
+
+      emit(LoginFailure(e));
+    }
+  }
+
+  void loginEmailPhone({
+    required String email,
+    required String password,
+    required AuthenticationType type,
+    String? countryCode,
+  }) async {
+    try {
+      emit(LoginInProgress());
+
+      String? token = await FirebaseMessaging.instance.getToken();
+
+      Map<String, dynamic> result = await _authRepository.loginEmailPhone(
+        type: type,
+        fcmId: token!,
+        email: email,
+        password: password,
+        countryCode: countryCode,
+      );
+
+      // Storing data to local database {HIVE}
+      HiveUtils.setJWT(result['token']);
+
+      if ((result['data']['name'] == "" || result['data']['name'] == null) ||
+          (result['data']['email'] == "" || result['data']['email'] == null) ||
+          (result['data']['mobile'] == "" ||
+              result['data']['mobile'] == null)) {
+        HiveUtils.setProfileNotCompleted();
+
+        var data = result['data'];
+        // data['countryCode'] = countryCode;
+        HiveUtils.setUserData(data);
+        emit(LoginSuccess(
+          apiResponse: Map<String, dynamic>.from(result['data']),
+          isProfileCompleted: false,
+          credential: null,
+        ));
+      } else {
+        var data = result['data'];
+        // data['countryCode'] = countryCode;
+        HiveUtils.setUserData(data);
+        emit(LoginSuccess(
+          apiResponse: Map<String, dynamic>.from(result['data']),
+          isProfileCompleted: true,
+          credential: null,
+        ));
+      }
+    } catch (e) {
+      if (e is ApiException) {
+        print("object $e");
+      }
 
       emit(LoginFailure(e));
     }

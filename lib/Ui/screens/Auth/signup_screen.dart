@@ -85,13 +85,13 @@ class _SignupScreenState extends CloudState<SignupScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       final Map<String, String> map = {};
       map[Api.type] = AuthenticationType.email.name;
-      map[Api.email] = _emailController.text;
+      map[Api.email] = _emailController.text.trim();
       map[Api.password] = _passwordController.text;
-      map[Api.name] = _usernameController.text;
+      map[Api.name] = _usernameController.text.trim();
       map[Api.userType] = widget.userType.name;
 
       if (UserType.provider == widget.userType) {
-        map[Api.projectName] = _projectNameController.text;
+        map[Api.projectName] = _projectNameController.text.trim();
         map[Api.categoryId] = _categoryController.text;
       }
 

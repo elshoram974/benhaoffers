@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../utils/api.dart';
 import '../../utils/constant.dart';
+import '../cubits/auth/authentication_cubit.dart';
 
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -30,6 +31,33 @@ class AuthRepository {
     Map<String, dynamic> response = await Api.post(
       url: Api.loginApi,
       parameter: parameters, /* useAuthToken: false*/
+    );
+
+    return {"token": response['token'], "data": response['data']};
+  }
+
+  Future<Map<String, dynamic>> loginEmailPhone({
+    required String email,
+    required String password,
+    required AuthenticationType type,
+    String? fcmId,
+    String? countryCode,
+  }) async {
+    Map<String, String> parameters = {
+      Api.type: type.name,
+      Api.password: password,
+      if (fcmId != null) Api.fcmId: fcmId,
+      if (countryCode != null) Api.countryCode: countryCode,
+    };
+    if (AuthenticationType.phone == type) {
+      parameters[Api.mobile] = email;
+    } else {
+      parameters[Api.email] = email;
+    }
+
+    Map<String, dynamic> response = await Api.post(
+      url: Api.loginApi,
+      parameter: parameters,
     );
 
     return {"token": response['token'], "data": response['data']};

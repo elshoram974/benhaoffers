@@ -37,11 +37,11 @@ class EmailLogin extends LoginSystem {
           );
           emit(MSuccess());
         } else {
-          userCredential =
-              await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: payloadData.email,
-            password: payloadData.password,
-          );
+          // userCredential =
+          //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+          //   email: payloadData.email,
+          //   password: payloadData.password,
+          // );
         }
       } catch (e) {
         emit(MFail(e));

@@ -30,7 +30,7 @@ class AuthenticationInProcess extends AuthenticationState {
 
 class AuthenticationSuccess extends AuthenticationState {
   final AuthenticationType type;
-  final UserCredential credential;
+  final UserCredential? credential;
 
   AuthenticationSuccess(this.type, this.credential);
 }
@@ -81,11 +81,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
       if (payloadData is EmailLoginPayload &&
           payloadData.type == EmailLoginType.login) {
-        if (credential != null) {
+        if (credential != null || type == AuthenticationType.email || type == AuthenticationType.phone) {
           emit(AuthenticationSuccess(type!, credential));
         }
       } else {
-        // ToDo: make the request of sign up here
         emit(AuthenticationSuccess(type!, credential!));
       }
       /*if (credential != null) {

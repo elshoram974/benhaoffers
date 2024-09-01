@@ -319,7 +319,7 @@ class LoginScreenState extends State<LoginScreen> {
                                 ? AuthenticationType.phone
                                 : AuthenticationType.email,
                             "extraData": {
-                              "email": state.credential.user?.email ??
+                              "email": state.credential?.user?.email ??
                                   state.apiResponse['email'],
                               "username": state.apiResponse['name'],
                               "mobile": state.apiResponse['mobile'],
@@ -340,32 +340,35 @@ class LoginScreenState extends State<LoginScreen> {
                       if (state is AuthenticationSuccess) {
                         Widgets.hideLoder(context);
 
-                        if (state.type == AuthenticationType.email) {
+                        if (state.type == AuthenticationType.email ||
+                            state.type == AuthenticationType.phone) {
                           //FirebaseAuth.instance.currentUser?.sendEmailVerification();
-                          if (state.credential.user!.emailVerified) {
-                            context.read<LoginCubit>().login(
-                                phoneNumber: state.credential.user!.phoneNumber,
-                                firebaseUserId: state.credential.user!.uid,
-                                type: state.type.name,
-                                credential: state.credential,
-                                countryCode: null);
-                          } else {
-                            // HelperUtils.showSnackBarMessage(context,"Please Verify Your email first" );
-                          }
-                        } else if (state.type == AuthenticationType.phone) {
-                          context.read<LoginCubit>().login(
-                              phoneNumber:
-                                  emailMobileTextController.text.trim(),
-                              firebaseUserId: state.credential.user!.uid,
-                              type: state.type.name,
-                              credential: state.credential,
-                              countryCode: "+${countryCode}");
+                          // if (state.credential.user!.emailVerified) {
+                          context.read<LoginCubit>().loginEmailPhone(
+                                email: emailMobileTextController.text.trim(),
+                                password: _passwordController.text,
+                                type: countryCode == null
+                                    ? state.type
+                                    : AuthenticationType.phone,
+                                countryCode: "+$countryCode",
+                              );
+                          // } else {
+                          //   // HelperUtils.showSnackBarMessage(context,"Please Verify Your email first" );
+                          // }
+                          // } else if (state.type == AuthenticationType.phone) {
+                          //   context.read<LoginCubit>().login(
+                          //       phoneNumber:
+                          //           emailMobileTextController.text.trim(),
+                          //       firebaseUserId: state.credential.user!.uid,
+                          //       type: state.type.name,
+                          //       credential: state.credential,
+                          //       countryCode: "+${countryCode}");
                         } else {
                           context.read<LoginCubit>().login(
-                              phoneNumber: state.credential.user!.phoneNumber,
-                              firebaseUserId: state.credential.user!.uid,
+                              phoneNumber: state.credential!.user!.phoneNumber,
+                              firebaseUserId: state.credential!.user!.uid,
                               type: state.type.name,
-                              credential: state.credential,
+                              credential: state.credential!,
                               countryCode: null);
                         }
                       }
@@ -441,9 +444,7 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 66
-              ),
+              const SizedBox(height: 66),
               Text("welcomeback".translate(context))
                   .size(context.font.extraLarge)
                   .color(context.color.textDefaultColor),
