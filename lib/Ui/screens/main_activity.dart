@@ -574,6 +574,7 @@ class MainActivityState extends State<MainActivity>
 
   Widget bottomBar() {
     bool visible = false;
+    final UserType? userType = HiveUtils.getUserDetails().userType;
 
     return BlocBuilder<FetchAdsListingSubscriptionPackagesCubit,
         FetchAdsListingSubscriptionPackagesState>(
@@ -582,7 +583,7 @@ class MainActivityState extends State<MainActivity>
         if (state is FetchAdsListingSubscriptionPackagesSuccess) {
           for (var e in state.subscriptionPackages) {
             if (e.isActive == true) {
-              if (HiveUtils.getUserDetails().userType == UserType.provider) {
+              if (userType == UserType.provider) {
                 visible = true;
               }
               break;
@@ -639,11 +640,12 @@ class MainActivityState extends State<MainActivity>
                               child: SizedBox(width: buttonWidth),
                             ),
                           ),
-                          buildBottomNavigationbarItem(
-                              2,
-                              AppIcons.myAdsNav,
-                              AppIcons.myAdsNavActive,
-                              "myAdsTab".translate(context)),
+                          if (userType == UserType.provider)
+                            buildBottomNavigationbarItem(
+                                2,
+                                AppIcons.myAdsNav,
+                                AppIcons.myAdsNavActive,
+                                "myAdsTab".translate(context)),
                           buildBottomNavigationbarItem(
                               3,
                               AppIcons.profileNav,
