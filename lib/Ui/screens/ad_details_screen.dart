@@ -53,6 +53,7 @@ import 'Item/add_item_screen/CustomFiledStructure/fields/custom_website_field.da
 import 'Item/add_item_screen/CustomFiledStructure/fields/custom_whatsapp_field.dart';
 import 'Widgets/Errors/no_internet.dart';
 import 'Widgets/Errors/something_went_wrong.dart';
+import 'Widgets/seller_name_container.dart';
 import 'Widgets/shimmerLoadingContainer.dart';
 import 'Widgets/video_view_screen.dart';
 import 'google_map_screen.dart';
@@ -454,10 +455,17 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   if (isAddedByMe) setLikesAndViewsCount(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(model.name!)
-                        .size(context.font.large)
-                        .setMaxLines(lines: 2)
-                        .color(context.color.textDefaultColor),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(model.name!)
+                              .size(context.font.large)
+                              .setMaxLines(lines: 2)
+                              .color(context.color.textDefaultColor),
+                        ),
+                        if (!isAddedByMe) SellerNameContainer(itemModel: model),
+                      ],
+                    ),
                   ),
                   setPriceAndStatus(),
                   if (isAddedByMe) setRejectedReason(),
