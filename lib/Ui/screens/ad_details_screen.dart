@@ -470,6 +470,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   setPriceAndStatus(),
                   if (isAddedByMe) setRejectedReason(),
                   if (model.address != null) setAddress(isDate: true),
+                  viewRemainingDays(),
 
                   if (Constant.isGoogleBannerAdsEnabled == "1") ...[
                     Divider(
@@ -540,6 +541,52 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             ),
           ),
         ));
+  }
+
+  Widget viewRemainingDays() {
+    return Padding(
+      padding: const EdgeInsets.all(1.5),
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.visibility_outlined,
+                  size: 18,
+                  color: context.color.territoryColor.withOpacity(0.4),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text("${model.views} ${"view".translate(context)}")
+                      .color(context.color.textDefaultColor.withOpacity(0.5))
+                      .setMaxLines(lines: 2),
+                )
+              ],
+            ),
+          ),
+          if (model.endDate != null)
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today_outlined,
+                    size: 18,
+                    color: context.color.territoryColor.withOpacity(0.4),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                            "${"daysRemining".translate(context)} ${widget.model.endDate?.difference(DateTime.now()).inDays.abs()} ${"days".translate(context)}")
+                        .color(context.color.textDefaultColor.withOpacity(0.5))
+                        .setMaxLines(lines: 2),
+                  )
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   Widget reportedAdsWidget() {
