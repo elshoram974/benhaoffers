@@ -508,7 +508,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   Divider(
                       thickness: 1,
                       color: context.color.textDefaultColor.withOpacity(0.1)),
-                  if (!isAddedByMe && model.user != null) setSellerDetails(),
+                  // if (!isAddedByMe && model.user != null) setSellerDetails(),
                   //Dynamic Ads here
                   setLocation(),
                   if (Constant.isGoogleBannerAdsEnabled == "1") ...[
@@ -1378,19 +1378,16 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
               children: [
                 if (chatedUser == null /*!model.isAlreadyOffered!*/)
                   Expanded(
-                    child: _buildButton("makeAnOffer".translate(context), () {
-                      /* if (Constant.isDemoModeOn) {
-                        HelperUtils.showSnackBarMessage(context,
-                            "thisActionNotValidDemo".translate(context));
-                        return;
-                      }*/
-                      UiUtils.checkUser(
-                          onNotGuest: () {
-                            safetyTipsBottomSheet();
-                            //makeOfferBottomSheet(model);
-                          },
-                          context: context);
-                    }, null, null),
+                    child: _buildButtonNavBat(
+                      "chat".translate(context),
+                      AppIcons.circleMessageIcon,
+                      () {
+                        UiUtils.checkUser(
+                          onNotGuest: safetyTipsBottomSheet,
+                          context: context,
+                        );
+                      },
+                    ),
                   ),
                 /*if (chatedUser == null */ /*model.isAlreadyOffered!*/ /*)
                   SizedBox(width: 10.rw(context)),*/
@@ -1450,6 +1447,22 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                         },
                       ));
                     }, null, null),
+                  ),
+                if (widget.model.contact != null)
+                  Expanded(
+                    child: _buildButtonNavBat(
+                      "callBtnLbl".translate(context),
+                      AppIcons.call,
+                      () {
+                        HelperUtils.launchPathURL(
+                          isTelephone: true,
+                          isSMS: false,
+                          isMail: false,
+                          value: widget.model.contact!,
+                          context: context,
+                        );
+                      },
+                    ),
                   ),
               ],
             ),
@@ -1568,6 +1581,35 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   )
                   .size(context.font.large)),
         ],
+      ),
+    );
+  }
+
+  Widget _buildButtonNavBat(
+    String title,
+    String svgIconPath,
+    VoidCallback onPressed,
+  ) {
+    const Color buttonColor = Color(0xffFAE0DF);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: UiUtils.buildButton(
+        context,
+        onPressed: onPressed,
+        radius: 5,
+        height: 46,
+        buttonColor: buttonColor,
+        textColor: Colors.black,
+        prefixWidget: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: UiUtils.getSvg(
+            svgIconPath,
+            color: context.color.territoryColor,
+            width: 22,
+            height: 22,
+          ),
+        ),
+        buttonTitle: title,
       ),
     );
   }
