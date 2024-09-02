@@ -25,6 +25,7 @@ import '../../data/cubits/subscription/fetch_user_package_limit_cubit.dart';
 
 import '../../data/model/item/item_model.dart';
 import '../../data/model/system_settings_model.dart';
+import '../../data/model/user_model.dart';
 import '../../utils/Extensions/extensions.dart';
 
 import '../../utils/errorFilter.dart';
@@ -581,7 +582,9 @@ class MainActivityState extends State<MainActivity>
         if (state is FetchAdsListingSubscriptionPackagesSuccess) {
           for (var e in state.subscriptionPackages) {
             if (e.isActive == true) {
-              visible = true;
+              if (HiveUtils.getUserDetails().userType == UserType.provider) {
+                visible = true;
+              }
               break;
             }
           }
