@@ -34,7 +34,7 @@ class SellerNameContainer extends StatelessWidget {
           color: context.color.territoryColor,
           borderRadius: BorderRadius.circular(500),
         ),
-        child: Text("${itemModel.user?.name}")
+        child: Text("${itemModel.user?.projectName ?? itemModel.user?.name}")
             .bold()
             .color(Colors.white)
             .size(context.font.small),

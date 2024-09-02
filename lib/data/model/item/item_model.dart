@@ -332,6 +332,7 @@ class ItemModel {
 class User {
   int? id;
   String? name;
+  String? projectName;
   String? mobile;
   String? email;
   String? type;
@@ -347,6 +348,7 @@ class User {
   User(
       {this.id,
       this.name,
+      this.projectName,
       this.mobile,
       this.email,
       this.type,
@@ -362,6 +364,7 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    projectName = json['project_name'];
     mobile = json['mobile'];
     email = json['email'];
     type = json['type'];
@@ -379,6 +382,7 @@ class User {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['project_name'] = projectName;
     data['mobile'] = mobile;
     data['email'] = email;
     data['type'] = type;
