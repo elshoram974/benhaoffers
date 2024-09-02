@@ -5,8 +5,10 @@ import 'package:eClassify/Utils/hive_utils.dart';
 import 'package:eClassify/data/Repositories/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../helper/widgets.dart';
 import 'authentication_cubit.dart';
 
 abstract class LoginState {}
@@ -110,7 +112,9 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  void loginEmailPhone({
+  void loginEmailPhone(
+    BuildContext context,
+    {
     required String email,
     required String password,
     required AuthenticationType type,
@@ -118,6 +122,7 @@ class LoginCubit extends Cubit<LoginState> {
   }) async {
     try {
       emit(LoginInProgress());
+      Widgets.showLoader(context);
 
       String? token = await FirebaseMessaging.instance.getToken();
 
@@ -128,7 +133,7 @@ class LoginCubit extends Cubit<LoginState> {
         password: password,
         countryCode: countryCode,
       );
-
+      if(context.mounted) Widgets.hideLoder(context);
       if(result == null) return;
 
       // Storing data to local database {HIVE}

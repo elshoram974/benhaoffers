@@ -344,12 +344,17 @@ class LoginScreenState extends State<LoginScreen> {
                             state.type == AuthenticationType.phone) {
                           //FirebaseAuth.instance.currentUser?.sendEmailVerification();
                           // if (state.credential.user!.emailVerified) {
-                          context.read<LoginCubit>().loginEmailPhone(
-                                email: emailMobileTextController.text.trim(),
-                                password: _passwordController.text,
-                                type: state.type,
-                                countryCode: "+$countryCode",
-                              );
+                          if (emailMobileTextController.text
+                              .trim()
+                              .isNotEmpty) {
+                            context.read<LoginCubit>().loginEmailPhone(
+                                  context,
+                                  email: emailMobileTextController.text.trim(),
+                                  password: _passwordController.text,
+                                  type: state.type,
+                                  countryCode: "+$countryCode",
+                                );
+                          }
                           // } else {
                           //   // HelperUtils.showSnackBarMessage(context,"Please Verify Your email first" );
                           // }
