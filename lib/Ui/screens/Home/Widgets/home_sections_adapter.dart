@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../../../data/model/Home/home_screen_section.dart';
 
 import '../../Widgets/promoted_widget.dart';
+import '../../Widgets/seller_name_container.dart';
 import '../../widgets/shimmerLoadingContainer.dart';
 import 'grid_list_adapter.dart';
 
@@ -280,18 +281,8 @@ class _ItemCardState extends State<ItemCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: context.color.territoryColor,
-                            borderRadius: BorderRadius.circular(500),
-                          ),
-                          child: Text("${widget.item?.user?.name}")
-                              .bold()
-                              .color(Colors.white)
-                              .size(context.font.small),
-                        ),
+                        if (widget.item != null)
+                          SellerNameContainer(itemModel: widget.item!),
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(widget.item!.name!)
