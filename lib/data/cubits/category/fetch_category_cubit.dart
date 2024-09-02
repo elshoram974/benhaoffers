@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:eClassify/Utils/helper_utils.dart';
+import 'package:eClassify/Utils/hive_utils.dart';
 import 'package:eClassify/data/Repositories/category_repository.dart';
 import 'package:eClassify/data/model/category_model.dart';
 import 'package:eClassify/data/model/data_output.dart';
@@ -99,7 +100,10 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
       page = 1;
 
       DataOutput<CategoryModel> categories =
-          await _categoryRepository.fetchCategories(page: 1);
+          await _categoryRepository.fetchCategories(
+        page: 1,
+        categoryId: HiveUtils.getUserDetails().categoryId,
+      );
 
       emit(FetchCategorySuccess(
           total: categories.total,
@@ -124,8 +128,7 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
 
   Future<void> fetchCategoriesMore() async {
     try {
-      print(
-          "response :  : map length is $page");
+      print("response :  : map length is $page");
       if (state is FetchCategorySuccess) {
         if ((state as FetchCategorySuccess).isLoadingMore) {
           return;
@@ -135,6 +138,7 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
         DataOutput<CategoryModel> result =
             await _categoryRepository.fetchCategories(
           page: page,
+          categoryId: HiveUtils.getUserDetails().categoryId,
         );
 
         FetchCategorySuccess categoryState = (state as FetchCategorySuccess);

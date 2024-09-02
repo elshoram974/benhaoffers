@@ -12,11 +12,9 @@ class CategoryRepository {
       Map<String, dynamic> parameters = {
         Api.page: page,
         if (limit != null) Api.limit: limit,
+        if (categoryId != null) Api.categoryId: categoryId,
       };
 
-      if (categoryId != null) {
-        parameters[Api.categoryId] = categoryId;
-      }
       Map<String, dynamic> response =
           await Api.get(url: Api.getCategoriesApi, queryParameters: parameters);
 

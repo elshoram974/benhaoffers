@@ -34,7 +34,7 @@ class UserModel {
   String? profile;
   String? token;
   String? updatedAt;
-  String? categoryId;
+  int? categoryId;
   String? projectName;
   UserType? userType;
 
@@ -61,7 +61,7 @@ class UserModel {
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    categoryId = json[' category_id'];
+    categoryId = json['category_id'];
     projectName = json['project_name'];
     userType = UserType.fromString(json['user_type']);
     address = json['address'];
