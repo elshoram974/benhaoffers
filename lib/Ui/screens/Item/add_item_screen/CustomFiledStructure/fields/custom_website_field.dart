@@ -16,14 +16,11 @@ class CustomFieldWebsite extends CustomField {
 
   @override
   void init() {
-    
     if (parameters['isEdit'] == true) {
-      if (parameters['value'] != null) {
-        if ((parameters['value'] as List).isNotEmpty) {
-          initialValue = parameters['value'][0].toString();
-          if(initialValue.isNotEmpty) setData();
-          update(() {});
-        }
+      if ((parameters['value'] as List?)?.isNotEmpty == true) {
+        initialValue = parameters['value'][0].toString();
+        if (initialValue.isNotEmpty) setData();
+        update(() {});
       }
     }
 
@@ -65,11 +62,10 @@ class CustomFieldWebsite extends CustomField {
                 .color(context.color.textColorDark)
           ],
         ),
-        SizedBox(
-          height: 14.rh(context),
-        ),
+        SizedBox(height: 14.rh(context)),
         CustomTextFormField(
           action: TextInputAction.next,
+          initialValue: initialValue,
           hintText: "Ex: https://examble.com",
           maxLine: 1,
           capitalization: TextCapitalization.none,
@@ -77,7 +73,9 @@ class CustomFieldWebsite extends CustomField {
           fillColor: context.color.secondaryColor,
           borderColor: context.color.borderColor.darken(30),
           keyboard: TextInputType.url,
-          validator: parameters['required'] == 1 || initialValue.isNotEmpty? CustomTextFieldValidator.url : null,
+          validator: parameters['required'] == 1 || initialValue.isNotEmpty
+              ? CustomTextFieldValidator.url
+              : null,
           onChange: (val) {
             initialValue = val;
             setData();

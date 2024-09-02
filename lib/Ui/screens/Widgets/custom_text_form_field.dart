@@ -19,6 +19,7 @@ enum CustomTextFieldValidator {
 
 class CustomTextFormField extends StatefulWidget {
   final String? hintText;
+  final String? initialValue;
   final TextEditingController? controller;
   final int? minLine;
   final int? maxLine;
@@ -46,6 +47,7 @@ class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
     super.key,
     this.hintText,
+    this.initialValue,
     this.controller,
     this.minLine,
     this.maxLine,
@@ -102,7 +104,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return CustomValidator<String?>(
-        initialValue: widget.controller?.text,
+        initialValue: widget.controller?.text ?? widget.initialValue,
         validator: iconWithBorder ? validatorFn : (_) => null,
         builder: (state) {
           final Color borderColor;
@@ -157,6 +159,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                             : null,
                         child: TextFormField(
                           focusNode: focusNode,
+                          initialValue: widget.initialValue,
                           onEditingComplete: widget.onEditingComplete,
                           controller: widget.controller,
                           inputFormatters: widget.formaters,
@@ -325,7 +328,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       return Validator.validatePhoneNumber(value: value, context: context);
     }
     if (widget.validator == CustomTextFieldValidator.url) {
-      return Validator.urlValidation(value: value, context: context);
+      return Validator.urlValidation(value: value ?? '', context: context);
     }
     if (widget.validator == CustomTextFieldValidator.password) {
       return Validator.validatePassword(value, context: context);

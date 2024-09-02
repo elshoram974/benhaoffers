@@ -15,24 +15,30 @@ import '../custom_field.dart';
 class CustomFieldWhatsapp extends CustomField {
   @override
   String type = "whatsappfield";
-  // String initialValue = "";
   String? phone, countryCode;
+  final TextEditingController controller = TextEditingController();
 
   @override
   void init() {
-    //
-    // if (parameters['isEdit'] == true) {
-    //   if (parameters['value'] != null) {
-    //     if ((parameters['value'] as List).isNotEmpty) {
-    //       initialValue = parameters['value'][0].toString();
-    //       update(() {});
-    //     }
-    //   }
-    // }
+    print("parameters $parameters");
+
+    if (parameters['isEdit'] == true) {
+      if ((parameters['value'] as List?)?.isNotEmpty == true) {
+        phone = parameters['value'][0].toString();
+      }
+    }
 
     getSimCountry().then((value) {
       print("value country***$value");
       countryCode = value.phoneCode;
+      phone = phone?.substring(
+          "https://api.whatsapp.com/send/?phone=$countryCode".length);
+      phone = phone?.replaceAll(
+          "&text=Hello%21&type=phone_number&app_absent=0", '');
+      if (phone?.isNotEmpty == true) {
+        controller.text = phone!;
+        setData();
+      }
       update(() {});
     });
     super.init();
@@ -71,11 +77,10 @@ class CustomFieldWhatsapp extends CustomField {
                 .color(context.color.textColorDark)
           ],
         ),
-        SizedBox(
-          height: 14.rh(context),
-        ),
+        SizedBox(height: 14.rh(context)),
         CustomTextFormField(
           action: TextInputAction.next,
+          controller: controller,
           fillColor: context.color.secondaryColor,
           borderColor: context.color.borderColor.darken(30),
           suffixWithBorder: UiUtils.getSvg(AppIcons.whatsappIcon),

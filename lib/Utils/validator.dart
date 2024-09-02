@@ -121,8 +121,8 @@ class Validator {
     return null;
   }
 
-  static String? urlValidation({String? value, required BuildContext context}) {
-    if (value!.isNotEmpty) {
+  static String? urlValidation({required String value, required BuildContext context}) {
+    if (value.isNotEmpty) {
       validUrl(value).then((result) {
         if (result == false) {
           return 'plzValidUrlLbl'.translate(context);
