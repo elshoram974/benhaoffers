@@ -36,7 +36,7 @@ class AuthRepository {
     return {"token": response['token'], "data": response['data']};
   }
 
-  Future<Map<String, dynamic>> loginEmailPhone({
+  Future<Map<String, dynamic>>? loginEmailPhone({
     required String email,
     required String password,
     required AuthenticationType type,

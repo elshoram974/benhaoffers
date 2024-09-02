@@ -347,9 +347,7 @@ class LoginScreenState extends State<LoginScreen> {
                           context.read<LoginCubit>().loginEmailPhone(
                                 email: emailMobileTextController.text.trim(),
                                 password: _passwordController.text,
-                                type: countryCode == null
-                                    ? state.type
-                                    : AuthenticationType.phone,
+                                type: state.type,
                                 countryCode: "+$countryCode",
                               );
                           // } else {
@@ -463,6 +461,10 @@ class LoginScreenState extends State<LoginScreen> {
                 controller: emailMobileTextController,
                 fillColor: context.color.secondaryColor,
                 borderColor: context.color.borderColor.darken(30),
+                formaters: isMobileNumberField
+                    ? [FilteringTextInputFormatter.digitsOnly]
+                    : null,
+                keyboard: TextInputType.emailAddress,
                 onChange: (value) {
                   bool isNumber =
                       value.toString().contains(RegExp(r'^[0-9]+$'));
@@ -630,15 +632,11 @@ class LoginScreenState extends State<LoginScreen> {
                               context, "termsConditions"),
                           'param': Api.termsAndConditions
                         })),*/
-            const SizedBox(
-              width: 5.0,
-            ),
+            const SizedBox(width: 5.0),
             Text("andTxt".translate(context))
                 .size(context.font.small)
                 .color(context.color.textLightColor.withOpacity(0.8)),
-            const SizedBox(
-              width: 5.0,
-            ),
+            const SizedBox(width: 5.0),
             InkWell(
                 child: Text("privacyPolicy".translate(context))
                     .underline()
@@ -798,7 +796,7 @@ class LoginScreenState extends State<LoginScreen> {
                     context, "lblEnterOtp".translate(context));
               } else {*/
 
-              phoneLoginPayload.setOTP(_otpController.text);
+              // phoneLoginPayload.setOTP(_otpController.text);
               context.read<AuthenticationCubit>().authenticate();
               //}
             },
@@ -847,20 +845,14 @@ class LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 66,
-          ),
+          const SizedBox(height: 66),
           Text("signInWithEmail".translate(context))
               .size(context.font.extraLarge),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           Row(
             children: [
               Text(emailMobileTextController.text).size(context.font.large),
-              const SizedBox(
-                width: 5,
-              ),
+              const SizedBox(width: 5),
               InkWell(
                   child: Text("change".translate(context))
                       .underline()
@@ -869,9 +861,7 @@ class LoginScreenState extends State<LoginScreen> {
                   onTap: () => Navigator.pushNamed(context, Routes.login)),
             ],
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           CustomTextFormField(
             hintText: "${"password".translate(context)}*",
             controller: _passwordController,
@@ -898,18 +888,19 @@ class LoginScreenState extends State<LoginScreen> {
                   .size(context.font.normal),
             ),
           ),
-          const SizedBox(
-            height: 19,
-          ),
+          const SizedBox(height: 19),
           UiUtils.buildButton(
             context,
             onPressed: () {
               context.read<AuthenticationCubit>().setData(
-                  payload: EmailLoginPayload(
-                      email: emailMobileTextController.text,
-                      password: _passwordController.text,
-                      type: EmailLoginType.login),
-                  type: AuthenticationType.email);
+                    payload: EmailLoginPayload(
+                        email: emailMobileTextController.text,
+                        password: _passwordController.text,
+                        type: EmailLoginType.login),
+                    type: isMobileNumberField
+                        ? AuthenticationType.phone
+                        : AuthenticationType.email,
+                  );
               context.read<AuthenticationCubit>().authenticate();
             },
             buttonTitle: "signIn".translate(context),

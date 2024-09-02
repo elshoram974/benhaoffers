@@ -121,13 +121,15 @@ class LoginCubit extends Cubit<LoginState> {
 
       String? token = await FirebaseMessaging.instance.getToken();
 
-      Map<String, dynamic> result = await _authRepository.loginEmailPhone(
+      Map<String, dynamic>? result = await _authRepository.loginEmailPhone(
         type: type,
         fcmId: token!,
         email: email,
         password: password,
         countryCode: countryCode,
       );
+
+      if(result == null) return;
 
       // Storing data to local database {HIVE}
       HiveUtils.setJWT(result['token']);
