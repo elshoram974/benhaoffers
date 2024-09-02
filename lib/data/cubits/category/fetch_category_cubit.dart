@@ -92,8 +92,10 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
 
   final CategoryRepository _categoryRepository = CategoryRepository();
 
-  Future<void> fetchCategories(
-      {bool? forceRefresh, bool? loadWithoutDelay}) async {
+  Future<void> fetchCategories({
+    bool? forceRefresh,
+    bool? loadWithoutDelay,
+  }) async {
     try {
       emit(FetchCategoryInProgress());
 
@@ -102,6 +104,7 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
       DataOutput<CategoryModel> categories =
           await _categoryRepository.fetchCategories(
         page: 1,
+        limit: 33,
         categoryId: HiveUtils.getUserDetails().categoryId,
       );
 
@@ -128,7 +131,6 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
 
   Future<void> fetchCategoriesMore() async {
     try {
-      print("response :  : map length is $page");
       if (state is FetchCategorySuccess) {
         if ((state as FetchCategorySuccess).isLoadingMore) {
           return;
@@ -138,6 +140,7 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
         DataOutput<CategoryModel> result =
             await _categoryRepository.fetchCategories(
           page: page,
+          limit: 33,
           categoryId: HiveUtils.getUserDetails().categoryId,
         );
 
