@@ -547,6 +547,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
     return Padding(
       padding: const EdgeInsets.all(1.5),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Row(
@@ -576,8 +577,9 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                   ),
                   const SizedBox(width: 4),
                   Expanded(
-                    child: Text(
-                            "${"daysRemining".translate(context)} ${widget.model.endDate?.difference(DateTime.now()).inDays.abs()} ${"days".translate(context)}")
+                    child: Text(widget.model.isExpired
+                            ? "expired".translate(context)
+                            : "${"daysRemining".translate(context)} ${widget.model.endDate?.difference(DateTime.now()).inDays.abs()} ${"days".translate(context)}")
                         .color(context.color.textDefaultColor.withOpacity(0.5))
                         .setMaxLines(lines: 2),
                   )
@@ -1024,17 +1026,17 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
 
     String val = value[0].toString();
     if (field.type == CustomFieldWebsite().type) {
-      return TextButton(
-        onPressed: () async {
-          if (await canLaunchUrlString(val)) {
-            launchUrlString(val);
-          } else {
-            HelperUtils.showSnackBarMessage(
-                context, "unable_to_open".translate(context));
-          }
-        },
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 40.rw(context)),
+      return Padding(
+        padding: EdgeInsetsDirectional.only(start: 40.rw(context)),
+        child: TextButton(
+          onPressed: () async {
+            if (await canLaunchUrlString(val)) {
+              launchUrlString(val);
+            } else {
+              HelperUtils.showSnackBarMessage(
+                  context, "unable_to_open".translate(context));
+            }
+          },
           child: Text(
             val,
             style: TextStyle(fontSize: context.font.small),
@@ -1239,8 +1241,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
       }*/
       else if (model.status == "sold out" ||
           model.status == "inactive" ||
-          model.status == "rejected" ||
-          model.isExpired) {
+          model.status == "rejected") {
         return BlocProvider(
           create: (context) => DeleteItemCubit(),
           child: Builder(builder: (context) {
@@ -2003,21 +2004,15 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             padding: const EdgeInsets.fromLTRB(18, 4, 18, 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: model.isExpired
-                  ? soldOutButtonColor.withOpacity(0.07)
-                  : _getStatusColor(model.status),
+              color: _getStatusColor(model.status),
             ),
-            child: model.isExpired
-                ? Text("expired".translate(context))
-                    .size(context.font.normal)
-                    .color(soldOutButtonColor)
-                : Text(
-                    model.status == "review"
-                        ? "underReview".translate(context)
-                        : model.status!.firstUpperCase(),
-                  ).size(context.font.normal).color(
-                      _getStatusTextColor(model.status),
-                    ),
+            child: Text(
+              model.status == "review"
+                  ? "underReview".translate(context)
+                  : model.status!.firstUpperCase(),
+            ).size(context.font.normal).color(
+                  _getStatusTextColor(model.status),
+                ),
           )
 
         //TODO: change color according to status - confirm,pending,etc..
@@ -2067,26 +2062,30 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             (isDate) ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SvgPicture.asset(
-            AppIcons.location,
-            colorFilter:
-                ColorFilter.mode(context.color.territoryColor, BlendMode.srcIn),
-          ),
           Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(start: 5.0),
-              child: Text(model.address!)
-                  .color(context.color.textDefaultColor.withOpacity(0.5)),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  AppIcons.location,
+                  colorFilter: ColorFilter.mode(
+                      context.color.territoryColor, BlendMode.srcIn),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 5.0),
+                    child: Text(model.address!)
+                        .color(context.color.textDefaultColor.withOpacity(0.5)),
+                  ),
+                ),
+              ],
             ),
           ),
-          (isDate)
-              ? Expanded(
-                  child: Text(model.created!.formatDate(format: "d MMM yyyy"))
-                      .setMaxLines(lines: 1)
-                      .color(context.color.textDefaultColor.withOpacity(0.5)))
-              : const SizedBox.shrink()
-          //TODO: add DATE from model
+          if (isDate)
+            Expanded(
+                child: Text(model.created!.formatDate(format: "d MMM yyyy"))
+                    .setMaxLines(lines: 1)
+                    .color(context.color.textDefaultColor.withOpacity(0.5)))
         ],
       ),
     );

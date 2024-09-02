@@ -1,4 +1,5 @@
 import 'package:eClassify/Utils/Extensions/extensions.dart';
+import 'package:eClassify/Utils/hive_utils.dart';
 import 'package:eClassify/app/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -11,16 +12,22 @@ class SellerNameContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool byMe = (itemModel.user?.id != null
+            ? itemModel.user?.id.toString()
+            : itemModel.userId) ==
+        HiveUtils.getUserId();
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          Routes.sellerDetailsScreen,
-          arguments: {
-            "model": itemModel,
-          },
-        );
-      },
+      onTap: byMe
+          ? null
+          : () {
+              Navigator.pushNamed(
+                context,
+                Routes.sellerDetailsScreen,
+                arguments: {
+                  "model": itemModel,
+                },
+              );
+            },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
