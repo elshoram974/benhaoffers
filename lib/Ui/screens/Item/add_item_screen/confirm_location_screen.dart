@@ -1163,12 +1163,11 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
   TextEditingController countryTextController = TextEditingController();
   String currentLocation = '';
   AddressComponent? formatedAddress;
-  final double latitude = 30.46601309987906,
-      longitude = 31.185332783716976; // benha location
+  double? latitude, longitude;
   CameraPosition? _cameraPosition;
   final Set<Marker> _markers = Set();
-  // late GoogleMapController _mapController;
-  // var markerMove;
+  late GoogleMapController _mapController;
+  var markerMove;
   bool _openedAppSettings = false;
 
   @override
@@ -1215,8 +1214,8 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
           city: itemModel.city,
           country: itemModel.country,
           state: itemModel.state);
-      // latitude = itemModel.latitude;
-      // longitude = itemModel.longitude;
+      latitude = itemModel.latitude;
+      longitude = itemModel.longitude;
       _cameraPosition = CameraPosition(
         target: LatLng(itemModel.latitude!, itemModel.longitude!),
         zoom: 14.4746,
@@ -1235,20 +1234,20 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
         HiveUtils.getCurrentCountryName()
       ].where((part) => part != null && part.isNotEmpty).join(', ');
       if (currentLocation == "") {
-        // Position position = await Geolocator.getCurrentPosition(
-        // desiredAccuracy: LocationAccuracy.high);
+        Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
         _cameraPosition = CameraPosition(
-          target: LatLng(latitude, longitude),
+          target: LatLng(position.latitude, position.longitude),
           zoom: 14.4746,
           bearing: 0,
         );
-        getLocationFromLatitudeLongitude(latLng: LatLng(latitude, longitude));
+        getLocationFromLatitudeLongitude(latLng: LatLng(position.latitude, position.longitude));
         _markers.add(Marker(
           markerId: const MarkerId('currentLocation'),
-          position: LatLng(latitude, longitude),
+          position: LatLng(position.latitude, position.longitude),
         ));
-        // latitude = position.latitude;
-        // longitude = position.longitude;
+        latitude = position.latitude;
+        longitude = position.longitude;
       } else {
         formatedAddress = AddressComponent(
             // area: HiveUtils.getCurrentAreaName(),
@@ -1256,17 +1255,17 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
             city: HiveUtils.getCurrentCityName(),
             country: HiveUtils.getCurrentCountryName(),
             state: HiveUtils.getCurrentStateName());
-        // latitude = HiveUtils.getCurrentLatitude();
-        // longitude = HiveUtils.getCurrentLongitude();
+        latitude = HiveUtils.getCurrentLatitude();
+        longitude = HiveUtils.getCurrentLongitude();
         _cameraPosition = CameraPosition(
-          target: LatLng(latitude, longitude),
+          target: LatLng(latitude!, longitude!),
           zoom: 14.4746,
           bearing: 0,
         );
-        getLocationFromLatitudeLongitude(latLng: LatLng(latitude, longitude));
+        getLocationFromLatitudeLongitude(latLng: LatLng(latitude!, longitude!));
         _markers.add(Marker(
           markerId: const MarkerId('currentLocation'),
-          position: LatLng(latitude, longitude),
+          position: LatLng(latitude!, longitude!),
         ));
       }
     }
@@ -1452,8 +1451,9 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                         getCloudData("with_more_details") ?? {};
 
                     cloudData['address'] = formatedAddress?.mixed;
-                    cloudData['latitude'] = latitude;
-                    cloudData['longitude'] = longitude;
+
+                    if(latitude != null) cloudData['latitude'] = latitude;
+                    if(longitude != null) cloudData['longitude'] = longitude;
                     cloudData['country'] = formatedAddress!.country;
                     cloudData['city'] = formatedAddress!.city;
                     cloudData['state'] = formatedAddress!.state;
@@ -1514,84 +1514,84 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
           ? Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Column(children: [
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                //   child: Text(
-                //     "locationItemSellingLbl".translate(context),
-                //   )
-                //       .bold(weight: FontWeight.bold)
-                //       .size(context.font.larger)
-                //       .centerAlign(),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
-                //   child: UiUtils.buildButton(context, height: 48,
-                //       onPressed: () {
-                //     Navigator.pushNamed(context, Routes.countriesScreen,
-                //         arguments: {"from": "addItem"}).then((value) {
-                //       if (value != null) {
-                //         Map<String, dynamic> location =
-                //             value as Map<String, dynamic>;
-                //         //getCloudData('add_item_location_detail');
-                //         print("value location****$value");
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Text(
+                    "locationItemSellingLbl".translate(context),
+                  )
+                      .bold(weight: FontWeight.bold)
+                      .size(context.font.larger)
+                      .centerAlign(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
+                  child: UiUtils.buildButton(context, height: 48,
+                      onPressed: () {
+                    Navigator.pushNamed(context, Routes.countriesScreen,
+                        arguments: {"from": "addItem"}).then((value) {
+                      if (value != null) {
+                        Map<String, dynamic> location =
+                            value as Map<String, dynamic>;
+                        //getCloudData('add_item_location_detail');
+                        print("value location****$value");
 
-                //         if (mounted) {
-                //           setState(() {
-                //             currentLocation = [
-                //               // location["area"] ?? null,
-                //               location["city"],
-                //               location["state"],
-                //               location["country"],
-                //             ]
-                //                 .where(
-                //                     (part) => part != null && part.isNotEmpty)
-                //                 .join(', ');
+                        if (mounted) {
+                          setState(() {
+                            currentLocation = [
+                              // location["area"] ?? null,
+                              location["city"],
+                              location["state"],
+                              location["country"],
+                            ]
+                                .where(
+                                    (part) => part != null && part.isNotEmpty)
+                                .join(', ');
 
-                //             formatedAddress = AddressComponent(
-                //                 // area: location["area"] ,
-                //                 areaId: location["area_id"],
-                //                 city: location["city"],
-                //                 country: location["country"],
-                //                 state: location["state"]);
+                            formatedAddress = AddressComponent(
+                                // area: location["area"] ,
+                                areaId: location["area_id"],
+                                city: location["city"],
+                                country: location["country"],
+                                state: location["state"]);
 
-                //             print(
-                //                 "latitude****${location["latitude"]}*****${location["longitude"]}");
-                //             // latitude = location["latitude"] ;
-                //             // longitude = location["longitude"] ;
+                            print(
+                                "latitude****${location["latitude"]}*****${location["longitude"]}");
+                            // latitude = location["latitude"] ;
+                            // longitude = location["longitude"] ;
 
-                //             print(
-                //                 "latitude11****${location["latitude"]}*****${location["longitude"]}");
-                //             _cameraPosition = CameraPosition(
-                //               target: LatLng(latitude, longitude),
-                //               zoom: 14.4746,
-                //               bearing: 0,
-                //             );
+                            print(
+                                "latitude11****${location["latitude"]}*****${location["longitude"]}");
+                            _cameraPosition = CameraPosition(
+                              target: LatLng(latitude!, longitude!),
+                              zoom: 14.4746,
+                              bearing: 0,
+                            );
 
-                //             // _mapController.animateCamera(
-                //             //   CameraUpdate.newCameraPosition(_cameraPosition!),
-                //             // );
-                //             _markers.add(Marker(
-                //               markerId: const MarkerId('currentLocation'),
-                //               position: LatLng(latitude, longitude),
-                //             ));
-                //           });
-                //         }
-                //       }
-                //     });
-                //   },
-                //       fontSize: 14,
-                //       buttonTitle: "somewhereElseLbl".translate(context),
-                //       textColor: context.color.textDefaultColor,
-                //       buttonColor: context.color.secondaryColor,
-                //       border: BorderSide(
-                //           color:
-                //               context.color.textDefaultColor.withOpacity(0.3),
-                //           width: 1.5),
-                //       radius: 5),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
+                            // _mapController.animateCamera(
+                            //   CameraUpdate.newCameraPosition(_cameraPosition!),
+                            // );
+                            _markers.add(Marker(
+                              markerId: const MarkerId('currentLocation'),
+                              position: LatLng(latitude!, longitude!),
+                            ));
+                          });
+                        }
+                      }
+                    });
+                  },
+                      fontSize: 14,
+                      buttonTitle: "somewhereElseLbl".translate(context),
+                      textColor: context.color.textDefaultColor,
+                      buttonColor: context.color.secondaryColor,
+                      border: BorderSide(
+                          color:
+                              context.color.textDefaultColor.withOpacity(0.3),
+                          width: 1.5),
+                      radius: 5),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
 
                 Expanded(
                   child: Stack(
@@ -1603,19 +1603,19 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: GoogleMap(
-                            // onCameraMove: (position) {
-                            //   _cameraPosition = position;
-                            // },
-                            // onCameraIdle: () async {
-                            //   if (markerMove == false) {
-                            //     if (LatLng(latitude!, longitude!) ==
-                            //         LatLng(_cameraPosition!.target.latitude,
-                            //             _cameraPosition!.target.longitude)) {
-                            //     } else {
-                            //       getLocationFromLatitudeLongitude();
-                            //     }
-                            //   }
-                            // },
+                            onCameraMove: (position) {
+                              _cameraPosition = position;
+                            },
+                            onCameraIdle: () async {
+                              if (markerMove == false) {
+                                if (LatLng(latitude!, longitude!) ==
+                                    LatLng(_cameraPosition!.target.latitude,
+                                        _cameraPosition!.target.longitude)) {
+                                } else {
+                                  getLocationFromLatitudeLongitude();
+                                }
+                              }
+                            },
                             initialCameraPosition: _cameraPosition!,
                             markers: _markers,
                             zoomControlsEnabled: false,
@@ -1627,78 +1627,78 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
                             myLocationButtonEnabled: true,
                             mapType: MapType.normal,
                             gestureRecognizers: getMapGestureRecognizers(),
-                            // onMapCreated: (GoogleMapController controller) {
-                            //   Future.delayed(
-                            //           const Duration(milliseconds: 500))
-                            //       .then((value) {
-                            //     _mapController = (controller);
-                            //     _mapController.animateCamera(
-                            //       CameraUpdate.newCameraPosition(
-                            //         _cameraPosition!,
-                            //       ),
-                            //     );
-                            //     //preFillLocationWhileEdit();
-                            //   });
-                            // },
-                            // onTap: (latLng) {
-                            //   setState(() {
-                            //     _markers.clear(); // Clear existing markers
-                            //     _markers.add(Marker(
-                            //       markerId:
-                            //           const MarkerId('selectedLocation'),
-                            //       position: latLng,
-                            //     ));
-                            //     // latitude = latLng.latitude;
-                            //     // longitude = latLng.longitude;
+                            onMapCreated: (GoogleMapController controller) {
+                              Future.delayed(
+                                      const Duration(milliseconds: 500))
+                                  .then((value) {
+                                _mapController = (controller);
+                                _mapController.animateCamera(
+                                  CameraUpdate.newCameraPosition(
+                                    _cameraPosition!,
+                                  ),
+                                );
+                                //preFillLocationWhileEdit();
+                              });
+                            },
+                            onTap: (latLng) {
+                              setState(() {
+                                _markers.clear(); // Clear existing markers
+                                _markers.add(Marker(
+                                  markerId:
+                                      const MarkerId('selectedLocation'),
+                                  position: latLng,
+                                ));
+                                // latitude = latLng.latitude;
+                                // longitude = latLng.longitude;
 
-                            //     getLocationFromLatitudeLongitude(
-                            //         latLng: latLng); // Get location details
-                            //   });
-                            // }
+                                getLocationFromLatitudeLongitude(
+                                    latLng: latLng); // Get location details
+                              });
+                            }
                           ),
                         ),
                       ),
-                      // PositionedDirectional(
-                      //   end: 30,
-                      //   bottom: 15,
-                      //   child: InkWell(
-                      //     child: Container(
-                      //       width: 48,
-                      //       height: 48,
-                      //       decoration: BoxDecoration(
-                      //         border: Border.all(
-                      //           color: context.color.borderColor,
-                      //           width: Constant.borderWidth,
-                      //         ),
-                      //         color: context.color.secondaryColor,
-                      //         // Adjust the opacity as needed
-                      //         borderRadius: BorderRadius.circular(10),
-                      //       ),
-                      //       child: const Icon(
-                      //         Icons.my_location_sharp,
-                      //         // Change the icon color if needed
-                      //       ),
-                      //     ),
-                      //     onTap: () async {
-                      //       Position position =
-                      //           await Geolocator.getCurrentPosition(
-                      //         desiredAccuracy: LocationAccuracy.high,
-                      //       );
+                      PositionedDirectional(
+                        end: 30,
+                        bottom: 15,
+                        child: InkWell(
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: context.color.borderColor,
+                                width: Constant.borderWidth,
+                              ),
+                              color: context.color.secondaryColor,
+                              // Adjust the opacity as needed
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(
+                              Icons.my_location_sharp,
+                              // Change the icon color if needed
+                            ),
+                          ),
+                          onTap: () async {
+                            Position position =
+                                await Geolocator.getCurrentPosition(
+                              desiredAccuracy: LocationAccuracy.high,
+                            );
 
-                      //       _cameraPosition = CameraPosition(
-                      //         target:
-                      //             LatLng(position.latitude, position.longitude),
-                      //         zoom: 14.4746,
-                      //         bearing: 0,
-                      //       );
-                      //       getLocationFromLatitudeLongitude();
+                            _cameraPosition = CameraPosition(
+                              target:
+                                  LatLng(position.latitude, position.longitude),
+                              zoom: 14.4746,
+                              bearing: 0,
+                            );
+                            getLocationFromLatitudeLongitude();
 
-                      //       _mapController.animateCamera(
-                      //         CameraUpdate.newCameraPosition(_cameraPosition!),
-                      //       );
-                      //     },
-                      //   ),
-                      // )
+                            _mapController.animateCamera(
+                              CameraUpdate.newCameraPosition(_cameraPosition!),
+                            );
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -1954,12 +1954,12 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
       ..add(Factory<VerticalDragGestureRecognizer>(
           () => VerticalDragGestureRecognizer()
             ..onDown = (dragUpdateDetails) {
-              // if (markerMove == false) {
-              // } else {
-              //   setState(() {
-              //     markerMove = false;
-              //   });
-              // }
+              if (markerMove == false) {
+              } else {
+                setState(() {
+                  markerMove = false;
+                });
+              }
             }));
   }
 
