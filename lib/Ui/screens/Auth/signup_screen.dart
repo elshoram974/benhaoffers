@@ -73,7 +73,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
 
   void getAllCategories() async {
     await CategoryRepository()
-        .fetchCategories(page: 0, limit: 500)
+        .fetchCategories(page: 1, limit: 1000)
         .then((value) {
       setState(() {
         categories = value.modelList;

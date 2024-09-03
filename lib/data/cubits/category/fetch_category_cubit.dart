@@ -116,23 +116,26 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
       emit(FetchCategoryInProgress());
 
       page = 1;
-
-      DataOutput<CategoryModel> categories =
-          await _categoryRepository.fetchCategories(
-        page: 1,
-        limit: 33,
-        categoryId:
-            getMyCategory ? HiveUtils.getUserDetails().categoryId : null,
-      );
       if (getMyCategory) {
+        final int category = HiveUtils.getUserDetails().categoryId ?? -2001;
+        DataOutput<CategoryModel> categories =
+            await _categoryRepository.fetchCategories(
+          page: 1,
+          limit: 1000,
+        );
         myCategories = FetchCategorySuccess(
             total: categories.total,
-            categories: categories.modelList,
+            categories: [categories.modelList.firstWhere((e)=> e.id == category)],
             page: 1,
             hasError: false,
             isLoadingMore: false);
         emit(myCategories);
       } else {
+        DataOutput<CategoryModel> categories =
+            await _categoryRepository.fetchCategories(
+          page: 1,
+          limit: 33,
+        );
         allCategories = FetchCategorySuccess(
             total: categories.total,
             categories: categories.modelList,
