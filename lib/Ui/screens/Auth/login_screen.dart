@@ -276,16 +276,18 @@ class LoginScreenState extends State<LoginScreen> {
                       if (state.isProfileCompleted) {
                         print(
                             "HiveUtils.getCityName()******${HiveUtils.getCityName()}");
-                        if (HiveUtils.getCityName() != null &&
-                            HiveUtils.getCityName() != "") {
-                          HelperUtils.killPreviousPages(
+                            HelperUtils.killPreviousPages(
                               context, Routes.main, {"from": "login"});
-                        } else {
-                          getBenhaLocationAndNavigate(context);
-                          // Navigator.of(context).pushNamedAndRemoveUntil(
-                          //     Routes.locationPermissionScreen,
-                          //     (route) => false);
-                        }
+                        // if (HiveUtils.getCityName() != null &&
+                        //     HiveUtils.getCityName() != "") {
+                        //   HelperUtils.killPreviousPages(
+                        //       context, Routes.main, {"from": "login"});
+                        // } else {
+                        //   getBenhaLocationAndNavigate(context);
+                        //   // Navigator.of(context).pushNamedAndRemoveUntil(
+                        //   //     Routes.locationPermissionScreen,
+                        //   //     (route) => false);
+                        // }
                       } else {
                         Navigator.pushReplacementNamed(
                           context,
@@ -862,8 +864,11 @@ class LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const SizedBox(height: 66),
-          Text("signInWithEmail".translate(context))
-              .size(context.font.extraLarge),
+          Text(
+            isMobileNumberField
+                ? "signInWithMob".translate(context)
+                : "signInWithEmail".translate(context),
+          ).size(context.font.extraLarge),
           const SizedBox(height: 8),
           Row(
             children: [
