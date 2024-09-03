@@ -59,8 +59,8 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool isObscure = true;
-  late PhoneLoginPayload phoneLoginPayload =
-      PhoneLoginPayload(emailMobileTextController.text, countryCode!);
+  // late PhoneLoginPayload phoneLoginPayload =
+  //     PhoneLoginPayload(emailMobileTextController.text, countryCode!);
   bool isBack = false;
 
   @override
@@ -186,7 +186,7 @@ class LoginScreenState extends State<LoginScreen> {
     if (isMobileNumberField) {
       final String number =
           emailMobileTextController.text.replaceAll(RegExp(r'^0+'), '');
-      emailMobileTextController.text = "+$countryCode$number";
+      emailMobileTextController.text = number;
       // isOtpSent = true;
       // phoneLoginPayload =
       //     PhoneLoginPayload(emailMobileTextController.text, countryCode!);
@@ -205,16 +205,16 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> sendVerificationCode() async {
-    if (widget.isDeleteAccount ?? false) {
-      isOtpSent = true;
+    // if (widget.isDeleteAccount ?? false) {
+    //   isOtpSent = true;
 
-      context
-          .read<AuthenticationCubit>()
-          .setData(payload: phoneLoginPayload, type: AuthenticationType.phone);
-      context.read<AuthenticationCubit>().verify();
+    //   context
+    //       .read<AuthenticationCubit>()
+    //       .setData(payload: phoneLoginPayload, type: AuthenticationType.phone);
+    //   context.read<AuthenticationCubit>().verify();
 
-      setState(() {});
-    }
+    //   setState(() {});
+    // }
     final form = _formKey.currentState;
 
     if (form == null) return;
@@ -252,29 +252,7 @@ class LoginScreenState extends State<LoginScreen> {
           child: PopScope(
             canPop: isBack,
             onPopInvoked: (didPop) {
-              if (widget.isDeleteAccount ?? false) {
-                Navigator.pop(context);
-              } else {
-                if (isOtpSent) {
-                  setState(() {
-                    isOtpSent = false;
-                    isMobileNumberField = true;
-                  });
-                } else if (sendMailClicked) {
-                  setState(() {
-                    sendMailClicked = false;
-                  });
-                } else {
-                  setState(() {
-                    isBack = true;
-                  });
-                  return;
-                }
-              }
-              setState(() {
-                isBack = false;
-              });
-              return;
+              onWillPop(context);
             },
             child: AnnotatedRegion(
               value: SystemUiOverlayStyle(
@@ -331,6 +309,8 @@ class LoginScreenState extends State<LoginScreen> {
                     }
 
                     if (state is LoginFailure) {
+                      Widgets.hideLoder(context);
+
                       HelperUtils.showSnackBarMessage(
                           context, state.errorMessage.toString());
                     }
@@ -349,7 +329,10 @@ class LoginScreenState extends State<LoginScreen> {
                               .isNotEmpty) {
                             context.read<LoginCubit>().loginEmailPhone(
                                   context,
-                                  email: emailMobileTextController.text.trim(),
+                                  email: (isMobileNumberField
+                                          ? "+$countryCode"
+                                          : '') +
+                                      emailMobileTextController.text.trim(),
                                   password: _passwordController.text,
                                   type: state.type,
                                   countryCode: "+$countryCode",
@@ -407,6 +390,32 @@ class LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void onWillPop(BuildContext context) {
+    if (widget.isDeleteAccount ?? false) {
+      Navigator.pop(context);
+    } else {
+      if (isOtpSent) {
+        setState(() {
+          isOtpSent = false;
+          isMobileNumberField = true;
+        });
+      } else if (sendMailClicked) {
+        setState(() {
+          sendMailClicked = false;
+        });
+      } else {
+        setState(() {
+          isBack = true;
+        });
+        return;
+      }
+    }
+    setState(() {
+      isBack = false;
+    });
+    return;
   }
 
   Widget buildLoginWidget() {
@@ -751,17 +760,19 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           Row(
             children: [
-              Text("+${phoneLoginPayload.countryCode}\t${phoneLoginPayload.phoneNumber}")
+              // Text("+${phoneLoginPayload.countryCode}\t${phoneLoginPayload.phoneNumber}")
+              Text("+${emailMobileTextController.text}")
                   .size(context.font.large),
               const SizedBox(
                 width: 5,
               ),
               InkWell(
-                  child: Text("change".translate(context))
-                      .underline()
-                      .color(context.color.territoryColor)
-                      .size(context.font.large),
-                  onTap: () => Navigator.pushNamed(context, Routes.login)),
+                child: Text("change".translate(context))
+                    .underline()
+                    .color(context.color.territoryColor)
+                    .size(context.font.large),
+                onTap: () => onWillPop(context),
+              ),
             ],
           ),
           const SizedBox(
@@ -780,11 +791,11 @@ class LoginScreenState extends State<LoginScreen> {
             alignment: AlignmentDirectional.centerEnd,
             child: MaterialButton(
               onPressed: () {
-                context.read<AuthenticationCubit>().setData(
-                      payload: phoneLoginPayload,
-                      type: AuthenticationType.phone,
-                    );
-                context.read<AuthenticationCubit>().verify();
+                // context.read<AuthenticationCubit>().setData(
+                //       payload: phoneLoginPayload,
+                //       type: AuthenticationType.phone,
+                //     );
+                // context.read<AuthenticationCubit>().verify();
               },
               child: Text("resendOTP".translate(context))
                   .color(context.color.textColorDark.withOpacity(0.7)),
@@ -856,14 +867,17 @@ class LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 8),
           Row(
             children: [
-              Text(emailMobileTextController.text).size(context.font.large),
+              Text((isMobileNumberField ? "+$countryCode " : '') +
+                      emailMobileTextController.text)
+                  .size(context.font.large),
               const SizedBox(width: 5),
               InkWell(
-                  child: Text("change".translate(context))
-                      .underline()
-                      .color(context.color.territoryColor)
-                      .size(context.font.large),
-                  onTap: () => Navigator.pushNamed(context, Routes.login)),
+                child: Text("change".translate(context))
+                    .underline()
+                    .color(context.color.territoryColor)
+                    .size(context.font.large),
+                onTap: () => onWillPop(context),
+              ),
             ],
           ),
           const SizedBox(height: 24),

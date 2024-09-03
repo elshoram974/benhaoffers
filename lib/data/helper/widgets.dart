@@ -37,12 +37,10 @@ class Widgets {
   }
 
   static void hideLoder(BuildContext context) {
-    Navigator.of(context).pop();
+    if (Navigator.of(context).canPop()) Navigator.of(context).pop();
   }
 
   static Center noDataFound(String errorMsg) {
     return Center(child: Text(errorMsg));
   }
 }
-
-

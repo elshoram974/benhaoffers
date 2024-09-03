@@ -1,6 +1,6 @@
 
 import 'package:eClassify/Utils/Login/lib/login_status.dart';
-import 'package:eClassify/Utils/Login/lib/payloads.dart';
+// import 'package:eClassify/Utils/Login/lib/payloads.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../utils/constant.dart';
@@ -17,7 +17,7 @@ class PhoneLogin extends LoginSystem {
 
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificationId ?? "",
-          smsCode: (payload as PhoneLoginPayload).getOTP()!);
+          smsCode: '(payload as PhoneLoginPayload).getOTP()!');
 
       UserCredential userCredential =
           await firebaseAuth.signInWithCredential(credential);
@@ -40,7 +40,7 @@ class PhoneLogin extends LoginSystem {
             seconds: Constant.otpTimeOutSecond,
           ),
           phoneNumber:
-              "+${(payload as PhoneLoginPayload).countryCode}${(payload as PhoneLoginPayload).phoneNumber}",
+              "+\${(payload as PhoneLoginPayload).countryCode}\${(payload as PhoneLoginPayload).phoneNumber}",
           verificationCompleted: (PhoneAuthCredential credential) {},
           verificationFailed: (FirebaseAuthException e) {
             emit(MFail(e));

@@ -74,14 +74,20 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         type!.name: payload!,
       });
 
-      UserCredential? credential = await mMultiAuthentication.login();
+      UserCredential? credential;
+      if (type != AuthenticationType.email &&
+          type != AuthenticationType.phone) {
+        credential = await mMultiAuthentication.login();
+      }
 
       print("auth cubit user credentials****$credential");
       LoginPayload? payloadData = (payload);
 
       if (payloadData is EmailLoginPayload &&
           payloadData.type == EmailLoginType.login) {
-        if (credential != null || type == AuthenticationType.email || type == AuthenticationType.phone) {
+        if (credential != null ||
+            type == AuthenticationType.email ||
+            type == AuthenticationType.phone) {
           emit(AuthenticationSuccess(type!, credential));
         }
       } else {

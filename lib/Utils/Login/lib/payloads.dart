@@ -26,18 +26,18 @@ class AppleLoginPayload extends LoginPayload {
 }
 
 
-class PhoneLoginPayload extends LoginPayload {
-  final String phoneNumber;
-  final String countryCode;
-  String? otp;
+// class PhoneLoginPayload extends LoginPayload {
+//   final String phoneNumber;
+//   final String countryCode;
+//   String? otp;
 
-  PhoneLoginPayload(this.phoneNumber, this.countryCode);
+//   PhoneLoginPayload(this.phoneNumber, this.countryCode);
 
-  void setOTP(String value) {
-    otp = value;
-  }
+//   void setOTP(String value) {
+//     otp = value;
+//   }
 
-  String? getOTP() {
-    return otp;
-  }
-}
+//   String? getOTP() {
+//     return otp;
+//   }
+// }
