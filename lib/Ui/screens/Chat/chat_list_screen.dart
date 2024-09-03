@@ -1,6 +1,8 @@
 import 'package:eClassify/Ui/screens/Widgets/Errors/something_went_wrong.dart';
+import 'package:eClassify/Utils/hive_utils.dart';
 import 'package:eClassify/data/cubits/chatCubits/blocked_users_list_cubit.dart';
 import 'package:eClassify/data/cubits/chatCubits/get_seller_chat_users_cubit.dart';
+import 'package:eClassify/data/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -63,6 +65,9 @@ class _ChatListScreenState extends State<ChatListScreen>
     super.initState();
   }
 
+  final bool isVendor =
+      HiveUtils.getUserDetails().userType == UserType.provider;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -72,7 +77,7 @@ class _ChatListScreenState extends State<ChatListScreen>
         statusBarColor: context.color.secondaryColor,
       ),
       child: DefaultTabController(
-        length: 2, // Number of tabs
+        length: isVendor ? 2 : 1, // Number of tabs
         child: Scaffold(
           backgroundColor: context.color.backgroundColor,
           appBar: UiUtils.buildAppBar(
@@ -90,43 +95,45 @@ class _ChatListScreenState extends State<ChatListScreen>
               )
             ],
 
-            bottom: [
-              TabBar(
-                tabs: [
-                  Tab(text: 'buying'.translate(context)),
-                  Tab(text: 'selling'.translate(context)),
-                ],
+            bottom: isVendor
+                ? [
+                    TabBar(
+                      tabs: [
+                        Tab(text: 'buying'.translate(context)),
+                        Tab(text: 'selling'.translate(context)),
+                      ],
 
-                indicatorColor: context.color.textDefaultColor,
-                // Line color
-                indicatorWeight: 1.5,
-                // Line thickness
-                labelColor: context.color.textDefaultColor,
-                // Selected tab text color
-                unselectedLabelColor:
-                    context.color.textDefaultColor.withOpacity(0.5),
-                // Unselected tab text color
-                labelStyle:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                // Selected tab text style
-                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-                // Padding around the tab text
-                indicatorSize: TabBarIndicatorSize.tab,
-              ),
-              Divider(
-                height: 0, // Set height to 0 to make it full width
-                thickness: 0.5, // Divider thickness
-                color: context.color.textDefaultColor
-                    .withOpacity(0.2), // Divider color
-              ),
-            ],
+                      indicatorColor: context.color.textDefaultColor,
+                      // Line color
+                      indicatorWeight: 1.5,
+                      // Line thickness
+                      labelColor: context.color.textDefaultColor,
+                      // Selected tab text color
+                      unselectedLabelColor:
+                          context.color.textDefaultColor.withOpacity(0.5),
+                      // Unselected tab text color
+                      labelStyle: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                      // Selected tab text style
+                      labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      // Padding around the tab text
+                      indicatorSize: TabBarIndicatorSize.tab,
+                    ),
+                    Divider(
+                      height: 0, // Set height to 0 to make it full width
+                      thickness: 0.5, // Divider thickness
+                      color: context.color.textDefaultColor
+                          .withOpacity(0.2), // Divider color
+                    ),
+                  ]
+                : null,
           ),
           body: TabBarView(
             children: [
               // Content of the 'Buying' tab
               buyingChatListData(),
               // Content of the 'Selling' tab
-              sellingChatListData(),
+              if (isVendor) sellingChatListData(),
             ],
           ),
         ),
