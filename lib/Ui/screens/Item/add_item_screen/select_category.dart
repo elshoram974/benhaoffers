@@ -55,13 +55,14 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
   void pageScrollListen() {
     if (controller.isEndReached()) {
       if (context.read<FetchCategoryCubit>().hasMoreData()) {
-        context.read<FetchCategoryCubit>().fetchCategoriesMore();
+        context.read<FetchCategoryCubit>().fetchCategoriesMore(true);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final FetchCategoryCubit c = BlocProvider.of<FetchCategoryCubit>(context); 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(
           context: context, statusBarColor: context.color.secondaryColor),
@@ -108,7 +109,7 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
                           mainAxisSpacing: 14,
                         ),
                         itemBuilder: (context, index) {
-                          CategoryModel category = state.categories[index];
+                          CategoryModel category = c.myCategories.categories[index];
 
                           return CategoryCard(
                             onTap: () {
@@ -159,9 +160,9 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
                             url: category.url!,
                           );
                         },
-                        itemCount: state.categories.length,
+                        itemCount: c.myCategories.categories.length,
                       ),
-                      if (state.isLoadingMore) UiUtils.progress()
+                      if (c.myCategories.isLoadingMore) UiUtils.progress()
                     ],
                   );
                 }

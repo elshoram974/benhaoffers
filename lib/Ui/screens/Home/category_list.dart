@@ -37,7 +37,7 @@ class _CategoryListState extends State<CategoryList>
     _pageScrollController.addListener(() {
       if (_pageScrollController.isEndReached()) {
         if (context.read<FetchCategoryCubit>().hasMoreData()) {
-          context.read<FetchCategoryCubit>().fetchCategoriesMore();
+          context.read<FetchCategoryCubit>().fetchCategoriesMore(false);
         }
       }
     });
@@ -46,6 +46,7 @@ class _CategoryListState extends State<CategoryList>
 
   @override
   Widget build(BuildContext context) {
+    final FetchCategoryCubit c = BlocProvider.of<FetchCategoryCubit>(context); 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(
           context: context, statusBarColor: context.color.secondaryColor),
@@ -83,13 +84,13 @@ class _CategoryListState extends State<CategoryList>
                       mainAxisSpacing: 14,
                     ),
                     itemBuilder: (context, index) {
-                      CategoryModel category = state.categories[index];
+                      CategoryModel category = c.allCategories.categories[index];
                       return CategoryCard(
                         onTap: () {
                           if (widget.from == Routes.filterScreen) {
                             Navigator.pop(context, category);
                           } else {
-                            if (state.categories[index].children!.isEmpty) {
+                            if (c.allCategories.categories[index].children!.isEmpty) {
                               Constant.itemFilter = null;
                               HelperUtils.goToNextPage(
                                 Routes.itemsList,
@@ -106,10 +107,10 @@ class _CategoryListState extends State<CategoryList>
                                   context, Routes.subCategoryScreen,
                                   arguments: {
                                     "categoryList":
-                                        state.categories[index].children,
-                                    "catName": state.categories[index].name,
-                                    "catId": state.categories[index].id,
-                                    "categoryIds":[state.categories[index].id.toString()]
+                                        c.allCategories.categories[index].children,
+                                    "catName": c.allCategories.categories[index].name,
+                                    "catId": c.allCategories.categories[index].id,
+                                    "categoryIds":[c.allCategories.categories[index].id.toString()]
                                   }); //pass current index category id & name here
                             }
                           }
@@ -118,9 +119,9 @@ class _CategoryListState extends State<CategoryList>
                         url: category.url!,
                       );
                     },
-                    itemCount: state.categories.length,
+                    itemCount: c.allCategories.categories.length,
                   )),
-                  if (state.isLoadingMore) UiUtils.progress()
+                  if (c.allCategories.isLoadingMore) UiUtils.progress()
                 ],
               );
             }

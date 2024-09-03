@@ -28,6 +28,7 @@ class _CategoryFilterScreenState extends State<CategoryFilterScreen>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final FetchCategoryCubit c = BlocProvider.of<FetchCategoryCubit>(context);
     return Scaffold(
       backgroundColor: context.color.backgroundColor,
       appBar: UiUtils.buildAppBar(
@@ -73,7 +74,7 @@ class _CategoryFilterScreenState extends State<CategoryFilterScreen>
                         ),
                         Expanded(
                           child: ListView.separated(
-                            itemCount: state.categories.length,
+                            itemCount: c.allCategories.categories.length,
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             separatorBuilder: (context, index) {
@@ -83,14 +84,14 @@ class _CategoryFilterScreenState extends State<CategoryFilterScreen>
                               );
                             },
                             itemBuilder: (context, index) {
-                              CategoryModel category = state.categories[index];
+                              CategoryModel category = c.allCategories.categories[index];
 
                               return ListTile(
                                 onTap: () {
                                   /* widget.addModel(
                                       state.categories[index], false);*/
                                   Navigator.pop(
-                                      context, state.categories[index]);
+                                      context, c.allCategories.categories[index]);
                                 },
                                 /*  if (state
                                       .categories[index].children.isNotEmpty) {

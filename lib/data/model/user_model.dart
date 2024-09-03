@@ -80,7 +80,7 @@ class UserModel {
 
     notification = (json['notification'] is int)
         ? json['notification']
-        : int.parse((json['notification']));
+        : int.tryParse((json['notification'])??"");
     profile = json['profile'];
     token = json['token'];
     updatedAt = json['updated_at'];

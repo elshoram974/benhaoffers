@@ -60,7 +60,7 @@ class LanguagesListScreen extends StatelessWidget {
 
             HiveUtils.storeLanguage(map);
             context.read<LanguageCubit>().emit(LanguageLoader(map));
-            context.read<FetchCategoryCubit>().fetchCategories();
+            context.read<FetchCategoryCubit>().fetchCategories(getMyCategory: false);
           }
         },
         child: ListView.builder(

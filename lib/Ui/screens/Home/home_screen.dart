@@ -73,7 +73,8 @@ class HomeScreenState extends State<HomeScreen>
     context.read<SliderCubit>().fetchSlider(
           context,
         );
-    context.read<FetchCategoryCubit>().fetchCategories();
+    context.read<FetchCategoryCubit>().fetchCategories(getMyCategory: true);
+    context.read<FetchCategoryCubit>().fetchCategories(getMyCategory: false);
     context
         .read<FetchHomeScreenCubit>()
         .fetch(city: HiveUtils.getCityName(), areaId: HiveUtils.getAreaId());
@@ -164,7 +165,8 @@ class HomeScreenState extends State<HomeScreen>
             context.read<SliderCubit>().fetchSlider(
                   context,
                 );
-            context.read<FetchCategoryCubit>().fetchCategories();
+            context.read<FetchCategoryCubit>().fetchCategories(getMyCategory: true);
+            context.read<FetchCategoryCubit>().fetchCategories(getMyCategory: false);
             context.read<FetchHomeScreenCubit>().fetch(
                 city: HiveUtils.getCityName(), areaId: HiveUtils.getAreaId());
             context.read<FetchHomeAllItemsCubit>().fetch(

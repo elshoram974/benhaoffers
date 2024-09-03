@@ -17,13 +17,14 @@ class CategoryWidgetHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FetchCategoryCubit c = BlocProvider.of<FetchCategoryCubit>(context);
     return BlocBuilder<FetchCategoryCubit, FetchCategoryState>(
       builder: (context, state) {
         final List<CategoryModel> list = [];
         if (state is FetchCategorySuccess) {
-          list.addAll(state.categories);
-          if (state.categories.length > 15) {
-            list.removeRange(15, state.categories.length);
+          list.addAll(c.allCategories.categories);
+          if (c.allCategories.categories.length > 15) {
+            list.removeRange(15, c.allCategories.categories.length);
           }
           if (list.isNotEmpty) {
             return Padding(
