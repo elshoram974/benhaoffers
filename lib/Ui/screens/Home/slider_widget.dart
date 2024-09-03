@@ -247,6 +247,7 @@ class _SliderWidgetState extends State<_SliderWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    _bannerIndex.value = 0 ;
 
     return Column(
       children: [
@@ -337,27 +338,48 @@ class _SliderWidgetState extends State<_SliderWidget>
         Container(
           height: 4,
           margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 7),
-          child: TabBar(
-            indicatorWeight: 4,
-            controller: _tabController,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorPadding: const EdgeInsets.symmetric(horizontal: 8),
-            indicator: UnderlineTabIndicator(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(color: context.color.territoryColor, width: 4),
-            ),
-            unselectedLabelColor: const Color(0xffCAC8C8).withOpacity(0.65),
-            splashBorderRadius: BorderRadius.circular(50),
-            onTap: (value) {
-              _tabController.animateTo(
-                value,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-            },
-            tabs: [
-              for (int i = 0; i < bannersLength; i++)
-                const Tab(height: 5, child: SizedBox.shrink())
+          child: Stack(
+            children: [
+              Row(
+                children: List.generate(
+                  bannersLength,
+                  (i) => Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: context.color.textDefaultColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      // Divider color
+                    ),
+                  ),
+                ),
+              ),
+              TabBar(
+                indicatorWeight: 4,
+                controller: _tabController,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorPadding: const EdgeInsets.symmetric(horizontal: 8),
+                indicator: UnderlineTabIndicator(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide:
+                      BorderSide(color: context.color.territoryColor, width: 4),
+                ),
+                unselectedLabelColor: const Color(0xffCAC8C8).withOpacity(0.65),
+                splashBorderRadius: BorderRadius.circular(50),
+                onTap: (value) {
+                  _tabController.animateTo(
+                    value,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                tabs: [
+                  for (int i = 0; i < bannersLength; i++)
+                    const Tab(height: 5, child: SizedBox.shrink())
+                ],
+              ),
             ],
           ),
         )
