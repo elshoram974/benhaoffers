@@ -92,9 +92,25 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
 
   final CategoryRepository _categoryRepository = CategoryRepository();
 
+  FetchCategorySuccess allCategories = FetchCategorySuccess(
+    total: 0,
+    page: 0,
+    isLoadingMore: true,
+    hasError: false,
+    categories: [],
+  );
+  FetchCategorySuccess myCategories = FetchCategorySuccess(
+    total: 0,
+    page: 0,
+    isLoadingMore: true,
+    hasError: false,
+    categories: [],
+  );
+
   Future<void> fetchCategories({
     bool? forceRefresh,
     bool? loadWithoutDelay,
+    required bool getMyCategory,
   }) async {
     try {
       emit(FetchCategoryInProgress());
@@ -105,15 +121,26 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
           await _categoryRepository.fetchCategories(
         page: 1,
         limit: 33,
-        categoryId: HiveUtils.getUserDetails().categoryId,
+        categoryId:
+            getMyCategory ? HiveUtils.getUserDetails().categoryId : null,
       );
-
-      emit(FetchCategorySuccess(
-          total: categories.total,
-          categories: categories.modelList,
-          page: 1,
-          hasError: false,
-          isLoadingMore: false));
+      if (getMyCategory) {
+        myCategories = FetchCategorySuccess(
+            total: categories.total,
+            categories: categories.modelList,
+            page: 1,
+            hasError: false,
+            isLoadingMore: false);
+        emit(myCategories);
+      } else {
+        allCategories = FetchCategorySuccess(
+            total: categories.total,
+            categories: categories.modelList,
+            page: 1,
+            hasError: false,
+            isLoadingMore: false);
+        emit(allCategories);
+      }
     } catch (e) {
       emit(FetchCategoryFailure(e.toString()));
     }
@@ -129,7 +156,7 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
 
   int page = 1;
 
-  Future<void> fetchCategoriesMore() async {
+  Future<void> fetchCategoriesMore(bool getMyCategory) async {
     try {
       if (state is FetchCategorySuccess) {
         if ((state as FetchCategorySuccess).isLoadingMore) {
@@ -141,28 +168,45 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
             await _categoryRepository.fetchCategories(
           page: page,
           limit: 33,
-          categoryId: HiveUtils.getUserDetails().categoryId,
+          categoryId:
+              getMyCategory ? HiveUtils.getUserDetails().categoryId : null,
         );
 
         FetchCategorySuccess categoryState = (state as FetchCategorySuccess);
         categoryState.categories.addAll(result.modelList);
-        print(
-            "response :  : map length is categoryState.categories ${categoryState.categories.length}");
 
         List<String> list =
             categoryState.categories.map((e) => e.url!).toList();
         await HelperUtils.precacheSVG(list);
 
-        emit(FetchCategorySuccess(
-            isLoadingMore: false,
-            hasError: false,
-            categories: categoryState.categories,
-            page: page,
-            total: result.total));
+        if (getMyCategory) {
+          myCategories = FetchCategorySuccess(
+              isLoadingMore: false,
+              hasError: false,
+              categories: categoryState.categories,
+              page: page,
+              total: result.total);
+          emit(myCategories);
+        } else {
+          allCategories = FetchCategorySuccess(
+              isLoadingMore: false,
+              hasError: false,
+              categories: categoryState.categories,
+              page: page,
+              total: result.total);
+          emit(allCategories);
+        }
       }
     } catch (e) {
-      emit((state as FetchCategorySuccess)
-          .copyWith(isLoadingMore: false, hasError: true));
+      if (getMyCategory) {
+        myCategories = (state as FetchCategorySuccess)
+            .copyWith(isLoadingMore: false, hasError: true);
+        emit(myCategories);
+      } else {
+        allCategories = (state as FetchCategorySuccess)
+            .copyWith(isLoadingMore: false, hasError: true);
+        emit(allCategories);
+      }
     }
   }
 

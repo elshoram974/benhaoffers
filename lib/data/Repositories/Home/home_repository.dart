@@ -9,8 +9,8 @@ class HomeRepository {
       {String? city, int? areaId}) async {
     try {
       Map<String, dynamic> parameters = {
-        if (city != null && city != "") 'city': city,
-        if (areaId != null && areaId != "") 'area_id': areaId,
+        // if (city != null && city != "") 'city': city,
+        // if (areaId != null && areaId != "") 'area_id': areaId,
       };
 
       Map<String, dynamic> response = await Api.get(
@@ -30,8 +30,8 @@ class HomeRepository {
     try {
       Map<String, dynamic> parameters = {
         "page": page,
-        if (city != null && city != "") 'city': city,
-        if (areaId != null && areaId != "") 'area_id': areaId,
+        // if (city != null && city != "") 'city': city,
+        // if (areaId != null && areaId != "") 'area_id': areaId,
         "sort_by": "new-to-old"
       };
 

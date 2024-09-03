@@ -151,6 +151,7 @@ class ItemRepository {
       }
 
       parameters.remove('area');
+      parameters.remove('city');
 
       // Add custom fields separately to the parameters
       if (filter.customFields != null) {
@@ -287,6 +288,7 @@ class ItemRepository {
         parameters.remove('area_id');
       }
       parameters.remove('area');
+      parameters.remove('city');
       parameters.remove('custom_fields');
     }
 
