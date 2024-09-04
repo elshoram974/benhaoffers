@@ -63,6 +63,11 @@ class LoginScreenState extends State<LoginScreen> {
   //     PhoneLoginPayload(emailMobileTextController.text, countryCode!);
   bool isBack = false;
 
+  // settings
+  final bool showLoginWithPhone = false;
+  final bool showLoginWithGoogle = false;
+  final bool showLoginWithApple = false;
+
   @override
   void initState() {
     super.initState();
@@ -87,7 +92,7 @@ class LoginScreenState extends State<LoginScreen> {
 
           isOtpSent = true;
           setState(() {});
-          if (isMobileNumberField) {
+          if (isMobileNumberField && showLoginWithPhone) {
             HelperUtils.showSnackBarMessage(
                 context, "optsentsuccessflly".translate(context));
           }
@@ -97,7 +102,7 @@ class LoginScreenState extends State<LoginScreen> {
       if (state is MFail) {
         //Widgets.hideLoder(context);
 
-        if (!isOtpSent && isMobileNumberField) {
+        if (!isOtpSent && isMobileNumberField && showLoginWithPhone) {
           Widgets.hideLoder(context);
         }
 
@@ -183,7 +188,7 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   void _onTapContinue() {
-    if (isMobileNumberField) {
+    if (isMobileNumberField && showLoginWithPhone) {
       final String number =
           emailMobileTextController.text.replaceAll(RegExp(r'^0+'), '');
       emailMobileTextController.text = number;
@@ -276,8 +281,8 @@ class LoginScreenState extends State<LoginScreen> {
                       if (state.isProfileCompleted) {
                         print(
                             "HiveUtils.getCityName()******${HiveUtils.getCityName()}");
-                            HelperUtils.killPreviousPages(
-                              context, Routes.main, {"from": "login"});
+                        HelperUtils.killPreviousPages(
+                            context, Routes.main, {"from": "login"});
                         // if (HiveUtils.getCityName() != null &&
                         //     HiveUtils.getCityName() != "") {
                         //   HelperUtils.killPreviousPages(
@@ -295,7 +300,7 @@ class LoginScreenState extends State<LoginScreen> {
                           arguments: {
                             "from": "login",
                             "popToCurrent": false,
-                            "type": isMobileNumberField
+                            "type": isMobileNumberField && showLoginWithPhone
                                 ? AuthenticationType.phone
                                 : AuthenticationType.email,
                             "extraData": {
@@ -331,10 +336,11 @@ class LoginScreenState extends State<LoginScreen> {
                               .isNotEmpty) {
                             context.read<LoginCubit>().loginEmailPhone(
                                   context,
-                                  email: (isMobileNumberField
-                                          ? "+$countryCode"
-                                          : '') +
-                                      emailMobileTextController.text.trim(),
+                                  email:
+                                      (isMobileNumberField && showLoginWithPhone
+                                              ? "+$countryCode"
+                                              : '') +
+                                          emailMobileTextController.text.trim(),
                                   password: _passwordController.text,
                                   type: state.type,
                                   countryCode: "+$countryCode",
@@ -477,10 +483,11 @@ class LoginScreenState extends State<LoginScreen> {
                 controller: emailMobileTextController,
                 fillColor: context.color.secondaryColor,
                 borderColor: context.color.borderColor.darken(30),
-                formaters: isMobileNumberField
+                formaters: isMobileNumberField && showLoginWithPhone
                     ? [FilteringTextInputFormatter.digitsOnly]
                     : null,
                 keyboard: TextInputType.emailAddress,
+                onEditingComplete: sendVerificationCode,
                 onChange: (value) {
                   bool isNumber =
                       value.toString().contains(RegExp(r'^[0-9]+$'));
@@ -490,10 +497,10 @@ class LoginScreenState extends State<LoginScreen> {
                   numberOrEmail = value;
                   setState(() {});
                 },
-                validator: isMobileNumberField
+                validator: isMobileNumberField && showLoginWithPhone
                     ? CustomTextFieldValidator.phoneNumber
                     : CustomTextFieldValidator.email,
-                fixedPrefix: (isMobileNumberField)
+                fixedPrefix: (isMobileNumberField && showLoginWithPhone)
                     ? SizedBox(
                         width: 55,
                         child: Align(
@@ -544,41 +551,39 @@ class LoginScreenState extends State<LoginScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Text("orSignInWith".translate(context))
-                      .color(context.color.textDefaultColor),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  UiUtils.buildButton(context,
-                      prefixWidget: Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 10.0),
-                        child: UiUtils.getSvg(AppIcons.googleIcon,
-                            width: 22, height: 22),
-                      ),
-                      showElevation: false,
-                      buttonColor: secondaryColor_,
-                      border: context.watch<AppThemeCubit>().state.appTheme !=
-                              AppTheme.dark
-                          ? BorderSide(
-                              color: context.color.textDefaultColor
-                                  .withOpacity(0.5))
-                          : null,
-                      textColor: textDarkColor, onPressed: () {
-                    context.read<AuthenticationCubit>().setData(
-                        payload: GoogleLoginPayload(),
-                        type: AuthenticationType.google);
-                    context.read<AuthenticationCubit>().authenticate();
-                  },
-                      radius: 8,
-                      height: 46,
-                      buttonTitle: "continueWithGoogle".translate(context)),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  if (Platform.isIOS)
+                  const SizedBox(height: 24),
+                  if (showLoginWithGoogle || showLoginWithApple) ...[
+                    Text("orSignInWith".translate(context))
+                        .color(context.color.textDefaultColor),
+                    const SizedBox(height: 24),
+                  ],
+                  if (showLoginWithGoogle) ...[
+                    UiUtils.buildButton(context,
+                        prefixWidget: Padding(
+                          padding: const EdgeInsetsDirectional.only(end: 10.0),
+                          child: UiUtils.getSvg(AppIcons.googleIcon,
+                              width: 22, height: 22),
+                        ),
+                        showElevation: false,
+                        buttonColor: secondaryColor_,
+                        border: context.watch<AppThemeCubit>().state.appTheme !=
+                                AppTheme.dark
+                            ? BorderSide(
+                                color: context.color.textDefaultColor
+                                    .withOpacity(0.5))
+                            : null,
+                        textColor: textDarkColor, onPressed: () {
+                      context.read<AuthenticationCubit>().setData(
+                          payload: GoogleLoginPayload(),
+                          type: AuthenticationType.google);
+                      context.read<AuthenticationCubit>().authenticate();
+                    },
+                        radius: 8,
+                        height: 46,
+                        buttonTitle: "continueWithGoogle".translate(context)),
+                    const SizedBox(height: 12),
+                  ],
+                  if (Platform.isIOS && showLoginWithApple)
                     UiUtils.buildButton(context,
                         prefixWidget: Padding(
                           padding: const EdgeInsetsDirectional.only(end: 10.0),
@@ -865,14 +870,16 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           const SizedBox(height: 66),
           Text(
-            isMobileNumberField
+            isMobileNumberField && showLoginWithPhone
                 ? "signInWithMob".translate(context)
                 : "signInWithEmail".translate(context),
           ).size(context.font.extraLarge),
           const SizedBox(height: 8),
           Row(
             children: [
-              Text((isMobileNumberField ? "+$countryCode " : '') +
+              Text((isMobileNumberField && showLoginWithPhone
+                          ? "+$countryCode "
+                          : '') +
                       emailMobileTextController.text)
                   .size(context.font.large),
               const SizedBox(width: 5),
@@ -888,8 +895,10 @@ class LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 24),
           CustomTextFormField(
             hintText: "${"password".translate(context)}*",
+            validator: CustomTextFieldValidator.nullCheck,
             controller: _passwordController,
             obscureText: isObscure,
+            onEditingComplete: signInAfterPass,
             suffix: IconButton(
               onPressed: () {
                 isObscure = !isObscure;
@@ -915,23 +924,27 @@ class LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 19),
           UiUtils.buildButton(
             context,
-            onPressed: () {
-              context.read<AuthenticationCubit>().setData(
-                    payload: EmailLoginPayload(
-                        email: emailMobileTextController.text,
-                        password: _passwordController.text,
-                        type: EmailLoginType.login),
-                    type: isMobileNumberField
-                        ? AuthenticationType.phone
-                        : AuthenticationType.email,
-                  );
-              context.read<AuthenticationCubit>().authenticate();
-            },
+            onPressed: signInAfterPass,
             buttonTitle: "signIn".translate(context),
             radius: 8,
           ),
         ],
       ),
     );
+  }
+
+  void signInAfterPass() {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthenticationCubit>().setData(
+            payload: EmailLoginPayload(
+                email: emailMobileTextController.text,
+                password: _passwordController.text,
+                type: EmailLoginType.login),
+            type: isMobileNumberField && showLoginWithPhone
+                ? AuthenticationType.phone
+                : AuthenticationType.email,
+          );
+      context.read<AuthenticationCubit>().authenticate();
+    }
   }
 }
