@@ -525,5 +525,9 @@
     "chooseCategory": "اختر القسم",
     "accountCreatedSuccessfully": "تم إنشاء الحساب بنجاح",
     "yourAccountWillApprovedSoon": "سيتم الموافقه على الحساب قريباً",
+    "codeVerification": "تحقق من الرمز",
+    "enterDigitCodeThatHasBeenSentToYourEmail": "أدخل الرمز المكون من 6 أرقام الذي تم إرساله إلى بريدك الإلكتروني",
+    "noCodeReceived": "لم يتم استلام رمز؟ ",
+    "resend": "إعادة الإرسال",
     "patienceFoundationOfSuccess": "الصبر اساس النجاح"
 }

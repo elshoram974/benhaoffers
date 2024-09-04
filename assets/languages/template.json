@@ -356,7 +356,7 @@
   "allItems": "All Items",
   "makeAnOffer": "Make an offer",
   "forgotHeadingTxt": "Enter the email address associated with your account",
-  "forgotSubHeadingTxt": "We will email you a link to reset your password",
+  "forgotSubHeadingTxt": "We will email you a code to reset your password",
   "userNotFound": "No user found for that email.",
   "passReset": "Password reset link has been sent to your mail",
   "verify": "Verify",
@@ -525,5 +525,9 @@
   "chooseCategory": "Choose category",
   "accountCreatedSuccessfully": "User created successfully",
   "yourAccountWillApprovedSoon": "Your account will be approved soon.",
+  "codeVerification": "Code verification",
+  "enterDigitCodeThatHasBeenSentToYourEmail": "Enter the 6-digit code that has been sent to your email",
+  "noCodeReceived": "No code received? ",
+  "resend": "Resend",
   "patienceFoundationOfSuccess": "Patience is the foundation of success."
 }
