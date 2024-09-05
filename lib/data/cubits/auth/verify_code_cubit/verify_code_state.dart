@@ -32,11 +32,7 @@ final class VerifyCodeLoadingResendCodeState extends VerifyCodeState {
 }
 
 final class VerifyCodeSuccessState extends VerifyCodeState {
-  final String code;
-  const VerifyCodeSuccessState(this.code);
-
-  @override
-  List<String> get props => [code];
+  const VerifyCodeSuccessState();
 }
 
 final class VerifyCodeFailureState extends VerifyCodeState {

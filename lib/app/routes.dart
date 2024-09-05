@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import '../Ui/screens/Advertisement/my_advertisment_screen.dart';
 import '../Ui/screens/Auth/code_verification_screen.dart';
 import '../Ui/screens/Auth/login_screen.dart';
+import '../Ui/screens/Auth/new_password_screen.dart';
 import '../Ui/screens/Blogs/blog_details.dart';
 import '../Ui/screens/Blogs/blogs_screen.dart';
 import '../Ui/screens/Home/Widgets/subCategoryFilterScreen.dart';
@@ -63,6 +64,7 @@ class Routes {
   static const login = 'login';
   static const forgotPassword = 'forgotPassword';
   static const verificationCode = 'verificationCode';
+  static const newPassword = 'newPassword';
   static const chooseAccountType = 'chooseAccountType';
   static const signup = 'signup';
   static const authWaiting = 'authWaiting';
@@ -191,6 +193,8 @@ class Routes {
         return ForgotPasswordScreen.route(routeSettings);
       case verificationCode:
         return CodeVerificationScreen.route(routeSettings);
+      case newPassword:
+        return NewPasswordScreen.route(routeSettings);
       case chooseAccountType:
         return ChooseAccountTypeScreen.route(routeSettings);
       case signup:

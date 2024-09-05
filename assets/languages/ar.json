@@ -529,5 +529,7 @@
     "enterDigitCodeThatHasBeenSentToYourEmail": "أدخل الرمز المكون من 6 أرقام الذي تم إرساله إلى بريدك الإلكتروني",
     "noCodeReceived": "لم يتم استلام رمز؟ ",
     "resend": "إعادة الإرسال",
+    "createNewPassword": "إنشاء كلمة مرور جديدة",
+    "yourNewPasswordMustBeDifferentFromPreviously": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا",
     "patienceFoundationOfSuccess": "الصبر اساس النجاح"
 }

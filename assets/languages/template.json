@@ -529,5 +529,7 @@
   "enterDigitCodeThatHasBeenSentToYourEmail": "Enter the 6-digit code that has been sent to your email",
   "noCodeReceived": "No code received? ",
   "resend": "Resend",
+  "createNewPassword": "Create new password",
+  "yourNewPasswordMustBeDifferentFromPreviously": "Your new password must be different from previously used password",
   "patienceFoundationOfSuccess": "Patience is the foundation of success."
 }

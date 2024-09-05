@@ -13,10 +13,11 @@ class CodeVerificationScreen extends StatefulWidget {
   final String email;
 
   static BlurredRouter route(RouteSettings routeSettings) {
+    final String email =  routeSettings.arguments as String;
     return BlurredRouter(
       builder: (_) => BlocProvider(
-        create: (context) => VerifyCodeCubit(),
-        child: CodeVerificationScreen(email: routeSettings.arguments as String),
+        create: (context) => VerifyCodeCubit(email),
+        child: CodeVerificationScreen(email:email),
       ),
     );
   }
@@ -34,7 +35,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
   @override
   void initState() {
     super.initState();
-    cubit.email = widget.email;
     WidgetsBinding.instance
         .addPostFrameCallback((_) => cubit.sendCode(context));
   }

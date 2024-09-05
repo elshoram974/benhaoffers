@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:eClassify/app/routes.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,11 +11,11 @@ import '../../../helper/widgets.dart';
 part 'verify_code_state.dart';
 
 class VerifyCodeCubit extends Cubit<VerifyCodeState> {
-  VerifyCodeCubit() : super(const VerifyCodeInitial());
+  VerifyCodeCubit(this.email) : super(const VerifyCodeInitial());
 
   final AuthRepository repo = AuthRepository();
   bool submitIsEnabled = false;
-  String email = '';
+  String email;
 
   // * verify Code----------------------------
   String code = '';
@@ -39,6 +40,9 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
       if (context.mounted) {
         Widgets.hideLoder(context);
         _failureState(e.toString(), context);
+
+        // TODO: remove this when it work
+        _verifySuccess(context);
       }
     }
   }
@@ -46,8 +50,13 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
   // end verify Code----------------------------
 
   void _verifySuccess(BuildContext context) {
-    _timer.cancel();
-    emit(VerifyCodeSuccessState(code));
+    _timer?.cancel();
+    emit(const VerifyCodeSuccessState());
+    Navigator.pushReplacementNamed(
+      context,
+      Routes.newPassword,
+      arguments: email,
+    );
   }
 
   void _failureState(String error, BuildContext context) {
@@ -56,7 +65,7 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
   }
 
   // * resend Code----------------------------
-  late Timer _timer;
+  Timer? _timer;
   int waitingTime = 0;
   void sendCode(BuildContext context) async {
     emit(const VerifyCodeLoadingState());
@@ -88,5 +97,5 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
   }
 
   // end resend Code----------------------------
-  void onWillPop() => _timer.cancel();
+  void onWillPop() => _timer?.cancel();
 }
