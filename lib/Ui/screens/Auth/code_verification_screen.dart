@@ -13,11 +13,11 @@ class CodeVerificationScreen extends StatefulWidget {
   final String email;
 
   static BlurredRouter route(RouteSettings routeSettings) {
-    final String email =  routeSettings.arguments as String;
+    final String email = routeSettings.arguments as String;
     return BlurredRouter(
       builder: (_) => BlocProvider(
         create: (context) => VerifyCodeCubit(email),
-        child: CodeVerificationScreen(email:email),
+        child: CodeVerificationScreen(email: email),
       ),
     );
   }
@@ -52,6 +52,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
 
           HelperUtils.showSnackBarMessage(
             context,
+            messageDuration: 2,
             "pressAgainToExit".translate(context),
           );
           canPop = true;

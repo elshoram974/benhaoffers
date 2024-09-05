@@ -57,8 +57,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 arguments: {"from": "login"},
               );*/
 
-              Navigator.pushReplacementNamed(context, Routes.login
-              );
+              Navigator.pushReplacementNamed(context, Routes.login);
               return;
             }
             // timer.cancel();

@@ -59,6 +59,7 @@ class Api {
   static String loginApi = "user-signup";
   static String sendCode = "send-code";
   static String checkCode = "check-code";
+  static String createNewPassword = "create-new-password";
   static String updateProfileApi = "update-profile";
   static String getSliderApi = "get-slider";
   static String getCategoriesApi = "get-categories";

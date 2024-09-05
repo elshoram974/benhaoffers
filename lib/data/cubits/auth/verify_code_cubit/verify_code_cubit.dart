@@ -40,9 +40,6 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
       if (context.mounted) {
         Widgets.hideLoder(context);
         _failureState(e.toString(), context);
-
-        // TODO: remove this when it work
-        _verifySuccess(context);
       }
     }
   }

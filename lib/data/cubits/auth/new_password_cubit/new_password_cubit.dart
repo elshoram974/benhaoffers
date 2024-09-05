@@ -1,14 +1,20 @@
+import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/helper_utils.dart';
+import 'package:eClassify/app/routes.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../Repositories/auth_repository.dart';
+import '../../../helper/widgets.dart';
 
 part 'new_password_state.dart';
 
 class CreateNewPasswordCubit extends Cubit<CreateNewPasswordState> {
   final String email;
-
   CreateNewPasswordCubit(this.email) : super(const CreateNewPasswordInitial());
+
+  final AuthRepository repo = AuthRepository();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String newPassword = '';
@@ -25,31 +31,36 @@ class CreateNewPasswordCubit extends Cubit<CreateNewPasswordState> {
     if (!isValidPass) return;
 
     emit(const CreateNewPasswordLoadingState());
+    Widgets.showLoader(context);
 
-    // EasyLoading.show(dismissOnTap: false);
-
-    // final Status<User> savedStatus = await createNewPasswordUseCase((
-    //   id: userId,
-    //   newPass: newPassword,
-    // ));
-    // await EasyLoading.dismiss();
-    // if (savedStatus is Success<User>) {
-    //   _savedSuccess(savedStatus.data.copyWith(password: newPassword));
-    // } else if (savedStatus is Failure<User>) {
-    //   _failureState(savedStatus.failure.message);
-    // }
+    try {
+      await repo.createNewPassword(email, newPassword);
+      if (context.mounted) {
+        Widgets.hideLoder(context);
+        _savedSuccess(context);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Widgets.hideLoder(context);
+        _failureState(e.toString(), context);
+      }
+    }
   }
 
   // end saved new password Code----------------------------
 
-  void _savedSuccess(Map<String, dynamic> data) {
-    emit(CreateNewPasswordSuccessState(data));
-    // TextInput.finishAutofillContext();
-    // if (user.userType == UserType.business) {
-    //   // TODO: to admin home
-    // } else {
-    //   AppRoute.key.currentContext!.go(AppRoute.userHome, extra: user);
-    // }
+  void _savedSuccess(BuildContext context) {
+    emit(const CreateNewPasswordSuccessState());
+    HelperUtils.showSnackBarMessage(
+      context,
+      "passwordChangeSuccess".translate(context),
+    );
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      Routes.login,
+      (route) => route.isFirst,
+    );
   }
 
   void _failureState(String error, BuildContext context) {

@@ -531,5 +531,6 @@
     "resend": "إعادة الإرسال",
     "createNewPassword": "إنشاء كلمة مرور جديدة",
     "yourNewPasswordMustBeDifferentFromPreviously": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا",
+    "passwordChangeSuccess": "تم تغيير الرقم السري بنجاح.",
     "patienceFoundationOfSuccess": "الصبر اساس النجاح"
 }

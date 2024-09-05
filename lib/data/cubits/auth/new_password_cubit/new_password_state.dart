@@ -22,10 +22,7 @@ final class CreateNewPasswordChangeTextState extends CreateNewPasswordState {
   List<String> get props => [val];
 }
 final class CreateNewPasswordSuccessState extends CreateNewPasswordState {
-  final Map<String,dynamic> data;
-  const CreateNewPasswordSuccessState(this.data);
-  @override
-  List<Map<String,dynamic>> get props => [data];
+  const CreateNewPasswordSuccessState();
 }
 
 final class CreateNewPasswordFailureState extends CreateNewPasswordState {

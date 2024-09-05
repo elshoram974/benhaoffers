@@ -80,6 +80,15 @@ class AuthRepository {
     );
     return {"token": response['token'], "data": response['data']};
   }
+  
+  Future<Map<String, dynamic>>? createNewPassword(String email, String password) async {
+    Map<String, String> parameters = {Api.email: email, Api.password: password};
+    Map<String, dynamic> response = await Api.post(
+      url: Api.createNewPassword,
+      parameter: parameters,
+    );
+    return {"token": response['token'], "data": response['data']};
+  }
 
   Future<Map<String, dynamic>> numberLoginWithApi(
       {String? phone,

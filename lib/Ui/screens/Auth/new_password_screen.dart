@@ -42,6 +42,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
 
           HelperUtils.showSnackBarMessage(
             context,
+            messageDuration: 2,
             "pressAgainToExit".translate(context),
           );
           canPop = true;
