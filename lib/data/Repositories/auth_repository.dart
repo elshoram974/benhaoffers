@@ -72,6 +72,15 @@ class AuthRepository {
     return {"token": response['token'], "data": response['data']};
   }
 
+  Future<Map<String, dynamic>>? checkCode(String email, String code) async {
+    Map<String, String> parameters = {Api.email: email, Api.code: code};
+    Map<String, dynamic> response = await Api.post(
+      url: Api.checkCode,
+      parameter: parameters,
+    );
+    return {"token": response['token'], "data": response['data']};
+  }
+
   Future<Map<String, dynamic>> numberLoginWithApi(
       {String? phone,
       required String uid,

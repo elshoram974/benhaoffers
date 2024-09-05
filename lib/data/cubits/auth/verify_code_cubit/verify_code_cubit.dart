@@ -26,37 +26,28 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
 
   void verifyCode(BuildContext context) async {
     if (code.length < 6 || state is VerifyCodeLoadingState) return;
+    emit(const VerifyCodeLoadingState());
     Widgets.showLoader(context);
 
-    emit(const VerifyCodeLoadingState());
-    // final Status<User> verifyStatus = await verifyCodeUseCase((
-    //   id: user.userId,
-    //   code: code,
-    //   verification: verificationFromNextRoute(),
-    // ));
-    if (context.mounted) Widgets.hideLoder(context);
-
-    // if (verifyStatus is Success<User>) {
-    //   _verifySuccess(verifyStatus.data, nextRoute);
-    // } else if (verifyStatus is Failure<User>) {
-    //   if (context.mounted) _failureState(verifyStatus.failure.message, context);
-    // }
+    try {
+      await repo.checkCode(email, code);
+      if (context.mounted) {
+        Widgets.hideLoder(context);
+        _verifySuccess(context);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Widgets.hideLoder(context);
+        _failureState(e.toString(), context);
+      }
+    }
   }
 
   // end verify Code----------------------------
 
-  void _verifySuccess() {
+  void _verifySuccess(BuildContext context) {
     _timer.cancel();
-    emit(VerifyCodeSuccessState());
-    // if (nextRoute == AppRoute.userHome) {
-    //   if (user.userType == UserType.business) {
-    //     // TODO: to admin home
-    //   } else {
-    //     AppRoute.key.currentContext!.go(AppRoute.userHome, extra: user);
-    //   }
-    // } else {
-    //   AppRoute.key.currentContext!.pushReplacement(nextRoute, extra: user.id);
-    // }
+    emit(VerifyCodeSuccessState(code));
   }
 
   void _failureState(String error, BuildContext context) {
@@ -78,7 +69,7 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
     } catch (e) {
       if (context.mounted) {
         Widgets.hideLoder(context);
-        _failureState("Failed to send code $e", context);
+        _failureState(e.toString(), context);
       }
     }
   }
