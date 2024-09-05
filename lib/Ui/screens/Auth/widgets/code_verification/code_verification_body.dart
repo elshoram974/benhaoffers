@@ -29,6 +29,7 @@ class CodeVerificationBody extends StatelessWidget {
                   fit: BoxFit.none,
                   child: MaterialButton(
                     onPressed: () {
+                      cubit.onWillPop();
                       Navigator.pushNamed(
                         context,
                         Routes.main,

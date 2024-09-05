@@ -33,8 +33,10 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
 
   @override
   void initState() {
-    cubit.email = widget.email;
     super.initState();
+    cubit.email = widget.email;
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => cubit.sendCode(context));
   }
 
   @override

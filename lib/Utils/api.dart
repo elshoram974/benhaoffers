@@ -57,6 +57,7 @@ class Api {
 
   //api fun
   static String loginApi = "user-signup";
+  static String sendCode = "send-code";
   static String updateProfileApi = "update-profile";
   static String getSliderApi = "get-slider";
   static String getCategoriesApi = "get-categories";

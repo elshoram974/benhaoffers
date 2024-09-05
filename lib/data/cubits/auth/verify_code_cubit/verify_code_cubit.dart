@@ -10,9 +10,7 @@ import '../../../helper/widgets.dart';
 part 'verify_code_state.dart';
 
 class VerifyCodeCubit extends Cubit<VerifyCodeState> {
-  VerifyCodeCubit() : super(const VerifyCodeInitial()) {
-    _start();
-  }
+  VerifyCodeCubit() : super(const VerifyCodeInitial());
 
   final AuthRepository repo = AuthRepository();
   bool submitIsEnabled = false;
@@ -68,23 +66,25 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
 
   // * resend Code----------------------------
   late Timer _timer;
-  late int waitingTime;
-  void resendCode(BuildContext context) async {
+  int waitingTime = 0;
+  void sendCode(BuildContext context) async {
     emit(const VerifyCodeLoadingState());
     Widgets.showLoader(context);
-    // final Status<User> status = await sendCodeUseCase.call((
-    //   email: user.email,
-    //   verification: verificationFromNextRoute(),
-    // ));
-    if (context.mounted) Widgets.hideLoder(context);
-    // if (status is Success<User>) {
-    //   _start();
-    // } else if (status is Failure<User>) {
-    //   if (context.mounted) _failureState(status.failure.message, context);
-    // }
+
+    try {
+      await repo.requestToSendCode(email);
+      if (context.mounted) Widgets.hideLoder(context);
+      _start();
+    } catch (e) {
+      if (context.mounted) {
+        Widgets.hideLoder(context);
+        _failureState("Failed to send code $e", context);
+      }
+    }
   }
 
   void _start() {
+    // if (_timer.isActive) _timer.cancel();
     waitingTime = 90;
     _timer = Timer.periodic(
       const Duration(seconds: 1),

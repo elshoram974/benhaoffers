@@ -23,9 +23,8 @@ class ResendWidget extends StatelessWidget {
               c.duration == cubit.waitingTime,
           builder: (context, state) {
             return TextButton(
-              onPressed: cubit.waitingTime == 0
-                  ? () => cubit.resendCode(context)
-                  : null,
+              onPressed:
+                  cubit.waitingTime == 0 ? () => cubit.sendCode(context) : null,
               child: Text("resend".translate(context)),
             );
           },
