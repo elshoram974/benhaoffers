@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:country_picker/country_picker.dart';
 import 'package:eClassify/Ui/screens/widgets/custom_text_form_field.dart';
 import 'package:eClassify/Ui/screens/widgets/image_cropper.dart';
 import 'package:eClassify/Utils/AppIcon.dart';
@@ -65,7 +64,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   File? fileUserimg;
   bool isNotificationsEnabled = true;
   bool? isLoading;
-  String? countryCode = "+${Constant.defaultCountryCode}";
 
   @override
   void initState() {
@@ -87,18 +85,9 @@ class UserProfileScreenState extends State<UserProfileScreen> {
           HiveUtils.getUserDetails().notification == 1 ? true : false;
     }
 
-    if (HiveUtils.getCountryCode() != null) {
-      countryCode = (HiveUtils.getCountryCode() != null
-          ? HiveUtils.getCountryCode()!
-          : "");
-      phoneController.text = HiveUtils.getUserDetails().mobile != null
-          ? HiveUtils.getUserDetails().mobile!.replaceFirst("+$countryCode", "")
-          : "";
-    } else {
-      phoneController.text = HiveUtils.getUserDetails().mobile != null
-          ? HiveUtils.getUserDetails().mobile!
-          : "";
-    }
+    phoneController.text = HiveUtils.getUserDetails().mobile != null
+        ? HiveUtils.getUserDetails().mobile!
+        : "";
   }
 
   @override
@@ -303,25 +292,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
             ),
           ],
         ),*/
-        fixedPrefix: SizedBox(
-          width: 55,
-          child: Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: GestureDetector(
-                onTap: () {
-                  showCountryCode();
-                },
-                child: Container(
-                  // color: Colors.red,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                  child: Center(
-                      child: Text("$countryCode")
-                          .size(context.font.large)
-                          .centerAlign()),
-                ),
-              )),
-        ),
         hintText: "phoneNumber".translate(context),
       )
     ]);
@@ -733,19 +703,5 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       fileUserimg = null;
     }
     setState(() {});
-  }
-
-  void showCountryCode() {
-    showCountryPicker(
-      context: context,
-      showWorldWide: false,
-      showPhoneCode: true,
-      countryListTheme:
-          CountryListThemeData(borderRadius: BorderRadius.circular(11)),
-      onSelect: (Country value) {
-        countryCode = value.phoneCode;
-        setState(() {});
-      },
-    );
   }
 }

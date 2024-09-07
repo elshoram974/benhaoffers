@@ -39,6 +39,7 @@ class CustomTextFormField extends StatefulWidget {
   final Color? borderColor;
   final Widget? fixedPrefix;
   final bool? obscureText;
+  final bool autofocus;
   final int? maxLength;
   final int? minLength;
   final TextStyle? hintTextStyle;
@@ -67,6 +68,7 @@ class CustomTextFormField extends StatefulWidget {
     this.borderColor,
     this.fixedPrefix,
     this.obscureText,
+    this.autofocus = false,
     this.maxLength,
     this.hintTextStyle,
     this.minLength,
@@ -158,6 +160,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                               )
                             : null,
                         child: TextFormField(
+                          autofocus: widget.autofocus,
                           focusNode: focusNode,
                           initialValue: widget.initialValue,
                           onEditingComplete: widget.onEditingComplete,

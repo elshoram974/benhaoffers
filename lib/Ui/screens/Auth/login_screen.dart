@@ -22,10 +22,11 @@ import '../../../data/helper/widgets.dart';
 import '../../../exports/main_export.dart';
 import '../widgets/AnimatedRoutes/blur_page_route.dart';
 
-  // settings
-  const bool showLoginWithPhone = false;
-  const bool showLoginWithGoogle = false;
-  const bool showLoginWithApple = false;
+// settings
+const bool showLoginWithPhone = true;
+const bool showLoginWithGoogle = false;
+const bool showLoginWithApple = false;
+
 class LoginScreen extends StatefulWidget {
   final bool? isDeleteAccount;
   final bool? popToCurrent;
@@ -49,7 +50,7 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailMobileTextController = TextEditingController(
       text: Constant.isDemoModeOn ? Constant.demoMobileNumber : "");
   bool isOtpSent = false;
-  String? phone, otp, countryCode, countryName, flagEmoji;
+  String? phone, otp, countryName;
 
   Timer? timer;
   late Size size;
@@ -126,13 +127,6 @@ class LoginScreenState extends State<LoginScreen> {
         // Widgets.hideLoder(context);
       }
     });
-    getSimCountry().then((value) {
-      print("value country***$value");
-      countryCode = value.phoneCode;
-
-      flagEmoji = value.flagEmoji;
-      setState(() {});
-    });
   }
 
   /// it will return user's sim cards country code
@@ -187,21 +181,18 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   void _onTapContinue() {
-    if (isMobileNumberField && showLoginWithPhone) {
-      final String number =
-          emailMobileTextController.text.replaceAll(RegExp(r'^0+'), '');
-      emailMobileTextController.text = number;
-      // isOtpSent = true;
-      // phoneLoginPayload =
-      //     PhoneLoginPayload(emailMobileTextController.text, countryCode!);
+    // if (isMobileNumberField && showLoginWithPhone) {
+    // isOtpSent = true;
+    // phoneLoginPayload =
+    //     PhoneLoginPayload(emailMobileTextController.text, countryCode!);
 
-      // context
-      //     .read<AuthenticationCubit>()
-      //     .setData(payload: phoneLoginPayload, type: AuthenticationType.phone);
-      // context.read<AuthenticationCubit>().verify();
+    // context
+    //     .read<AuthenticationCubit>()
+    //     .setData(payload: phoneLoginPayload, type: AuthenticationType.phone);
+    // context.read<AuthenticationCubit>().verify();
 
-      // setState(() {});
-    }
+    // setState(() {});
+    // }
     // else {
     sendMailClicked = true;
     setState(() {});
@@ -307,7 +298,6 @@ class LoginScreenState extends State<LoginScreen> {
                                   state.apiResponse['email'],
                               "username": state.apiResponse['name'],
                               "mobile": state.apiResponse['mobile'],
-                              "countryCode": countryCode
                             }
                           },
                         );
@@ -335,14 +325,9 @@ class LoginScreenState extends State<LoginScreen> {
                               .isNotEmpty) {
                             context.read<LoginCubit>().loginEmailPhone(
                                   context,
-                                  email:
-                                      (isMobileNumberField && showLoginWithPhone
-                                              ? "+$countryCode"
-                                              : '') +
-                                          emailMobileTextController.text.trim(),
+                                  email: emailMobileTextController.text.trim(),
                                   password: _passwordController.text,
                                   type: state.type,
-                                  countryCode: "+$countryCode",
                                 );
                           }
                           // } else {
@@ -499,27 +484,6 @@ class LoginScreenState extends State<LoginScreen> {
                 validator: isMobileNumberField && showLoginWithPhone
                     ? CustomTextFieldValidator.phoneNumber
                     : CustomTextFieldValidator.email,
-                fixedPrefix: (isMobileNumberField && showLoginWithPhone)
-                    ? SizedBox(
-                        width: 55,
-                        child: Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: GestureDetector(
-                              onTap: () {
-                                showCountryCode();
-                              },
-                              child: Container(
-                                // color: Colors.red,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 8),
-                                child: Center(
-                                    child: Text("+$countryCode")
-                                        .size(context.font.large)
-                                        .centerAlign()),
-                              ),
-                            )),
-                      )
-                    : null,
                 hintText: "emailOrPhone".translate(context),
               ),
               const SizedBox(height: 46),
@@ -700,21 +664,6 @@ class LoginScreenState extends State<LoginScreen> {
     return Future.value(false);
   }
 
-  void showCountryCode() {
-    showCountryPicker(
-      context: context,
-      showWorldWide: false,
-      showPhoneCode: true,
-      countryListTheme:
-          CountryListThemeData(borderRadius: BorderRadius.circular(11)),
-      onSelect: (Country value) {
-        flagEmoji = value.flagEmoji;
-        countryCode = value.phoneCode;
-        setState(() {});
-      },
-    );
-  }
-
   Widget verifyOTPWidget() {
     /* _otpController = TextEditingController(
         text: emailMobileTextController.text == Constant.demoMobileNumber
@@ -873,26 +822,9 @@ class LoginScreenState extends State<LoginScreen> {
                 ? "signInWithMob".translate(context)
                 : "signInWithEmail".translate(context),
           ).size(context.font.extraLarge),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Text((isMobileNumberField && showLoginWithPhone
-                          ? "+$countryCode "
-                          : '') +
-                      emailMobileTextController.text)
-                  .size(context.font.large),
-              const SizedBox(width: 5),
-              InkWell(
-                child: Text("change".translate(context))
-                    .underline()
-                    .color(context.color.territoryColor)
-                    .size(context.font.large),
-                onTap: () => onWillPop(context),
-              ),
-            ],
-          ),
           const SizedBox(height: 24),
           CustomTextFormField(
+            autofocus: true,
             hintText: "${"password".translate(context)}*",
             validator: CustomTextFieldValidator.nullCheck,
             controller: _passwordController,

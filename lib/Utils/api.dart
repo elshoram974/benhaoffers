@@ -56,7 +56,8 @@ class Api {
   static String stripeIntentAPI = "https://api.stripe.com/v1/payment_intents";
 
   //api fun
-  static String loginApi = "user-signup";
+  static String login = "user-login";
+  static String signUp = "user-signup";
   static String sendCode = "send-code";
   static String checkCode = "check-code";
   static String createNewPassword = "create-new-password";
@@ -219,7 +220,7 @@ class Api {
   static String stateId = "state_id";
   static String countryId = "country_id";
   static String cityId = "city_id";
-  static String countryCode = "country_code";
+  // static String countryCode = "country_code";
 
   static Future<Map<String, dynamic>> post({
     required String url,

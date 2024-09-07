@@ -16,7 +16,7 @@ class AuthRepository {
     required String email,
     required String name,
     String? profile,
-    String? countryCode,
+    // String? countryCode,
   }) async {
     Map<String, String> parameters = {
       if (phone != null) Api.mobile: phone,
@@ -25,11 +25,11 @@ class AuthRepository {
       if (fcmId != null) Api.fcmId: fcmId,
       Api.email: email,
       Api.name: name,
-      if (countryCode != null) Api.countryCode: countryCode,
+      // if (countryCode != null) Api.countryCode: countryCode,
     };
 
     Map<String, dynamic> response = await Api.post(
-      url: Api.loginApi,
+      url: Api.signUp,
       parameter: parameters, /* useAuthToken: false*/
     );
 
@@ -47,7 +47,7 @@ class AuthRepository {
       Api.type: type.name,
       Api.password: password,
       if (fcmId != null) Api.fcmId: fcmId,
-      if (countryCode != null) Api.countryCode: countryCode,
+      // if (countryCode != null) Api.countryCode: countryCode,
     };
     if (AuthenticationType.phone == type) {
       parameters[Api.mobile] = email;
@@ -56,7 +56,7 @@ class AuthRepository {
     }
 
     Map<String, dynamic> response = await Api.post(
-      url: Api.loginApi,
+      url: Api.login,
       parameter: parameters,
     );
 
@@ -80,8 +80,9 @@ class AuthRepository {
     );
     return {"token": response['token'], "data": response['data']};
   }
-  
-  Future<Map<String, dynamic>>? createNewPassword(String email, String password) async {
+
+  Future<Map<String, dynamic>>? createNewPassword(
+      String email, String password) async {
     Map<String, String> parameters = {Api.email: email, Api.password: password};
     Map<String, dynamic> response = await Api.post(
       url: Api.createNewPassword,
@@ -106,12 +107,12 @@ class AuthRepository {
       if (fcmId != null) Api.fcmId: fcmId,
       if (email != null) Api.email: email,
       if (name != null) Api.name: name,
-      if (countryCode != null) Api.countryCode: countryCode,
+      // if (countryCode != null) Api.countryCode: countryCode,
       //if (profile != null) Api.profile: profile
     };
 
     Map<String, dynamic> response = await Api.post(
-      url: Api.loginApi,
+      url: Api.login,
       parameter: parameters, /* useAuthToken: false*/
     );
 

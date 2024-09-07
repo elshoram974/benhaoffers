@@ -32,7 +32,7 @@ class EmailLogin extends LoginSystem {
           if (token != null) parameters[Api.fcmId] = token;
 
           await Api.post(
-            url: Api.loginApi,
+            url: Api.signUp,
             parameter: parameters,
           );
           emit(MSuccess());
