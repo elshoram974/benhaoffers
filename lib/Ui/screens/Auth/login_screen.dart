@@ -822,6 +822,20 @@ class LoginScreenState extends State<LoginScreen> {
                 ? "signInWithMob".translate(context)
                 : "signInWithEmail".translate(context),
           ).size(context.font.extraLarge),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Text(emailMobileTextController.text).size(context.font.large),
+              const SizedBox(width: 5),
+              InkWell(
+                child: Text("change".translate(context))
+                    .underline()
+                    .color(context.color.territoryColor)
+                    .size(context.font.large),
+                onTap: () => onWillPop(context),
+              ),
+            ],
+          ),
           const SizedBox(height: 24),
           CustomTextFormField(
             autofocus: true,
