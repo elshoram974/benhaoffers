@@ -1,4 +1,5 @@
 import 'package:eClassify/Utils/Extensions/extensions.dart';
+import 'package:eClassify/Utils/validator.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController(text: widget.email);
+    _emailController = TextEditingController();
+    Future.delayed(
+      Duration.zero,
+      () {
+        if (Validator.validateEmail(email: widget.email, context: context) ==
+            null) {
+          _emailController.text = widget.email ?? '';
+        }
+      },
+    );
   }
 
   @override
@@ -92,10 +102,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     .color(context.color.textLightColor),
                 const SizedBox(height: 24),
                 CustomTextFormField(
-                    controller: _emailController,
-                    keyboard: TextInputType.emailAddress,
-                    hintText: "emailAddress".translate(context),
-                    validator: CustomTextFieldValidator.email),
+                  controller: _emailController,
+                  keyboard: TextInputType.emailAddress,
+                  hintText: "emailAddress".translate(context),
+                  validator: CustomTextFieldValidator.email,
+                ),
                 const SizedBox(height: 25),
                 UiUtils.buildButton(
                   context,
@@ -105,8 +116,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     Future.delayed(const Duration(seconds: 1)).then((_) async {
                       if (_formKey.currentState!.validate()) {
                         final String mail = _emailController.text.trim();
-                        Navigator.of(context)
-                            .pushNamed(Routes.verificationCode, arguments: mail);
+                        Navigator.of(context).pushNamed(Routes.verificationCode,
+                            arguments: mail);
                         // try {
                         //   await _auth
                         //       .sendPasswordResetEmail(
