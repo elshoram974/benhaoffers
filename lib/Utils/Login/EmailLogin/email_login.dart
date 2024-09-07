@@ -29,7 +29,7 @@ class EmailLogin extends LoginSystem {
           };
           parameters.addAll(CloudState.cloudData['signup_details']);
 
-          if(token != null) parameters[Api.fcmId] = token;
+          if (token != null) parameters[Api.fcmId] = token;
 
           await Api.post(
             url: Api.loginApi,
@@ -44,7 +44,11 @@ class EmailLogin extends LoginSystem {
           // );
         }
       } catch (e) {
+        FirebaseAuth.instance.currentUser!.delete();
         emit(MFail(e));
+
+        // TODO: cancel this and make it like in login
+        throw e.toString();
       }
     }
     return userCredential;

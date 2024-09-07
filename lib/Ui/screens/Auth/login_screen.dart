@@ -22,6 +22,10 @@ import '../../../data/helper/widgets.dart';
 import '../../../exports/main_export.dart';
 import '../widgets/AnimatedRoutes/blur_page_route.dart';
 
+  // settings
+  const bool showLoginWithPhone = false;
+  const bool showLoginWithGoogle = false;
+  const bool showLoginWithApple = false;
 class LoginScreen extends StatefulWidget {
   final bool? isDeleteAccount;
   final bool? popToCurrent;
@@ -55,18 +59,13 @@ class LoginScreenState extends State<LoginScreen> {
   String numberOrEmail = "";
   bool sendMailClicked = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _otpController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   bool isObscure = true;
   // late PhoneLoginPayload phoneLoginPayload =
   //     PhoneLoginPayload(emailMobileTextController.text, countryCode!);
   bool isBack = false;
-
-  // settings
-  final bool showLoginWithPhone = false;
-  final bool showLoginWithGoogle = false;
-  final bool showLoginWithApple = false;
 
   @override
   void initState() {
