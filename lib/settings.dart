@@ -188,10 +188,10 @@ it will call API in background without showing the process and when data availab
   ///Here is for only reference you have to change it from panel
   static String enabledPaymentGateway = "";
   static String razorpayKey = "";
-  static int razorpayStatus = 1;
+  static int razorpayStatus = 0;
   static String payStackKey = ""; // public key
   static String payStackCurrency = "";
-  static int payStackStatus = 1;
+  static int payStackStatus = 0;
   static String paypalClientId = "";
   static String paypalServerKey = ""; //secrete
   static bool isSandBoxMode = true; //testing mode
@@ -199,7 +199,7 @@ it will call API in background without showing the process and when data availab
   static String paypalReturnURL = "";
   static String stripeCurrency = "";
   static String stripePublishableKey = "";
-  static int stripeStatus = 1;
+  static int stripeStatus = 0;
 
   static List<PaymentGateway> getEnabledPaymentGateways() {
     print("paymentGateways****${paymentGateways.length}");
