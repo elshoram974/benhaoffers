@@ -58,7 +58,7 @@ class Api {
   //api fun
   static String login = "user-login";
   static String signUp = "user-signup";
-  static String sendCode = "send-code";
+  static String sendCode = "forget-password";
   static String checkCode = "check-code";
   static String createNewPassword = "create-new-password";
   static String updateProfileApi = "update-profile";
@@ -127,6 +127,7 @@ class Api {
   static String code = "code";
   static String address = "address";
   static String clientAddress = "client_address";
+  static String identity = "identity";
   static String email = "email";
   static String password = "password";
   static String categoryId = "category_id";

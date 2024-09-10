@@ -64,7 +64,7 @@ class AuthRepository {
   }
 
   Future<Map<String, dynamic>>? requestToSendCode(String email) async {
-    Map<String, String> parameters = {Api.email: email};
+    Map<String, String> parameters = {Api.identity: email};
     Map<String, dynamic> response = await Api.post(
       url: Api.sendCode,
       parameter: parameters,

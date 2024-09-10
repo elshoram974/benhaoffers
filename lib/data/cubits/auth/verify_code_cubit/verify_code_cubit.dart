@@ -64,6 +64,26 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
   // * resend Code----------------------------
   Timer? _timer;
   int waitingTime = 0;
+  void sendCodeFirstTime(BuildContext context) async {
+    emit(const VerifyCodeLoadingState());
+    Widgets.showLoader(context);
+
+    try {
+      await repo.requestToSendCode(email);
+      if (context.mounted) Widgets.hideLoder(context);
+      _start();
+    } catch (e) {
+      if (context.mounted) {
+        Widgets.hideLoder(context);
+        onWillPop();
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+        _failureState(e.toString(), context);
+      }
+    }
+  }
+
   void sendCode(BuildContext context) async {
     emit(const VerifyCodeLoadingState());
     Widgets.showLoader(context);

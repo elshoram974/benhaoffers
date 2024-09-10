@@ -36,7 +36,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => cubit.sendCode(context));
+        .addPostFrameCallback((_) => cubit.sendCodeFirstTime(context));
   }
 
   @override
