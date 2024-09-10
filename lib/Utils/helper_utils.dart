@@ -155,10 +155,14 @@ class HelperUtils {
   }
 
   static Future<void> precacheSVG(List<String> urls) async {
-    for (String imageUrl in urls) {
-      var loader = SvgAssetLoader(imageUrl);
-      await svg.cache
-          .putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));
+    try {
+      for (String imageUrl in urls) {
+        var loader = SvgAssetLoader(imageUrl);
+        await svg.cache
+            .putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));
+      }
+    } catch (e) {
+      return;
     }
   }
 
@@ -385,8 +389,6 @@ class HelperUtils {
   static Future<File> compressImageFile(File file) async {
     try {
       final int fileSize = await file.length();
-
-
 
       if (fileSize <= Constant.maxSizeInBytes) {
         // No need to compress if already within size limit
