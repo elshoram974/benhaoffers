@@ -103,12 +103,17 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
   void _start() {
     // if (_timer.isActive) _timer.cancel();
     waitingTime = 90;
+    emit(const VerifyCodeLoadingResendCodeState(true));
+
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
         waitingTime--;
-        emit(VerifyCodeLoadingResendCodeState(waitingTime));
-        if (waitingTime <= 0) timer.cancel();
+        if (waitingTime <= 0) {
+          emit(const VerifyCodeLoadingResendCodeState(false));
+
+          timer.cancel();
+        }
       },
     );
   }

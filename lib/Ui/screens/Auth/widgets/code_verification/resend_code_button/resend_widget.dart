@@ -18,11 +18,14 @@ class ResendWidget extends StatelessWidget {
             .color(context.color.textColorDark.brighten(50)),
         const SizedBox(width: 12),
         BlocBuilder<VerifyCodeCubit, VerifyCodeState>(
-          buildWhen: (p, c) =>
-              c is VerifyCodeLoadingResendCodeState &&
-              c.duration == cubit.waitingTime,
+          buildWhen: (p, c) => c is VerifyCodeLoadingResendCodeState,
           builder: (context, state) {
             return TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               onPressed:
                   cubit.waitingTime == 0 ? () => cubit.sendCode(context) : null,
               child: Text("resend".translate(context)),

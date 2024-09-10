@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import '../../../../../data/cubits/auth/verify_code_cubit/verify_code_cubit.dart';
 import '../../../../../exports/main_export.dart';
 import 'code_fields.dart';
-import 'code_verification_buttons.dart';
+import 'resend_code_button/resend_code_button.dart';
 
 class CodeVerificationBody extends StatelessWidget {
   const CodeVerificationBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-  final VerifyCodeCubit cubit = BlocProvider.of<VerifyCodeCubit>(context);
+    final VerifyCodeCubit cubit = BlocProvider.of<VerifyCodeCubit>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -64,8 +64,7 @@ class CodeVerificationBody extends StatelessWidget {
                   .color(context.color.textLightColor),
               const SizedBox(height: 24),
               const CodeFields(),
-              const CodeVerificationButtons(),
-              const SizedBox(height: 25),
+              const SizedBox(height: 53),
               BlocBuilder<VerifyCodeCubit, VerifyCodeState>(
                 buildWhen: (p, c) => c is VerifyCodeSubmitState,
                 builder: (context, state) {
@@ -79,6 +78,9 @@ class CodeVerificationBody extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 8),
+              const ResendCodeButton(),
+              const SizedBox(height: 25),
             ],
           ),
         ),

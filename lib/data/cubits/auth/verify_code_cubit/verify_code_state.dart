@@ -24,11 +24,11 @@ final class VerifyCodeSubmitState extends VerifyCodeState {
 }
 
 final class VerifyCodeLoadingResendCodeState extends VerifyCodeState {
-  final int duration;
-  const VerifyCodeLoadingResendCodeState(this.duration);
+  final bool isCounting;
+  const VerifyCodeLoadingResendCodeState(this.isCounting);
 
   @override
-  List<int> get props => [duration];
+  List<bool> get props => [isCounting];
 }
 
 final class VerifyCodeSuccessState extends VerifyCodeState {
