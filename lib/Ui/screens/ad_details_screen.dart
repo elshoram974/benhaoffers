@@ -463,7 +463,11 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                               .setMaxLines(lines: 2)
                               .color(context.color.textDefaultColor),
                         ),
-                        if (!isAddedByMe) SellerNameContainer(itemModel: model),
+                        if (!isAddedByMe)
+                          SellerNameContainer(
+                            itemModel: model,
+                            turnFnOn: !isAddedByMe,
+                          ),
                       ],
                     ),
                   ),

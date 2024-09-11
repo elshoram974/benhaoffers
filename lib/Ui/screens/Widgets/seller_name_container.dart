@@ -1,25 +1,24 @@
 import 'package:eClassify/Utils/Extensions/extensions.dart';
-import 'package:eClassify/Utils/hive_utils.dart';
 import 'package:eClassify/app/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/model/item/item_model.dart';
 
 class SellerNameContainer extends StatelessWidget {
-  const SellerNameContainer({super.key, required this.itemModel});
+  const SellerNameContainer({
+    super.key,
+    required this.itemModel,
+    required this.turnFnOn,
+  });
 
   final ItemModel itemModel;
+  final bool turnFnOn;
 
   @override
   Widget build(BuildContext context) {
-    final bool byMe = (itemModel.user?.id != null
-            ? itemModel.user?.id.toString()
-            : itemModel.userId) ==
-        HiveUtils.getUserId();
     return GestureDetector(
-      onTap: byMe
-          ? null
-          : () {
+      onTap: turnFnOn
+          ? () {
               Navigator.pushNamed(
                 context,
                 Routes.sellerDetailsScreen,
@@ -27,7 +26,8 @@ class SellerNameContainer extends StatelessWidget {
                   "model": itemModel,
                 },
               );
-            },
+            }
+          : null,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(

@@ -364,7 +364,7 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    projectName = json['project_name'];
+    projectName = json['project_name'] ?? name;
     mobile = json['mobile'];
     email = json['email'];
     type = json['type'];

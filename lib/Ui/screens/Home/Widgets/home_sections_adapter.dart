@@ -209,12 +209,14 @@ class TitleHeader extends StatelessWidget {
 class ItemCard extends StatefulWidget {
   final double? width;
   final bool? bigCard;
+  final bool turnUserDetailsFnOn;
   final ItemModel? item;
 
   const ItemCard({
     super.key,
     required this.item,
     this.width,
+    this.turnUserDetailsFnOn = true,
     this.bigCard,
   });
 
@@ -228,9 +230,14 @@ class _ItemCardState extends State<ItemCard> {
 
   // Use nullable bool to represent initial state
 
+  late final bool byMe;
   @override
   void initState() {
     super.initState();
+    byMe = (widget.item?.user?.id != null
+            ? widget.item?.user?.id.toString()
+            : widget.item?.userId) ==
+        HiveUtils.getUserId();
     // Initialize the isLiked status based on the existing favorite state
   }
 
@@ -282,7 +289,10 @@ class _ItemCardState extends State<ItemCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (widget.item != null)
-                          SellerNameContainer(itemModel: widget.item!),
+                          SellerNameContainer(
+                            itemModel: widget.item!,
+                            turnFnOn: widget.turnUserDetailsFnOn && !byMe,
+                          ),
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(widget.item!.name!)

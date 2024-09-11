@@ -57,7 +57,6 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
     super.dispose();
   }
 
-
   void _loadMore() async {
     if (controller.isEndReached()) {
       if (context.read<FetchItemFromSellerCubit>().hasMoreData()) {
@@ -150,6 +149,7 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
             child: Row(
               children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(seller.projectName!).bold().size(context.font.larger),
                   Text(seller.name!).bold().size(context.font.large),
                   Text(seller.email!)
                       .color(context.color.textLightColor)
@@ -274,6 +274,7 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
                 },
                 child: ItemCard(
                   item: item,
+                  turnUserDetailsFnOn: false,
                   width: MediaQuery.sizeOf(context).width / 2.3.rw(context),
                 ));
           },
