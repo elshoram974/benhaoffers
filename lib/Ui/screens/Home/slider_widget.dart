@@ -213,7 +213,11 @@ class _SliderWidgetState extends State<_SliderWidget>
     super.initState();
     bannersLength = widget.sliderlist.length;
     _tabController = TabController(length: bannersLength, vsync: this);
-    _tabController.addListener(() => _bannerIndex.value = _tabController.index);
+    _tabController.addListener(() {
+      _timer.cancel();
+      _startAutoSlider();
+      _bannerIndex.value = _tabController.index;
+    });
     _startAutoSlider();
   }
 
@@ -247,7 +251,7 @@ class _SliderWidgetState extends State<_SliderWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _bannerIndex.value = 0 ;
+    _bannerIndex.value = 0;
 
     return Column(
       children: [
