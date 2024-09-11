@@ -1514,84 +1514,84 @@ class _ConfirmLocationScreenState extends CloudState<ConfirmLocationScreen>
           ? Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Text(
-                    "locationItemSellingLbl".translate(context),
-                  )
-                      .bold(weight: FontWeight.bold)
-                      .size(context.font.larger)
-                      .centerAlign(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
-                  child: UiUtils.buildButton(context, height: 48,
-                      onPressed: () {
-                    Navigator.pushNamed(context, Routes.countriesScreen,
-                        arguments: {"from": "addItem"}).then((value) {
-                      if (value != null) {
-                        Map<String, dynamic> location =
-                            value as Map<String, dynamic>;
-                        //getCloudData('add_item_location_detail');
-                        print("value location****$value");
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                //   child: Text(
+                //     "locationItemSellingLbl".translate(context),
+                //   )
+                //       .bold(weight: FontWeight.bold)
+                //       .size(context.font.larger)
+                //       .centerAlign(),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
+                //   child: UiUtils.buildButton(context, height: 48,
+                //       onPressed: () {
+                //     Navigator.pushNamed(context, Routes.countriesScreen,
+                //         arguments: {"from": "addItem"}).then((value) {
+                //       if (value != null) {
+                //         Map<String, dynamic> location =
+                //             value as Map<String, dynamic>;
+                //         //getCloudData('add_item_location_detail');
+                //         print("value location****$value");
 
-                        if (mounted) {
-                          setState(() {
-                            currentLocation = [
-                              // location["area"] ?? null,
-                              location["city"],
-                              location["state"],
-                              location["country"],
-                            ]
-                                .where(
-                                    (part) => part != null && part.isNotEmpty)
-                                .join(', ');
+                //         if (mounted) {
+                //           setState(() {
+                //             currentLocation = [
+                //               // location["area"] ?? null,
+                //               location["city"],
+                //               location["state"],
+                //               location["country"],
+                //             ]
+                //                 .where(
+                //                     (part) => part != null && part.isNotEmpty)
+                //                 .join(', ');
 
-                            formatedAddress = AddressComponent(
-                                // area: location["area"] ,
-                                areaId: location["area_id"],
-                                city: location["city"],
-                                country: location["country"],
-                                state: location["state"]);
+                //             formatedAddress = AddressComponent(
+                //                 // area: location["area"] ,
+                //                 areaId: location["area_id"],
+                //                 city: location["city"],
+                //                 country: location["country"],
+                //                 state: location["state"]);
 
-                            print(
-                                "latitude****${location["latitude"]}*****${location["longitude"]}");
-                            // latitude = location["latitude"] ;
-                            // longitude = location["longitude"] ;
+                //             print(
+                //                 "latitude****${location["latitude"]}*****${location["longitude"]}");
+                //             // latitude = location["latitude"] ;
+                //             // longitude = location["longitude"] ;
 
-                            print(
-                                "latitude11****${location["latitude"]}*****${location["longitude"]}");
-                            _cameraPosition = CameraPosition(
-                              target: LatLng(latitude!, longitude!),
-                              zoom: 14.4746,
-                              bearing: 0,
-                            );
+                //             print(
+                //                 "latitude11****${location["latitude"]}*****${location["longitude"]}");
+                //             _cameraPosition = CameraPosition(
+                //               target: LatLng(latitude!, longitude!),
+                //               zoom: 14.4746,
+                //               bearing: 0,
+                //             );
 
-                            // _mapController.animateCamera(
-                            //   CameraUpdate.newCameraPosition(_cameraPosition!),
-                            // );
-                            _markers.add(Marker(
-                              markerId: const MarkerId('currentLocation'),
-                              position: LatLng(latitude!, longitude!),
-                            ));
-                          });
-                        }
-                      }
-                    });
-                  },
-                      fontSize: 14,
-                      buttonTitle: "somewhereElseLbl".translate(context),
-                      textColor: context.color.textDefaultColor,
-                      buttonColor: context.color.secondaryColor,
-                      border: BorderSide(
-                          color:
-                              context.color.textDefaultColor.withOpacity(0.3),
-                          width: 1.5),
-                      radius: 5),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+                //             // _mapController.animateCamera(
+                //             //   CameraUpdate.newCameraPosition(_cameraPosition!),
+                //             // );
+                //             _markers.add(Marker(
+                //               markerId: const MarkerId('currentLocation'),
+                //               position: LatLng(latitude!, longitude!),
+                //             ));
+                //           });
+                //         }
+                //       }
+                //     });
+                //   },
+                //       fontSize: 14,
+                //       buttonTitle: "somewhereElseLbl".translate(context),
+                //       textColor: context.color.textDefaultColor,
+                //       buttonColor: context.color.secondaryColor,
+                //       border: BorderSide(
+                //           color:
+                //               context.color.textDefaultColor.withOpacity(0.3),
+                //           width: 1.5),
+                //       radius: 5),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
 
                 Expanded(
                   child: Stack(
