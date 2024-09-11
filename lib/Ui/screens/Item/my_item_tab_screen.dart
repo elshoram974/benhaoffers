@@ -241,26 +241,20 @@ class _MyItemTabState extends CloudState<MyItemTab> {
               );
             }
 
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    controller: _pageScrollController,
-                    padding: const EdgeInsets.only(
-                      left: sidePadding,
-                      right: sidePadding,
-                      top: 8,
-                      bottom: 66,
-                    ),
-                    separatorBuilder: (context, index) {
-                      return Container(
-                        height: 8,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      ItemModel item = state.items[index];
-                      return InkWell(
+            return CustomScrollView(
+              controller: _pageScrollController,
+              slivers: [
+                const SliverToBoxAdapter(child: SizedBox(height: 8)),
+                SliverList.separated(
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 8);
+                  },
+                  itemBuilder: (context, index) {
+                    ItemModel item = state.items[index];
+                    return Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: sidePadding),
+                      child: InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, Routes.adDetailsScreen,
                               arguments: {
@@ -396,16 +390,19 @@ class _MyItemTabState extends CloudState<MyItemTab> {
                             ),
                           ),
                         ),
-                      );
-                    },
-                    itemCount: state.items.length,
-                  ),
+                      ),
+                    );
+                  },
+                  itemCount: state.items.length,
                 ),
                 if (state.isLoadingMore)
-                  Padding(
-                    padding: const EdgeInsets.all(58),
-                    child: UiUtils.progress(),
-                  )
+                  SliverPadding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    sliver: SliverToBoxAdapter(
+                      child: UiUtils.progress(),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 66)),
               ],
             );
           }

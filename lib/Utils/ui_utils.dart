@@ -292,78 +292,84 @@ class UiUtils {
     }
   }
 
-  static PreferredSize buildAppBar(BuildContext context,
-      {String? title,
-      bool? showBackButton,
-      List<Widget>? actions,
-      List<Widget>? bottom,
-      double? bottomHeight,
-      bool? hideTopBorder,
-      VoidCallback? onBackPress,
-      Color? backgroundColor}) {
+  static PreferredSize buildAppBar(
+    BuildContext context, {
+    String? title,
+    bool? showBackButton,
+    List<Widget>? actions,
+    List<Widget>? bottom,
+    double? bottomHeight,
+    bool? hideTopBorder,
+    VoidCallback? onBackPress,
+    Color? backgroundColor,
+    Color? borderColor,
+  }) {
     return PreferredSize(
       preferredSize: Size.fromHeight(55 + (bottomHeight ?? 0)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: RoundedBorderOnSomeSidesWidget(
-              borderColor: context.color.borderColor,
-              borderRadius: 0,
-              borderWidth: 1.5,
-              contentBackgroundColor:
-                  backgroundColor ?? context.color.secondaryColor,
-              bottomLeft: true,
-              bottomRight: true,
-              topLeft: false,
-              topRight: false,
-              child: Container(
-                alignment: AlignmentDirectional.bottomStart,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: (showBackButton ?? false) ? 0 : 20,
-                      vertical: (showBackButton ?? false) ? 0 : 18),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    //crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (showBackButton ?? false) ...[
-                        Material(
-                          clipBehavior: Clip.antiAlias,
-                          color: Colors.transparent,
-                          type: MaterialType.circle,
-                          child: InkWell(
-                            onTap: () {
-                              if (onBackPress != null) {
-                                onBackPress.call();
-                              } else {
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: UiUtils.getSvg(AppIcons.arrowLeft,
-                                  fit: BoxFit.none,
-                                  color: context.color.textDefaultColor),
+      child: ColoredBox(
+        color: backgroundColor ?? context.color.secondaryColor,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: RoundedBorderOnSomeSidesWidget(
+                borderColor: borderColor ?? context.color.borderColor,
+                borderRadius: 0,
+                borderWidth: 1.5,
+                contentBackgroundColor:
+                    backgroundColor ?? context.color.secondaryColor,
+                bottomLeft: true,
+                bottomRight: true,
+                topLeft: false,
+                topRight: false,
+                child: Container(
+                  alignment: AlignmentDirectional.bottomStart,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: (showBackButton ?? false) ? 0 : 20,
+                        vertical: (showBackButton ?? false) ? 0 : 18),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      //crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        if (showBackButton ?? false) ...[
+                          Material(
+                            clipBehavior: Clip.antiAlias,
+                            color: Colors.transparent,
+                            type: MaterialType.circle,
+                            child: InkWell(
+                              onTap: () {
+                                if (onBackPress != null) {
+                                  onBackPress.call();
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: UiUtils.getSvg(AppIcons.arrowLeft,
+                                    fit: BoxFit.none,
+                                    color: context.color.textDefaultColor),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
+                        Text(
+                          title ?? "",
+                        )
+                            .color(context.color.textDefaultColor)
+                            .bold(weight: FontWeight.w600)
+                            .size(18),
+                        if (actions != null) ...[const Spacer(), ...actions],
                       ],
-                      Text(
-                        title ?? "",
-                      )
-                          .color(context.color.textDefaultColor)
-                          .bold(weight: FontWeight.w600)
-                          .size(18),
-                      if (actions != null) ...[const Spacer(), ...actions],
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          ...bottom ?? [const SizedBox.shrink()]
-        ],
+            ...bottom ?? [const SizedBox.shrink()]
+          ],
+        ),
       ),
     );
   }

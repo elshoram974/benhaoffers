@@ -69,7 +69,8 @@ class MyItemState extends State<ItemsScreen> with TickerProviderStateMixin {
           title: "myAds".translate(context),
           // bottomHeight: 49,
           bottomHeight: 49,
-
+          backgroundColor: context.color.secondaryColor,
+          borderColor: Colors.transparent,
           bottom: [
             SizedBox(
               width: context.screenWidth,
@@ -100,6 +101,12 @@ class MyItemState extends State<ItemsScreen> with TickerProviderStateMixin {
                 },
                 itemCount: sections.length,
               ),
+            ),
+            const SizedBox(height: 5),
+            Divider(
+              color: context.color.borderColor,
+              height: 1.5,
+              thickness: 1.5,
             ),
           ],
         ),
