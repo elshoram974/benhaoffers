@@ -41,7 +41,7 @@ class NewPasswordBody extends StatelessWidget {
                 StatefulBuilder(
                   builder: (context, setState) {
                     return CustomTextFormField(
-                      hintText: "${"password".translate(context)}*",
+                      hintText: "${"createNewPassword".translate(context)}*",
                       validator: CustomTextFieldValidator.password,
                       obscureText: isObscure,
                       onChange: cubit.onChangePassword,

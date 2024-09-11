@@ -321,8 +321,9 @@ class LoginScreenState extends State<LoginScreen> {
                           //FirebaseAuth.instance.currentUser?.sendEmailVerification();
                           // if (state.credential.user!.emailVerified) {
                           if (emailMobileTextController.text
-                              .trim()
-                              .isNotEmpty) {
+                                  .trim()
+                                  .isNotEmpty &&
+                              _passwordController.text.isNotEmpty) {
                             context.read<LoginCubit>().loginEmailPhone(
                                   context,
                                   email: emailMobileTextController.text.trim(),

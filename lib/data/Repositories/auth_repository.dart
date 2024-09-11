@@ -73,17 +73,22 @@ class AuthRepository {
   }
 
   Future<Map<String, dynamic>>? checkCode(String email, String code) async {
-    Map<String, String> parameters = {Api.email: email, Api.code: code};
+    Map<String, String> parameters = {Api.identity: email, Api.token: code};
     Map<String, dynamic> response = await Api.post(
-      url: Api.checkCode,
+      url: Api.checkToken,
       parameter: parameters,
     );
     return {"token": response['token'], "data": response['data']};
   }
 
   Future<Map<String, dynamic>>? createNewPassword(
-      String email, String password) async {
-    Map<String, String> parameters = {Api.email: email, Api.password: password};
+    String email,
+    String newPassword,
+  ) async {
+    Map<String, String> parameters = {
+      Api.identity: email,
+      Api.newPassword: newPassword
+    };
     Map<String, dynamic> response = await Api.post(
       url: Api.createNewPassword,
       parameter: parameters,

@@ -59,8 +59,8 @@ class Api {
   static String login = "user-login";
   static String signUp = "user-signup";
   static String sendCode = "forget-password";
-  static String checkCode = "check-code";
-  static String createNewPassword = "create-new-password";
+  static String checkToken = "check-token";
+  static String createNewPassword = "forgetten-update-password";
   static String updateProfileApi = "update-profile";
   static String getSliderApi = "get-slider";
   static String getCategoriesApi = "get-categories";
@@ -124,12 +124,13 @@ class Api {
   static String firebaseId = "firebase_id";
   static String profile = "profile";
   static String fcmId = "fcm_id";
-  static String code = "code";
+  static String token = "token";
   static String address = "address";
   static String clientAddress = "client_address";
   static String identity = "identity";
   static String email = "email";
   static String password = "password";
+  static String newPassword = "newPassword";
   static String categoryId = "category_id";
   static String projectName = "project_name";
   static String name = "name";

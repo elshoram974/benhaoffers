@@ -22,7 +22,8 @@ class CodeFields extends StatelessWidget {
           onCompleted: (val) => cubit.verifyCode(context),
           length: 6,
           autofocus: true,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          keyboardType: TextInputType.visiblePassword,
+          // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           defaultPinTheme: PinTheme(
             height: 48,
