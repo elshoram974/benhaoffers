@@ -125,7 +125,9 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
         );
         myCategories = FetchCategorySuccess(
             total: categories.total,
-            categories: [categories.modelList.firstWhere((e)=> e.id == category)],
+            categories: [
+              categories.modelList.firstWhere((e) => e.id == category)
+            ],
             page: 1,
             hasError: false,
             isLoadingMore: false);
@@ -166,14 +168,22 @@ class FetchCategoryCubit extends Cubit<FetchCategoryState> with HydratedMixin {
           return;
         }
         page++;
-        emit((state as FetchCategorySuccess).copyWith(isLoadingMore: true));
-        DataOutput<CategoryModel> result =
-            await _categoryRepository.fetchCategories(
-          page: page,
-          limit: 33,
-          categoryId:
-              getMyCategory ? HiveUtils.getUserDetails().categoryId : null,
-        );
+        late DataOutput<CategoryModel> result;
+        if (getMyCategory) {
+          emit(myCategories.copyWith(isLoadingMore: true));
+          result = await _categoryRepository.fetchCategories(
+            page: page,
+            limit: 33,
+            categoryId: HiveUtils.getUserDetails().categoryId,
+          );
+        } else {
+          emit(allCategories.copyWith(isLoadingMore: true));
+          result = await _categoryRepository.fetchCategories(
+            page: page,
+            limit: 33,
+            categoryId: null,
+          );
+        }
 
         FetchCategorySuccess categoryState = (state as FetchCategorySuccess);
         categoryState.categories.addAll(result.modelList);
