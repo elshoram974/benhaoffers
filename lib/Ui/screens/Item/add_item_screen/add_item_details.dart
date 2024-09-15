@@ -75,6 +75,8 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
       TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   DateTime? _tempEndDate;
+  bool noPackages = true;
+
   late String dateToShow = "chooseDate".translate(context);
 
   ScrollController scrollController = ScrollController();
@@ -492,9 +494,13 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                               DateTime? farthestEndDate = DateTime(2001);
                               for (SubscriptionPackageModel e
                                   in state.subscriptionPackages) {
-                                if (e.endDate == null && e.isActive == true) {
-                                  farthestEndDate = null;
-                                  break;
+                                if (e.isActive == true) {
+                                  noPackages = false;
+                                  if (e.endDate == null) {
+                                    farthestEndDate = null;
+                                    _tempEndDate = null;
+                                    break;
+                                  }
                                 }
 
                                 if (e.endDate != null &&
@@ -527,39 +533,44 @@ class _AddItemDetailsState extends CloudState<AddItemDetails> {
                                 return Column(
                                   children: [
                                     GestureDetector(
-                                      onTap: () {
-                                        final initialDate = DateTime.tryParse(
-                                            endDateController.text);
-                                        showDatePicker(
-                                          context: context,
-                                          initialEntryMode:
-                                              DatePickerEntryMode.calendarOnly,
-                                          firstDate: !(DateTime.now().isAfter(
-                                                  initialDate ??
-                                                      DateTime.now()))
-                                              ? DateTime.now()
-                                              : initialDate!,
-                                          lastDate:
-                                              _tempEndDate ?? DateTime(2100),
-                                          initialDate: initialDate,
-                                        ).then((e) {
-                                          if (e != null) {
-                                            dateToShow =
-                                                DateFormat.yMMMd().format(e);
-                                            endDateController.text = e
-                                                .copyWith(
-                                                    hour: 23,
-                                                    minute: 59,
-                                                    second: 59)
-                                                .toIso8601String();
-                                            print(
-                                                "ddd ${DateTime.parse(endDateController.text)}");
-                                            state.didChange(
-                                                endDateController.text);
-                                          }
-                                          HelperUtils.unfocus();
-                                        });
-                                      },
+                                      onTap: noPackages
+                                          ? null
+                                          : () {
+                                              final initialDate =
+                                                  DateTime.tryParse(
+                                                      endDateController.text);
+                                              showDatePicker(
+                                                context: context,
+                                                initialEntryMode:
+                                                    DatePickerEntryMode
+                                                        .calendarOnly,
+                                                firstDate: !(DateTime.now()
+                                                        .isAfter(initialDate ??
+                                                            DateTime.now()))
+                                                    ? DateTime.now()
+                                                    : initialDate!,
+                                                lastDate: _tempEndDate ??
+                                                    DateTime(2100),
+                                                initialDate: initialDate,
+                                              ).then((e) {
+                                                if (e != null) {
+                                                  dateToShow =
+                                                      DateFormat.yMMMd()
+                                                          .format(e);
+                                                  endDateController.text = e
+                                                      .copyWith(
+                                                          hour: 23,
+                                                          minute: 59,
+                                                          second: 59)
+                                                      .toIso8601String();
+                                                  print(
+                                                      "ddd ${DateTime.parse(endDateController.text)}");
+                                                  state.didChange(
+                                                      endDateController.text);
+                                                }
+                                                HelperUtils.unfocus();
+                                              });
+                                            },
                                       child: Container(
                                         height: 48,
                                         width: double.infinity,
