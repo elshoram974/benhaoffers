@@ -6,6 +6,15 @@ import 'package:flutter/material.dart';
 
 extension Sizing on num {
   ///Responsive height
+  double rMin(context) {
+    //!Don't change [812]
+    const double aspectedScreenWidth = 375;
+
+    Size size = MediaQuery.of(context).size;
+    double responsiveHeight = size.shortestSide * (this / aspectedScreenWidth);
+    return responsiveHeight;
+  }
+
   double rh(context) {
     //!Don't change [812]
     const double aspectedScreenHeight = 812;

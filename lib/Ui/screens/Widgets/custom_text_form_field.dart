@@ -42,10 +42,12 @@ class CustomTextFormField extends StatefulWidget {
   final bool autofocus;
   final int? maxLength;
   final int? minLength;
+  final double? borderRadius;
   final TextStyle? hintTextStyle;
   final TextCapitalization? capitalization;
   final void Function()? onEditingComplete;
   final String? Function(String?)? customValidatorFn;
+  final EdgeInsetsGeometry? contentPadding;
 
   const CustomTextFormField({
     super.key,
@@ -74,9 +76,11 @@ class CustomTextFormField extends StatefulWidget {
     this.maxLength,
     this.hintTextStyle,
     this.minLength,
+    this.borderRadius,
     this.capitalization,
     this.onEditingComplete,
     this.customValidatorFn,
+    this.contentPadding,
   });
 
   @override
@@ -133,7 +137,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     ? BoxDecoration(
                         color: widget.fillColor ?? context.color.secondaryColor,
                         border: Border.all(width: 1.5, color: borderColor),
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(widget.borderRadius ?? 5),
                       )
                     : null,
                 child: Row(
@@ -145,11 +150,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                         decoration: iconWithBorder
                             ? BoxDecoration(
                                 borderRadius: widget.prefixWithBorder != null
-                                    ? const BorderRadiusDirectional.horizontal(
-                                        end: Radius.circular(5),
+                                    ? BorderRadiusDirectional.horizontal(
+                                        end: Radius.circular(
+                                            widget.borderRadius ?? 5),
                                       )
-                                    : const BorderRadiusDirectional.horizontal(
-                                        start: Radius.circular(5),
+                                    : BorderRadiusDirectional.horizontal(
+                                        start: Radius.circular(
+                                            widget.borderRadius ?? 5),
                                       ),
                                 border: widget.prefixWithBorder != null
                                     ? BorderDirectional(
@@ -177,6 +184,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                               widget.capitalization ?? TextCapitalization.none,
                           readOnly: widget.isReadOnly ?? false,
                           style: TextStyle(
+                              fontWeight: FontWeight.w400,
                               fontSize: context.font.large,
                               color: context.color.textDefaultColor),
                           minLines: widget.minLine ?? 1,
@@ -189,6 +197,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                           keyboardType: widget.keyboard,
                           maxLength: widget.maxLength,
                           decoration: InputDecoration(
+                            contentPadding: widget.contentPadding,
                             prefix: widget.prefix,
                             isDense: widget.dense,
                             prefixIcon: widget.fixedPrefix,
@@ -209,7 +218,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                                     borderSide: BorderSide(
                                         width: 1.5,
                                         color: context.color.territoryColor),
-                                    borderRadius: BorderRadius.circular(5)),
+                                    borderRadius: BorderRadius.circular(
+                                        widget.borderRadius ?? 5)),
                             enabledBorder: iconWithBorder
                                 ? _noBorder()
                                 : OutlineInputBorder(
@@ -218,7 +228,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                                         color: widget.borderColor ??
                                             context.color.borderColor
                                                 .darken(50)),
-                                    borderRadius: BorderRadius.circular(5)),
+                                    borderRadius: BorderRadius.circular(
+                                        widget.borderRadius ?? 5)),
                             border: iconWithBorder
                                 ? _noBorder()
                                 : OutlineInputBorder(
@@ -226,7 +237,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                                         width: 1.5,
                                         color: widget.borderColor ??
                                             context.color.borderColor),
-                                    borderRadius: BorderRadius.circular(5)),
+                                    borderRadius: BorderRadius.circular(
+                                        widget.borderRadius ?? 5)),
                           ),
                         ),
                       ),
@@ -258,7 +270,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   OutlineInputBorder _noBorder() {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: BorderRadius.circular(widget.borderRadius ?? 5),
       borderSide: BorderSide.none,
     );
   }
