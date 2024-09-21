@@ -1849,9 +1849,12 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                           context: context);
                     },
                     child: state is UpdateFavoriteInProgress
-                        ? UiUtils.progress(
-                            height: 22,
-                            width: 22,
+                        ? SizedBox.square(
+                            dimension: 22,
+                            child: UiUtils.progress(
+                              height: 22,
+                              width: 22,
+                            ),
                           )
                         : UiUtils.getSvg(
                             isLike ? AppIcons.like_fill : AppIcons.like,

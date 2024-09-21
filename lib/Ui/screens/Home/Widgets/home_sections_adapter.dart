@@ -1,7 +1,10 @@
 import 'package:eClassify/Ui/screens/Home/home_screen.dart';
+import 'package:eClassify/Utils/AppIcon.dart';
 import 'package:eClassify/Utils/Extensions/extensions.dart';
 import 'package:eClassify/Utils/responsiveSize.dart';
 import 'package:eClassify/Utils/ui_utils.dart';
+import 'package:eClassify/data/cubits/favorite/favoriteCubit.dart';
+import 'package:eClassify/data/cubits/favorite/manageFavCubit.dart';
 import 'package:eClassify/data/model/item/item_model.dart';
 import 'package:eClassify/exports/main_export.dart';
 import 'package:flutter/material.dart';
@@ -362,11 +365,90 @@ class _ItemCardState extends State<ItemCard> {
                 ),
               ],
             ),
-            // favButton(),
+            favouriteButton(),
           ],
         ),
       ),
     );
+  }
+
+  Widget favouriteButton() {
+    if (!byMe) {
+      return BlocBuilder<FavoriteCubit, FavoriteState>(
+        bloc: context.read<FavoriteCubit>(),
+        builder: (context, favState) {
+          bool isLike = context.select(
+              (FavoriteCubit cubit) => cubit.isItemFavorite(widget.item!.id!));
+
+          return BlocConsumer<UpdateFavoriteCubit, UpdateFavoriteState>(
+            bloc: context.read<UpdateFavoriteCubit>(),
+            listener: (context, state) {
+              if (state is UpdateFavoriteSuccess) {
+                if (state.wasProcess) {
+                  context.read<FavoriteCubit>().addFavoriteitem(state.item);
+                } else {
+                  context.read<FavoriteCubit>().removeFavoriteItem(state.item);
+                }
+              }
+            },
+            builder: (context, state) {
+              return setTopRowItem(
+                  alignment: AlignmentDirectional.topEnd,
+                  marginVal: 10,
+                  backgroundColor: context.color.backgroundColor,
+                  cornerRadius: 30,
+                  childWidget: InkWell(
+                    onTap: () {
+                      UiUtils.checkUser(
+                          onNotGuest: () {
+                            context.read<UpdateFavoriteCubit>().setFavoriteItem(
+                                  item: widget.item!,
+                                  type: isLike ? 0 : 1,
+                                );
+                          },
+                          context: context);
+                    },
+                    child: state is UpdateFavoriteInProgress &&
+                            state.itemId == widget.item?.id
+                        ? SizedBox.square(
+                            dimension: 22,
+                            child: UiUtils.progress(
+                              height: 22,
+                              width: 22,
+                            ),
+                          )
+                        : UiUtils.getSvg(
+                            isLike ? AppIcons.like_fill : AppIcons.like,
+                            color: context.color.territoryColor,
+                            width: 22,
+                            height: 22),
+                  ));
+            },
+          );
+        },
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget setTopRowItem(
+      {required AlignmentDirectional alignment,
+      required double marginVal,
+      required double cornerRadius,
+      required Color backgroundColor,
+      required Widget childWidget}) {
+    return Align(
+        alignment: alignment,
+        child: Container(
+            margin: EdgeInsets.all(marginVal),
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(cornerRadius),
+                color: backgroundColor),
+            child: childWidget)
+        //TODO: swap icons according to liked and non-liked -- favorite_border_rounded and favorite_rounded
+        );
   }
 }
 
