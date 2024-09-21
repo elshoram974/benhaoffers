@@ -441,8 +441,19 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
             ],
           ),
           backgroundColor: context.color.secondaryDetailsColor,
-          bottomNavigationBar: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          bottomNavigationBar: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+              decoration: BoxDecoration(
+                color: context.color.secondaryDetailsColor,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x3F000000),
+                    blurRadius: 8,
+                    offset: Offset(0, -3),
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
               child: bottomButtonWidget()),
           body: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
