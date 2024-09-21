@@ -45,6 +45,8 @@ class CustomTextFormField extends StatefulWidget {
   final TextStyle? hintTextStyle;
   final TextCapitalization? capitalization;
   final void Function()? onEditingComplete;
+  final String? Function(String?)? customValidatorFn;
+
   const CustomTextFormField({
     super.key,
     this.hintText,
@@ -74,6 +76,7 @@ class CustomTextFormField extends StatefulWidget {
     this.minLength,
     this.capitalization,
     this.onEditingComplete,
+    this.customValidatorFn,
   });
 
   @override
@@ -335,6 +338,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     }
     if (widget.validator == CustomTextFieldValidator.password) {
       return Validator.validatePassword(value, context: context);
+    }
+    if (widget.customValidatorFn != null) {
+      return widget.customValidatorFn!(value);
     }
     return null;
   }

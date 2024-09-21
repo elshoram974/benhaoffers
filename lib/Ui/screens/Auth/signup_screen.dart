@@ -47,10 +47,12 @@ class _SignupScreenState extends CloudState<SignupScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _projectNameController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isObscure = true;
+  bool isRePassObscure = true;
 
   CategoryModel? _tempSelectedCat;
 
@@ -67,6 +69,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
     super.dispose();
     _usernameController.dispose();
     _emailController.dispose();
+    _mobileController.dispose();
     _projectNameController.dispose();
     _categoryController.dispose();
     _passwordController.dispose();
@@ -87,6 +90,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
       final Map<String, String> map = {};
       map[Api.type] = AuthenticationType.email.name;
       map[Api.email] = _emailController.text.trim();
+      map[Api.mobile] = _mobileController.text.trim();
       map[Api.password] = _passwordController.text;
       map[Api.name] = _usernameController.text.trim();
       map[Api.userType] = widget.userType.name;
@@ -266,6 +270,17 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                       ),
                       const SizedBox(height: 14),
                       CustomTextFormField(
+                        controller: _mobileController,
+                        fillColor: context.color.secondaryColor,
+                        formaters: [FilteringTextInputFormatter.digitsOnly],
+                        action: TextInputAction.next,
+                        validator: CustomTextFieldValidator.phoneNumber,
+                        hintText: "phoneNumber".translate(context),
+                        keyboard: TextInputType.number,
+                        borderColor: context.color.borderColor.darken(10),
+                      ),
+                      const SizedBox(height: 14),
+                      CustomTextFormField(
                         controller: _passwordController,
                         fillColor: context.color.secondaryColor,
                         obscureText: isObscure,
@@ -283,6 +298,34 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                         ),
                         hintText: "password".translate(context),
                         validator: CustomTextFieldValidator.password,
+                        onEditingComplete: onTapSignup,
+                        borderColor: context.color.borderColor.darken(10),
+                      ),
+                      const SizedBox(height: 14),
+                      CustomTextFormField(
+                        fillColor: context.color.secondaryColor,
+                        obscureText: isRePassObscure,
+                        suffix: IconButton(
+                          onPressed: () {
+                            isRePassObscure = !isRePassObscure;
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            !isRePassObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: context.color.textColorDark.withOpacity(0.3),
+                          ),
+                        ),
+                        hintText: "confirmPassword".translate(context),
+                        customValidatorFn: (val) {
+                          if (val?.isNotEmpty != true) {
+                            return "fieldMustNotBeEmpty".translate(context);
+                          } else if (_passwordController.text != val) {
+                            return "passwordsNotMatch".translate(context);
+                          }
+                          return null;
+                        },
                         onEditingComplete: onTapSignup,
                         borderColor: context.color.borderColor.darken(10),
                       ),
