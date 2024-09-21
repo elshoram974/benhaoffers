@@ -50,24 +50,15 @@ class CustomFieldWhatsapp extends CustomField {
       children: [
         Row(
           children: [
-            Container(
-              width: 48.rw(context),
-              height: 48.rh(context),
-              decoration: BoxDecoration(
-                color: context.color.territoryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: SizedBox(
-                height: 24,
-                width: 24,
-                child: FittedBox(
-                  fit: BoxFit.none,
-                  child: UiUtils.imageType(parameters['image'],
-                      width: 24,
-                      height: 24,
-                      fit: BoxFit.cover,
-                      color: context.color.textDefaultColor),
-                ),
+            SizedBox.square(
+              dimension: 24.rw(context),
+              child: FittedBox(
+                fit: BoxFit.none,
+                child: UiUtils.imageType(parameters['image'],
+                    width: 24.rw(context),
+                    height: 24.rw(context),
+                    fit: BoxFit.cover,
+                    color: context.color.textDefaultColor),
               ),
             ),
             SizedBox(width: 10.rw(context)),

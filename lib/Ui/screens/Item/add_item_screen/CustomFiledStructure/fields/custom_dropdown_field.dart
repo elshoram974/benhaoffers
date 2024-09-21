@@ -60,28 +60,15 @@ class CustomFieldDropdown extends CustomField {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 32.rw(context),
-                    height: 32.rh(context),
-                    decoration: BoxDecoration(
-                      color: context.color.territoryColor.withOpacity(
-                        0.1,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        10,
-                      ),
-                    ),
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: FittedBox(
-                        fit: BoxFit.none,
-                        child: UiUtils.imageType(parameters['image'],
-                            width: 20,
-                            height: 20,
-                            fit: BoxFit.cover,
-                            color: context.color.textDefaultColor),
-                      ),
+                  SizedBox.square(
+                    dimension: 24.rw(context),
+                    child: FittedBox(
+                      fit: BoxFit.none,
+                      child: UiUtils.imageType(parameters['image'],
+                          width: 24.rw(context),
+                          height: 24.rw(context),
+                          fit: BoxFit.cover,
+                          color: context.color.textDefaultColor),
                     ),
                   ),
                   SizedBox(width: 10.rw(context)),

@@ -28,64 +28,49 @@ class CustomNumberField extends CustomField {
 
   @override
   Widget render() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0.0),
-        child: Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 48.rw(context),
-                  height: 48.rh(context),
-                  decoration: BoxDecoration(
-                    color: context.color.territoryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: FittedBox(
-                      fit: BoxFit.none,
-                      child: UiUtils.imageType(
-                        parameters['image'],
-                        width: 24,
-                        height: 24,
-                        fit: BoxFit.cover,
-                          color: context.color.textDefaultColor
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10.rw(context),
-                ),
-                Text(parameters['name'])
-                    .size(context.font.large)
-                    .bold(weight: FontWeight.w500)
-                    .color(context.color.textColorDark)
-              ],
+            SizedBox.square(
+              dimension: 24.rw(context),
+              child: FittedBox(
+                fit: BoxFit.none,
+                child: UiUtils.imageType(parameters['image'],
+                    width: 24.rw(context),
+                    height: 24.rw(context),
+                    fit: BoxFit.cover,
+                    color: context.color.textDefaultColor),
+              ),
             ),
-            SizedBox(
-              height: 14.rh(context),
-            ),
-            CustomTextFieldDynamic(
-              initController: parameters['value'] != null ? true : false,
-              value: initialValue,
-              validator: CustomTextFieldValidator.minAndMixLen,
-              maxLen: parameters['max_length'],
-              minLen: parameters['min_length'],
-              hintText: "addNumerical".translate(context),
-              formaters: [
-                FilteringTextInputFormatter.allow(
-                  RegExp("[0-9]"),
-                ),
-              ],
-              action: TextInputAction.next,
-              keyboardType: TextInputType.number,
-              required: parameters['required'] == 1 ? true : false,
-              id: parameters['id'],
+            SizedBox(width: 10.rw(context)),
+            Text(parameters['name'])
+                .size(context.font.large)
+                .bold(weight: FontWeight.w500)
+                .color(context.color.textColorDark)
+          ],
+        ),
+        SizedBox(
+          height: 14.rh(context),
+        ),
+        CustomTextFieldDynamic(
+          initController: parameters['value'] != null ? true : false,
+          value: initialValue,
+          validator: CustomTextFieldValidator.minAndMixLen,
+          maxLen: parameters['max_length'],
+          minLen: parameters['min_length'],
+          hintText: "addNumerical".translate(context),
+          formaters: [
+            FilteringTextInputFormatter.allow(
+              RegExp("[0-9]"),
             ),
           ],
-        ));
+          action: TextInputAction.next,
+          keyboardType: TextInputType.number,
+          required: parameters['required'] == 1 ? true : false,
+          id: parameters['id'],
+        ),
+      ],
+    );
   }
 }

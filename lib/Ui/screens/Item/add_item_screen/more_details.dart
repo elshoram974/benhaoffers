@@ -194,7 +194,7 @@ class _AddMoreDetailsScreenState extends CloudState<AddMoreDetailsScreen> {
                         (field) {
                           field.stateUpdater(setState);
                           return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 9.0),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             child: field.build(context),
                           );
                         },
