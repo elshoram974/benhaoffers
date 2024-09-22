@@ -7,6 +7,9 @@ import 'package:app_links/app_links.dart';
 import 'package:eClassify/Ui/screens/Widgets/maintenance_mode.dart';
 import 'package:eClassify/Ui/screens/widgets/AnimatedRoutes/blur_page_route.dart';
 import 'package:eClassify/Utils/Svg/svg_edit.dart';
+import 'package:eClassify/Utils/cloudState/cloud_state.dart';
+import 'package:eClassify/Utils/touch_manager.dart';
+import 'package:eClassify/data/model/category_model.dart';
 import 'package:eClassify/exports/main_export.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -35,6 +38,7 @@ import '../../utils/helper_utils.dart';
 import '../../utils/responsiveSize.dart';
 import '../../utils/ui_utils.dart';
 import 'Home/search_screen.dart';
+import 'Item/add_item_screen/select_category.dart';
 import 'Item/my_items_screen.dart';
 import 'Userprofile/profile_screen.dart';
 import 'chat/chat_list_screen.dart';
@@ -72,7 +76,7 @@ class MainActivity extends StatefulWidget {
   MainActivity({Key? key, required this.from}) : super(key: globalKey);
 
   @override
-  State<MainActivity> createState() => MainActivityState();
+  CloudState<MainActivity> createState() => MainActivityState();
 
   static Route route(RouteSettings routeSettings) {
     Map arguments = routeSettings.arguments as Map;
@@ -81,7 +85,7 @@ class MainActivity extends StatefulWidget {
   }
 }
 
-class MainActivityState extends State<MainActivity>
+class MainActivityState extends CloudState<MainActivity>
     with TickerProviderStateMixin {
   PageController pageCntrlr = PageController(initialPage: 0);
   int currtab = 0;
@@ -628,9 +632,13 @@ class MainActivityState extends State<MainActivity>
                               if (state is FetchUserPackageLimitInSuccess) {
                                 UiUtils.checkUser(
                                     onNotGuest: () {
-                                      Navigator.pushNamed(
-                                          context, Routes.selectCategoryScreen,
-                                          arguments: <String, dynamic>{});
+                                      onPressCat(
+                                        BlocProvider.of<FetchCategoryCubit>(
+                                                context)
+                                            .myCategories
+                                            .categories
+                                            .first,
+                                      );
                                     },
                                     context: context);
                               }
@@ -682,6 +690,45 @@ class MainActivityState extends State<MainActivity>
         );
       },
     );
+  }
+
+  void onPressCat(CategoryModel category) {
+    if (category.children!.isEmpty && category.subcategoriesCount == 0) {
+      if (TouchManager.canProcessTouch()) {
+        addCloudData("breadCrumb", [category]);
+        List<CategoryModel>? breadCrumbList =
+            getCloudData("breadCrumb") as List<CategoryModel>?;
+
+        screenStack++;
+        Navigator.pushNamed(
+          context,
+          Routes.addItemDetails,
+          arguments: <String, dynamic>{"breadCrumbItems": breadCrumbList},
+        ).then((value) {
+          List<CategoryModel> bcd = getCloudData("breadCrumb");
+          addCloudData("breadCrumb", bcd);
+          //}
+        });
+        Future.delayed(const Duration(seconds: 1), () {
+          // Notify that touch processing is complete
+          TouchManager.touchProcessed();
+        });
+      }
+    } else {
+      if (TouchManager.canProcessTouch()) {
+        addCloudData("breadCrumb", [category]);
+
+        screenStack++;
+        Navigator.pushNamed(context, Routes.selectNestedCategoryScreen,
+            arguments: {
+              "current": category,
+            });
+        Future.delayed(const Duration(seconds: 1), () {
+          // Notify that touch processing is complete
+          TouchManager.touchProcessed();
+        });
+      }
+    }
   }
 
   Widget buildBottomNavigationbarItem(

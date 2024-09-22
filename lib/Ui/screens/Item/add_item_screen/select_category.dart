@@ -62,7 +62,7 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final FetchCategoryCubit c = BlocProvider.of<FetchCategoryCubit>(context); 
+    final FetchCategoryCubit c = BlocProvider.of<FetchCategoryCubit>(context);
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(
           context: context, statusBarColor: context.color.secondaryColor),
@@ -109,7 +109,8 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
                           mainAxisSpacing: 14,
                         ),
                         itemBuilder: (context, index) {
-                          CategoryModel category = c.myCategories.categories[index];
+                          CategoryModel category =
+                              c.myCategories.categories[index];
 
                           return CategoryCard(
                             onTap: () {
@@ -134,7 +135,8 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
                                     addCloudData("breadCrumb", bcd);
                                     //}
                                   });
-                                  Future.delayed(const Duration(seconds: 1), () {
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
                                     // Notify that touch processing is complete
                                     TouchManager.touchProcessed();
                                   });
@@ -149,7 +151,8 @@ class _SelectCategoryScreenState extends CloudState<SelectCategoryScreen> {
                                       arguments: {
                                         "current": category,
                                       });
-                                  Future.delayed(const Duration(seconds: 1), () {
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
                                     // Notify that touch processing is complete
                                     TouchManager.touchProcessed();
                                   });
@@ -387,7 +390,8 @@ class _SelectNestedCategoryState extends CloudState<SelectNestedCategory> {
                                         addCloudData("breadCrumb", bcd);
                                       });
 
-                                      Future.delayed(const Duration(seconds: 1), () {
+                                      Future.delayed(const Duration(seconds: 1),
+                                          () {
                                         // Notify that touch processing is complete
                                         TouchManager.touchProcessed();
                                       });
@@ -423,7 +427,8 @@ class _SelectNestedCategoryState extends CloudState<SelectNestedCategory> {
                                           addCloudData("breadCrumb", bcd);
                                         }
                                       });
-                                      Future.delayed(const Duration(seconds: 1), () {
+                                      Future.delayed(const Duration(seconds: 1),
+                                          () {
                                         // Notify that touch processing is complete
                                         TouchManager.touchProcessed();
                                       });
