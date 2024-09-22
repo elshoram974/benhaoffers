@@ -122,10 +122,17 @@ class _AuthWaitingScreenState extends State<AuthWaitingScreen>
   }
 
   void _navigateToLogin() {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      Routes.login,
-      (route) => route.isFirst,
+    Future.delayed(
+      Duration.zero,
+      () {
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.login,
+            (route) => route.isFirst,
+          );
+        }
+      },
     );
   }
 }
