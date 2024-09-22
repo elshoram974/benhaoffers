@@ -135,6 +135,7 @@ class Api {
   static String projectName = "project_name";
   static String name = "name";
   static String userType = "user_type";
+  static String deletedAt = "deleted_at";
   static String amount = "amount";
   static String error = "error";
   static String message = "message";

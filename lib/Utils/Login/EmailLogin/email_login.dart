@@ -44,7 +44,7 @@ class EmailLogin extends LoginSystem {
           // );
         }
       } catch (e) {
-        FirebaseAuth.instance.currentUser!.delete();
+        // FirebaseAuth.instance.currentUser!.delete();
         emit(MFail(e));
 
         // TODO: cancel this and make it like in login

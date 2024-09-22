@@ -105,10 +105,12 @@ class _SignupScreenState extends CloudState<SignupScreen> {
       map[Api.password] = _passwordController.text;
       map[Api.name] = _usernameController.text.trim();
       map[Api.userType] = widget.userType.name;
+      map[Api.notification] = '1';
 
       if (UserType.provider == widget.userType) {
         map[Api.projectName] = _projectNameController.text.trim();
         map[Api.categoryId] = _categoryController.text;
+        map[Api.deletedAt] = DateTime.now().toIso8601String();
       }
 
       addCloudData("signup_details", map);
@@ -298,9 +300,6 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                                     validator:
                                         CustomTextFieldValidator.password,
                                     controller: _passwordController,
-                                    formaters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
                                     suffix: IconButton(
                                       onPressed: () {
                                         isObscure = !isObscure;
