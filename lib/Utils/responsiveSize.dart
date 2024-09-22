@@ -40,3 +40,20 @@ extension Sizing on num {
     return (this / aspectedScreenHeight) * MediaQuery.of(context).size.height;
   }
 }
+
+extension ResponsiveT on BuildContext {
+  T resValue<T>({
+    required T inPhone,
+    required T inTablet,
+    required T inDesktop,
+  }) {
+    final double width = MediaQuery.sizeOf(this).width;
+
+    if (width <= 500) {
+      return inPhone;
+    } else if (width <= 850) {
+      return inTablet;
+    }
+    return inDesktop;
+  }
+}

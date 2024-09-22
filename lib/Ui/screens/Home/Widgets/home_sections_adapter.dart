@@ -51,10 +51,12 @@ class HomeSectionsAdapter extends StatelessWidget {
                   builder: (context, int index, bool) {
                     ItemModel? item = section.sectionData?[index];
 
-                    return ItemCard(
-                      width: MediaQuery.sizeOf(context).width / 2.rw(context),
-                      item: item,
-                      bigCard: true,
+                    return Align(
+                      child: ItemCard(
+                        width: 165,
+                        item: item,
+                        bigCard: true,
+                      ),
                     );
                   },
                   total: section.sectionData?.length ?? 0,
@@ -86,9 +88,11 @@ class HomeSectionsAdapter extends StatelessWidget {
                   builder: (context, int index, bool) {
                     ItemModel? item = section.sectionData?[index];
 
-                    return ItemCard(
-                      item: item,
-                      width: MediaQuery.sizeOf(context).width / 2.3.rw(context),
+                    return Align(
+                      child: ItemCard(
+                        item: item,
+                        width: 165,
+                      ),
                     );
                   },
                   total: section.sectionData?.length ?? 0,
@@ -112,14 +116,15 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.Grid,
-                  crossAxisCount: 2,
                   height: MediaQuery.sizeOf(context).height / 3.rh(context),
                   builder: (context, int index, bool) {
                     ItemModel? item = section.sectionData?[index];
 
-                    return ItemCard(
-                      item: item,
-                      width: 192,
+                    return Align(
+                      child: ItemCard(
+                        item: item,
+                        width: 165,
+                      ),
                     );
                   },
                   total: section.sectionData?.length ?? 0,
@@ -151,9 +156,11 @@ class HomeSectionsAdapter extends StatelessWidget {
                   builder: (context, int index, bool) {
                     ItemModel? item = section.sectionData?[index];
 
-                    return ItemCard(
-                      item: item,
-                      width: 192,
+                    return Align(
+                      child: ItemCard(
+                        item: item,
+                        width: 165,
+                      ),
                     );
                   },
                   total: section.sectionData?.length ?? 0,
@@ -266,14 +273,14 @@ class _ItemCardState extends State<ItemCard> {
                 Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(9),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(12.5),
                         child: UiUtils.getImage(
                           widget.item?.image ?? "",
                           height: imageHeight,
                           width: imageHeight,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -300,7 +307,7 @@ class _ItemCardState extends State<ItemCard> {
                           fit: BoxFit.scaleDown,
                           child: Text(widget.item!.name!)
                               .firstUpperCaseWidget()
-                              .bold()
+                              .bold(weight: FontWeight.w500)
                               .setMaxLines(lines: 2)
                               .size(context.font.large),
                         ),

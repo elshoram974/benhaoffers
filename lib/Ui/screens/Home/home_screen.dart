@@ -165,8 +165,12 @@ class HomeScreenState extends State<HomeScreen>
             context.read<SliderCubit>().fetchSlider(
                   context,
                 );
-            context.read<FetchCategoryCubit>().fetchCategories(getMyCategory: true);
-            context.read<FetchCategoryCubit>().fetchCategories(getMyCategory: false);
+            context
+                .read<FetchCategoryCubit>()
+                .fetchCategories(getMyCategory: true);
+            context
+                .read<FetchCategoryCubit>()
+                .fetchCategories(getMyCategory: false);
             context.read<FetchHomeScreenCubit>().fetch(
                 city: HiveUtils.getCityName(), areaId: HiveUtils.getAreaId());
             context.read<FetchHomeAllItemsCubit>().fetch(
@@ -515,16 +519,22 @@ class AllItemsWidget extends StatelessWidget {
                 GridListAdapter(
                   type: ListUiType.Mixed,
                   mixMode: true,
-                  crossAxisCount: 2,
+                  crossAxisCount: context.resValue<int>(
+                    inPhone: 2,
+                    inTablet: 3,
+                    inDesktop: 4,
+                  ),
                   height: MediaQuery.of(context).size.height / 3.rh(context),
                   builder: (context, int index, bool isGrid) {
                     ItemModel? item = state.items[index];
 
                     if (isGrid) {
                       // Show ItemCard for grid items
-                      return ItemCard(
-                        item: item,
-                        width: 192,
+                      return Align(
+                        child: ItemCard(
+                          item: item,
+                          width: 165,
+                        ),
                       );
                     } else {
                       // Show ItemHorizontalCard for list items
