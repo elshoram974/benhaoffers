@@ -524,7 +524,7 @@ class AllItemsWidget extends StatelessWidget {
                     inTablet: 3,
                     inDesktop: 4,
                   ),
-                  height: MediaQuery.of(context).size.height / 3.rh(context),
+                  height: 295,
                   builder: (context, int index, bool isGrid) {
                     ItemModel? item = state.items[index];
 
@@ -533,7 +533,7 @@ class AllItemsWidget extends StatelessWidget {
                       return Align(
                         child: ItemCard(
                           item: item,
-                          width: 165,
+                          width: 190,
                         ),
                       );
                     } else {
@@ -588,7 +588,7 @@ Widget _builderWrapper(FetchHomeAllItemsSuccess state, BuildContext context,
     // Show ItemCard for grid items
     return ItemCard(
       item: item,
-      width: 192,
+      width: 190,
     );
   } else {
     // Show ItemHorizontalCard for list items

@@ -43,7 +43,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
+                  height: 295,
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -53,7 +53,7 @@ class HomeSectionsAdapter extends StatelessWidget {
 
                     return Align(
                       child: ItemCard(
-                        width: 165,
+                        width: 190,
                         item: item,
                         bigCard: true,
                       ),
@@ -80,7 +80,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
+                  height: 295,
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -91,7 +91,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                     return Align(
                       child: ItemCard(
                         item: item,
-                        width: 165,
+                        width: 190,
                       ),
                     );
                   },
@@ -116,14 +116,14 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.Grid,
-                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
+                  height: 295,
                   builder: (context, int index, bool) {
                     ItemModel? item = section.sectionData?[index];
 
                     return Align(
                       child: ItemCard(
                         item: item,
-                        width: 165,
+                        width: 190,
                       ),
                     );
                   },
@@ -148,7 +148,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: MediaQuery.sizeOf(context).height / 3.rh(context),
+                  height: 295,
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -159,7 +159,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                     return Align(
                       child: ItemCard(
                         item: item,
-                        width: 165,
+                        width: 190,
                       ),
                     );
                   },
@@ -236,7 +236,7 @@ class ItemCard extends StatefulWidget {
 
 class _ItemCardState extends State<ItemCard> {
   double likeButtonSize = 32;
-  double imageHeight = 147;
+  double imageHeight = 170;
 
   // Use nullable bool to represent initial state
 
