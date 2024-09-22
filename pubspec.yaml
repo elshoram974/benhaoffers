@@ -76,6 +76,7 @@ dependencies:
   pinput: ^5.0.0
   equatable: ^2.0.5
   slide_countdown: ^1.6.1
+  skeletonizer: ^1.4.2
   #pay_with_paystack:
 
 dependency_overrides:
