@@ -524,7 +524,7 @@ class AllItemsWidget extends StatelessWidget {
                     inTablet: 3,
                     inDesktop: 4,
                   ),
-                  height: 295,
+                  height: 300,
                   builder: (context, int index, bool isGrid) {
                     ItemModel? item = state.items[index];
 

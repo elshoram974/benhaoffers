@@ -42,7 +42,7 @@ class ItemModel {
   String? country;
   DateTime? endDate;
 
-  bool get isExpired => endDate?.isBefore(DateTime.now()) == true ;
+  bool get isExpired => endDate?.isBefore(DateTime.now()) == true;
 
   double? get latitude => _latitude;
 
@@ -326,6 +326,38 @@ class ItemModel {
   @override
   String toString() {
     return 'ItemModel{id: $id, name: $name,slug:$slug, description: $description, price: $price, image: $image, watermarkimage: $watermarkimage, latitude: $latitude, longitude: $longitude, address: $address, contact: $contact, total_likes: $totalLikes,isLiked: $isLike, isFeature: $isFeature,views: $views, type: $type, status: $status, active: $active, videoLink: $videoLink, user: $user, galleryImages: $galleryImages,itemOffers:$itemOffers, category: $category, customFields: $customFields,createdAt:$created,itemType:$itemType,userId:$userId,categoryId:$categoryId,isAlreadyOffered:$isAlreadyOffered,isAlreadyReported:$isAlreadyReported,allCategoryId:$allCategoryIds,rejected_reason:$rejectedReason,area_id:$areaId,area:$area,city:$city,state:$state,country:$country, end_date: $endDate}';
+  }
+
+  factory ItemModel.empty() {
+    return ItemModel(
+      id: -1,
+      name: "this is test item -1",
+      description: "item -1 description item -1 description item -1 description item -1 description",
+      price: 25446,
+      image: "item -1 image",
+      address: "null",
+      contact: "null",
+      totalLikes: -145,
+      views: -451,
+      user: User(projectName: "this is user name"),
+      category: null,
+      customFields: [],
+      created: "null",
+      itemType: "null",
+      userId: -1,
+      categoryId: -1,
+      isAlreadyOffered: false,
+      isAlreadyReported: false,
+      allCategoryIds: "null",
+      rejectedReason: "null",
+      areaId: -1,
+      area: "asfasf",
+      city: "asfass",
+      state: "nasfasfull",
+      country: "asfasfasf",
+      endDate: DateTime.now(),
+      active: true,
+    );
   }
 }
 

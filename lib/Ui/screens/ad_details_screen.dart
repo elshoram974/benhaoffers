@@ -675,7 +675,7 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
           ),
           GridListAdapter(
             type: ListUiType.List,
-            height: MediaQuery.of(context).size.height / 3.rh(context),
+            height: 300,
             controller: _pageScrollController,
             listAxis: Axis.horizontal,
             listSaperator: (BuildContext p0, int p1) => const SizedBox(
@@ -686,9 +686,11 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
               ItemModel? item = state.itemModel[index];
 
               if (item.id != model.id) {
-                return ItemCard(
-                  item: item,
-                  width: MediaQuery.sizeOf(context).width / 2.1.rw(context),
+                return Align(
+                  child: ItemCard(
+                    item: item,
+                    width: 190,
+                  ),
                 );
               } else {
                 return const SizedBox.shrink();

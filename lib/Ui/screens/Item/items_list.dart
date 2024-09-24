@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../Utils/AppIcon.dart';
 import '../../../Utils/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
@@ -48,7 +49,7 @@ class ItemsListState extends State<ItemsList> {
   late ScrollController controller;
   static TextEditingController searchController = TextEditingController();
   bool isFocused = false;
-  bool isList = true;
+  bool isList = false;
   String previousSearchQuery = "";
   Timer? _searchDelay;
   String? sortBy;
@@ -430,14 +431,16 @@ class ItemsListState extends State<ItemsList> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
                 child: Text(
                   'sortBy'.translate(context),
                   textAlign: TextAlign.start,
                 ).bold(weight: FontWeight.bold).size(context.font.large),
               ),
 
-              const Divider(height: 1), // Add some space between title and options
+              const Divider(
+                  height: 1), // Add some space between title and options
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 title: Text('default'.translate(context)),
@@ -546,12 +549,12 @@ class ItemsListState extends State<ItemsList> {
     return BlocBuilder<FetchItemFromCategoryCubit, FetchItemFromCategoryState>(
         builder: (context, state) {
       if (state is FetchItemFromCategoryInProgress) {
-        return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return buildItemsShimmer(context);
-          },
+        final List<ItemModel> temp =
+            List.generate(20, (i) => ItemModel.empty());
+        return Skeletonizer(
+          enabled: true,
+          containersColor: Colors.grey.shade300,
+          child: pageData(temp, false),
         );
       }
 
@@ -576,82 +579,81 @@ class ItemsListState extends State<ItemsList> {
             ),
           );
         }
-        return Column(
-          children: [
-            Expanded(
-              child: isList
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      controller: controller,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 3),
-                      itemCount: state.itemModel.length,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        ItemModel item = state.itemModel[index];
-
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.adDetailsScreen,
-                              arguments: {
-                                'model': item,
-                              },
-                            );
-                          },
-                          child: ItemHorizontalCard(
-                            item: item,
-                          ),
-                        );
-                      },
-                    )
-                  : GridView.builder(
-                      shrinkWrap: true,
-                      controller: controller,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                              crossAxisCount: 2,
-                              height: MediaQuery.of(context).size.height /
-                                  3.rh(context),
-                              mainAxisSpacing: 7,
-                              crossAxisSpacing: 10),
-                      itemCount: state.itemModel.length,
-                      itemBuilder: (context, index) {
-                        ItemModel item = state.itemModel[index];
-
-                        return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                Routes.adDetailsScreen,
-                                arguments: {
-                                  'model': item,
-                                },
-                              );
-                            },
-                            child: ItemCard(
-                              item: item,
-                              width: MediaQuery.sizeOf(context).width / 2.3.rw(context),
-                            ));
-                      },
-                    ),
-            ),
-            if (state.isLoadingMore) UiUtils.progress()
-          ],
-        );
+        return pageData(state.itemModel, state.isLoadingMore);
       }
       return Container();
     });
+  }
+
+  Column pageData(List<ItemModel> itemModel, bool isLoading) {
+    return Column(
+      children: [
+        Expanded(
+          child: isList
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  controller: controller,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                  itemCount: itemModel.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    ItemModel item = itemModel[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          Routes.adDetailsScreen,
+                          arguments: {
+                            'model': item,
+                          },
+                        );
+                      },
+                      child: ItemHorizontalCard(
+                        item: item,
+                      ),
+                    );
+                  },
+                )
+              : GridView.builder(
+                  shrinkWrap: true,
+                  controller: controller,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                          crossAxisCount: context.resValue<int>(
+                            inPhone: 2,
+                            inTablet: 3,
+                            inDesktop: 4,
+                          ),
+                          height: 300,
+                          mainAxisSpacing: 7,
+                          crossAxisSpacing: 10),
+                  itemCount: itemModel.length,
+                  itemBuilder: (context, index) {
+                    ItemModel item = itemModel[index];
+
+                    return Align(
+                      child: ItemCard(
+                        item: item,
+                        width: 190,
+                      ),
+                    );
+                  },
+                ),
+        ),
+        if (isLoading) UiUtils.progress()
+      ],
+    );
   }
 
   Widget buildItemsShimmer(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 120.rh(context),
+        height: 300,
         decoration: BoxDecoration(
             border: Border.all(width: 1.5, color: context.color.borderColor),
             color: context.color.secondaryColor,

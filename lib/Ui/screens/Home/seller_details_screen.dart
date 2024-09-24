@@ -254,29 +254,25 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
           physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-              crossAxisCount: 2,
-              height: MediaQuery.of(context).size.height / 3.rh(context),
+              crossAxisCount: context.resValue<int>(
+                inPhone: 2,
+                inTablet: 3,
+                inDesktop: 4,
+              ),
+              height: 300,
               mainAxisSpacing: 7,
               crossAxisSpacing: 10),
           itemCount: state.itemModel.length,
           itemBuilder: (context, index) {
             ItemModel item = state.itemModel[index];
 
-            return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    Routes.adDetailsScreen,
-                    arguments: {
-                      'model': item,
-                    },
-                  );
-                },
-                child: ItemCard(
-                  item: item,
-                  turnUserDetailsFnOn: false,
-                  width: MediaQuery.sizeOf(context).width / 2.3.rw(context),
-                ));
+            return Align(
+              child: ItemCard(
+                item: item,
+                turnUserDetailsFnOn: false,
+                width: 190,
+              ),
+            );
           },
         );
       }

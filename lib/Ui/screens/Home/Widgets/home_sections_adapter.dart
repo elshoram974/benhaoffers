@@ -43,7 +43,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: 295,
+                  height: 300,
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -80,7 +80,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: 295,
+                  height: 300,
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -116,7 +116,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.Grid,
-                  height: 295,
+                  height: 300,
                   builder: (context, int index, bool) {
                     ItemModel? item = section.sectionData?[index];
 
@@ -148,7 +148,7 @@ class HomeSectionsAdapter extends StatelessWidget {
                 ),
                 GridListAdapter(
                   type: ListUiType.List,
-                  height: 295,
+                  height: 300,
                   listAxis: Axis.horizontal,
                   listSaperator: (BuildContext p0, int p1) => const SizedBox(
                     width: 14,
@@ -303,14 +303,11 @@ class _ItemCardState extends State<ItemCard> {
                             itemModel: widget.item!,
                             turnFnOn: widget.turnUserDetailsFnOn && !byMe,
                           ),
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(widget.item!.name!)
-                              .firstUpperCaseWidget()
-                              .bold(weight: FontWeight.w500)
-                              .setMaxLines(lines: 2)
-                              .size(context.font.large),
-                        ),
+                        Text(widget.item!.name!)
+                            .firstUpperCaseWidget()
+                            .bold(weight: FontWeight.w500)
+                            .setMaxLines(lines: 2)
+                            .size(context.font.large),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 12),
                           child: Row(
