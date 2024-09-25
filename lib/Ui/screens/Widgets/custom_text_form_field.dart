@@ -18,6 +18,7 @@ enum CustomTextFieldValidator {
 }
 
 class CustomTextFormField extends StatefulWidget {
+  final FocusNode? focusNode;
   final String? hintText;
   final String? initialValue;
   final TextEditingController? controller;
@@ -46,11 +47,13 @@ class CustomTextFormField extends StatefulWidget {
   final TextStyle? hintTextStyle;
   final TextCapitalization? capitalization;
   final void Function()? onEditingComplete;
+  final void Function(String)? onFieldSubmitted;
   final String? Function(String?)? customValidatorFn;
   final EdgeInsetsGeometry? contentPadding;
 
   const CustomTextFormField({
     super.key,
+    this.focusNode,
     this.hintText,
     this.initialValue,
     this.controller,
@@ -79,6 +82,7 @@ class CustomTextFormField extends StatefulWidget {
     this.borderRadius,
     this.capitalization,
     this.onEditingComplete,
+    this.onFieldSubmitted,
     this.customValidatorFn,
     this.contentPadding,
   });
@@ -88,7 +92,7 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  final FocusNode focusNode = FocusNode();
+  late final FocusNode focusNode;
   bool isFocused = false;
 
   late final bool iconWithBorder;
@@ -96,6 +100,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   void initState() {
     super.initState();
+      focusNode = widget.focusNode ?? FocusNode();
+
     focusNode.addListener(changeFocus);
     iconWithBorder =
         widget.prefixWithBorder != null || widget.suffixWithBorder != null;
@@ -171,6 +177,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                             : null,
                         child: TextFormField(
                           autofocus: widget.autofocus,
+                          onFieldSubmitted: widget.onFieldSubmitted,
                           focusNode: focusNode,
                           initialValue: widget.initialValue,
                           onEditingComplete: widget.onEditingComplete,

@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 class SignUpTextField extends StatelessWidget {
   const SignUpTextField({
     super.key,
+    this.focusNode,
+    this.action,
     this.controller,
     this.validator,
     this.hintText,
@@ -14,9 +16,12 @@ class SignUpTextField extends StatelessWidget {
     this.suffix,
     this.obscureText,
     this.onEditingComplete,
+    this.onFieldSubmitted,
     this.customValidatorFn,
   });
 
+  final FocusNode? focusNode;
+  final TextInputAction? action;
   final TextEditingController? controller;
   final CustomTextFieldValidator? validator;
   final String? hintText;
@@ -25,15 +30,18 @@ class SignUpTextField extends StatelessWidget {
   final List<TextInputFormatter>? formaters;
   final TextInputType? keyboard;
   final void Function()? onEditingComplete;
+  final void Function(String)? onFieldSubmitted;
   final String? Function(String?)? customValidatorFn;
 
   @override
   Widget build(BuildContext context) {
     return CustomTextFormField(
+      focusNode: focusNode,
+      onFieldSubmitted: onFieldSubmitted,
       controller: controller,
       fillColor: context.color.secondaryColor,
       validator: validator,
-      action: TextInputAction.next,
+      action: action ?? TextInputAction.next,
       hintText: hintText,
       keyboard: keyboard,
       formaters: formaters,

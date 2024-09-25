@@ -53,6 +53,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
   final TextEditingController _projectNameController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
   bool isObscure = true;
   bool isRePassObscure = true;
   bool catHasError = false;
@@ -100,6 +101,7 @@ class _SignupScreenState extends CloudState<SignupScreen> {
   void onTapSignup() async {
     checkCatValidation();
     if ((_formKey.currentState?.validate() ?? false) && !catHasError) {
+      _focusNode.unfocus();
       final Map<String, String> map = {};
       map[Api.type] = AuthenticationType.email.name;
       map[Api.email] = _emailController.text.trim();
@@ -299,6 +301,9 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                                   SignUpTextField(
                                     obscureText: isObscure,
                                     hintText: "password".translate(context),
+                                    onFieldSubmitted: (_) {
+                                      _focusNode.requestFocus();
+                                    },
                                     validator:
                                         CustomTextFieldValidator.password,
                                     controller: _passwordController,
@@ -318,7 +323,9 @@ class _SignupScreenState extends CloudState<SignupScreen> {
                                   ),
                                   const SizedBox(height: 14),
                                   SignUpTextField(
+                                    focusNode: _focusNode,
                                     obscureText: isRePassObscure,
+                                    action: TextInputAction.done,
                                     suffix: IconButton(
                                       onPressed: () {
                                         isRePassObscure = !isRePassObscure;
