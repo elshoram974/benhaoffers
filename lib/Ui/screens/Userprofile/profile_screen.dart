@@ -222,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       args: {"from": "profile"});
                                 },
                                 child: Container(
-                                  width: 40.rw(context),
+                                  width: 40.rh(context),
                                   height: 40.rh(context),
                                   decoration: BoxDecoration(
                                     color: context.color.secondaryColor,
