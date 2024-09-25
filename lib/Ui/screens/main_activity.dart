@@ -675,20 +675,19 @@ class MainActivityState extends CloudState<MainActivity>
                 visible: visible,
                 child: Positioned(
                   top: 0,
-                  child: GestureDetector(
-                    onTap: () async {
-                      context
-                          .read<FetchUserPackageLimitCubit>()
-                          .fetchUserPackageLimit(packageType: "item_listing");
-                    },
-                    child: SizedBox(
-                      width: buttonWidth,
-                      height: 58,
-                      child: svgLoaded == false
-                          ? Container()
-                          : SvgPicture.string(
-                              svgEdit.toSVGString() ?? "",
-                            ),
+                  child: SizedBox(
+                    width: buttonWidth,
+                    height: 58,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        context
+                            .read<FetchUserPackageLimitCubit>()
+                            .fetchUserPackageLimit(packageType: "item_listing");
+                      },
+                      elevation: 10,
+                      foregroundColor: Colors.white,
+                      backgroundColor: context.color.territoryColor,
+                      child: const Icon(Icons.add),
                     ),
                   ),
                 ),
