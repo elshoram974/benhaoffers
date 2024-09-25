@@ -12,6 +12,9 @@ class AppIcons {
 
   //
   //** */
+  static String alarm = _svgPath("alarm_1");
+  static String rank = _svgPath("rank");
+  static String sync = _svgPath("sync");
   static String logoWithShadow = "assets/svg/Logo/logoWithShadow.png";
   static String splashLogo = _svgPath("Logo/splashlogo");
   static String authWaitingIcon = _svgPath("authWaitingIcon");

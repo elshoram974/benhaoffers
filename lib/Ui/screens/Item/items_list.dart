@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../Utils/AppIcon.dart';
 import '../../../Utils/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
+import '../../../data/model/home_slider.dart';
 import '../../../data/model/item/item_model.dart';
 import '../../../data/model/item_filter_model.dart';
 import '../../../exports/main_export.dart';
@@ -14,11 +15,11 @@ import '../../../utils/api.dart';
 import '../../../utils/responsiveSize.dart';
 import '../../../utils/ui_utils.dart';
 import '../Home/Widgets/home_sections_adapter.dart';
+import '../Home/home_screen.dart';
 import '../Widgets/Errors/no_data_found.dart';
 import '../home/Widgets/item_horizontal_card.dart';
 import '../main_activity.dart';
 import '../widgets/AnimatedRoutes/blur_page_route.dart';
-import '../widgets/shimmerLoadingContainer.dart';
 
 class ItemsList extends StatefulWidget {
   final String categoryId, categoryName;
@@ -588,6 +589,37 @@ class ItemsListState extends State<ItemsList> {
   Column pageData(List<ItemModel> itemModel, bool isLoading) {
     return Column(
       children: [
+        SizedBox(height: 10.rw(context)),
+        _SliderWidget([HomeSlider.new()]),
+        Container(
+          height: 45.rw(context),
+          margin: EdgeInsets.symmetric(vertical: 10.rw(context)),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 55,
+            itemBuilder: (context, index) {
+              return Container(
+                width: 45.rw(context),
+                margin: EdgeInsets.symmetric(horizontal: 10.rw(context)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.5),
+                  child: InkWell(
+                    onTap: () {
+                      print("object");
+                    },
+                    borderRadius: BorderRadius.circular(12.5),
+                    child: UiUtils.getImage(
+                      "https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvam9iNjgwLTE2Ni1wLWwxZGJ1cTN2LnBuZw.png",
+                      height: 45.rw(context),
+                      width: 45.rw(context),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
         Expanded(
           child: isList
               ? ListView.builder(
@@ -648,54 +680,206 @@ class ItemsListState extends State<ItemsList> {
       ],
     );
   }
+}
 
-  Widget buildItemsShimmer(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 300,
-        decoration: BoxDecoration(
-            border: Border.all(width: 1.5, color: context.color.borderColor),
-            color: context.color.secondaryColor,
-            borderRadius: BorderRadius.circular(18)),
-        child: Row(
-          children: [
-            CustomShimmer(
-              height: 120.rh(context),
-              width: 100.rw(context),
-            ),
-            SizedBox(
-              width: 10.rw(context),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CustomShimmer(
-                  width: 100.rw(context),
-                  height: 10,
-                  borderRadius: 7,
+class _SliderWidget extends StatefulWidget {
+  const _SliderWidget(this.sliderlist);
+  final List<HomeSlider> sliderlist;
+
+  @override
+  State<_SliderWidget> createState() => _SliderWidgetState();
+}
+
+class _SliderWidgetState extends State<_SliderWidget>
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  final ValueNotifier<int> _bannerIndex = ValueNotifier(0);
+  late Timer _timer;
+  int bannersLength = 0;
+  late final TabController _tabController;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    bannersLength = widget.sliderlist.length;
+    _tabController = TabController(length: bannersLength, vsync: this);
+    _tabController.addListener(() {
+      _timer.cancel();
+      _startAutoSlider();
+      _bannerIndex.value = _tabController.index;
+    });
+    _startAutoSlider();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bannerIndex.dispose();
+    _timer.cancel();
+    _tabController.removeListener(() {}); // Remove the listener
+    _tabController.dispose(); // Dispose the TabController
+  }
+
+  void _startAutoSlider() {
+    // Set up a timer to automatically change the banner index
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      final int nextPage = _bannerIndex.value + 1;
+      if (nextPage < bannersLength) {
+        _bannerIndex.value = nextPage;
+      } else {
+        _bannerIndex.value = 0;
+      }
+
+      _tabController.animateTo(
+        _bannerIndex.value,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    _bannerIndex.value = 0;
+
+    return Column(
+      children: [
+        AspectRatio(
+          aspectRatio: 389 / 194,
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              ...List.generate(
+                bannersLength,
+                (index) => InkWell(
+                  onTap: () async {
+                    // if (widget.sliderlist[index].thirdPartyLink != "") {
+                    //   await urllauncher.launchUrl(
+                    //       Uri.parse(widget.sliderlist[index].thirdPartyLink!),
+                    //       mode: LaunchMode.externalApplication);
+                    // } else if (widget.sliderlist[index].modelType!
+                    //     .contains("Category")) {
+                    //   if (widget.sliderlist[index].model!.subCategoriesCount! >
+                    //       0) {
+                    //     Navigator.pushNamed(context, Routes.subCategoryScreen,
+                    //         arguments: {
+                    //           "categoryList": <CategoryModel>[],
+                    //           "catName": widget.sliderlist[index].model!.name,
+                    //           "catId": widget.sliderlist[index].modelId,
+                    //           "categoryIds": [
+                    //             widget.sliderlist[index].model!.parentCategoryId
+                    //                 .toString(),
+                    //             widget.sliderlist[index].modelId.toString()
+                    //           ]
+                    //         });
+                    //   } else {
+                    //     Navigator.pushNamed(context, Routes.itemsList,
+                    //         arguments: {
+                    //           'catID':
+                    //               widget.sliderlist[index].modelId.toString(),
+                    //           'catName': widget.sliderlist[index].model!.name,
+                    //           "categoryIds": [
+                    //             widget.sliderlist[index].modelId.toString()
+                    //           ]
+                    //         });
+                    //   }
+                    // } else {
+                    //   try {
+                    //     ItemRepository fetch = ItemRepository();
+
+                    //     Widgets.showLoader(context);
+
+                    //     DataOutput<ItemModel> dataOutput =
+                    //         await fetch.fetchItemFromItemId(
+                    //             widget.sliderlist[index].modelId!);
+
+                    //     Future.delayed(
+                    //       Duration.zero,
+                    //       () {
+                    //         Widgets.hideLoder(context);
+                    //         Navigator.pushNamed(context, Routes.adDetailsScreen,
+                    //             arguments: {
+                    //               "model": dataOutput.modelList[0],
+                    //             });
+                    //       },
+                    //     );
+                    //   } catch (e) {
+                    //     Widgets.hideLoder(context);
+                    //     HelperUtils.showSnackBarMessage(context, e.toString());
+                    //   }
+                    // }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: sidePadding),
+                    width: MediaQuery.of(context).size.width - 16,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade200,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: UiUtils.getImage(
+                          widget.sliderlist[index].image ?? "",
+                          fit: BoxFit.fill),
+                    ),
+                  ),
                 ),
-                CustomShimmer(
-                  width: 150.rw(context),
-                  height: 10,
-                  borderRadius: 7,
-                ),
-                CustomShimmer(
-                  width: 120.rw(context),
-                  height: 10,
-                  borderRadius: 7,
-                ),
-                CustomShimmer(
-                  width: 80.rw(context),
-                  height: 10,
-                  borderRadius: 7,
-                )
-              ],
-            )
-          ],
+              ),
+            ],
+          ),
         ),
-      ),
+        Container(
+          height: 4,
+          margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 7),
+          child: Stack(
+            children: [
+              Row(
+                children: List.generate(
+                  bannersLength,
+                  (i) => Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: context.color.textDefaultColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      // Divider color
+                    ),
+                  ),
+                ),
+              ),
+              TabBar(
+                indicatorWeight: 4,
+                controller: _tabController,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorPadding: const EdgeInsets.symmetric(horizontal: 8),
+                indicator: UnderlineTabIndicator(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide:
+                      BorderSide(color: context.color.territoryColor, width: 4),
+                ),
+                unselectedLabelColor: const Color(0xffCAC8C8).withOpacity(0.65),
+                splashBorderRadius: BorderRadius.circular(50),
+                onTap: (value) {
+                  _tabController.animateTo(
+                    value,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                tabs: [
+                  for (int i = 0; i < bannersLength; i++)
+                    const Tab(height: 5, child: SizedBox.shrink())
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

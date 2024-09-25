@@ -87,7 +87,9 @@ class _SignupScreenState extends CloudState<SignupScreen> {
   }
 
   void checkCatValidation() {
-    if (_categoryController.text.isEmpty) {
+    if (UserType.customer == widget.userType) {
+      catHasError = false;
+    } else if (_categoryController.text.isEmpty) {
       catHasError = true;
     } else {
       catHasError = false;

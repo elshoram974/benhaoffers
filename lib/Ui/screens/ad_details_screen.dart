@@ -56,6 +56,7 @@ import 'Widgets/Errors/something_went_wrong.dart';
 import 'Widgets/seller_name_container.dart';
 import 'Widgets/shimmerLoadingContainer.dart';
 import 'Widgets/video_view_screen.dart';
+import 'add_item_no_package_screen.dart';
 import 'google_map_screen.dart';
 
 class AdDetailsScreen extends StatefulWidget {
@@ -755,7 +756,12 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
                 FetchUserPackageLimitState>(
               listener: (context, state) async {
                 if (state is FetchUserPackageLimitFailure) {
-                  UiUtils.noPackageAvailableDialog(context);
+                  if (state.error == "User is not allowed to create Item" ||
+                      state.error == "لا يُسمح للمستخدم بإنشاء عنصر") {
+                    AddItemNoPackageScreen.open(context);
+                  } else {
+                    UiUtils.noPackageAvailableDialog(context);
+                  }
                 }
                 if (state is FetchUserPackageLimitInSuccess) {
                   await UiUtils.showBlurredDialoge(

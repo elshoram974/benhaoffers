@@ -533,6 +533,10 @@
     "resend": "إعادة الإرسال",
     "createNewPassword": "إنشاء كلمة مرور جديدة",
     "yourNewPasswordMustBeDifferentFromPreviously": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا",
+    "sorry": "عفواً !!",
+    "youHaveExceededNumberOfAdsAllowedInYourPackage": "لقد تجاوزت عدد الاعلانات المسموحه لك في باقتك",
     "passwordChangeSuccess": "تم تغيير الرقم السري بنجاح.",
+    "renewPackage": "تجديد الباقة",
+    "back": "رجوع",
     "patienceFoundationOfSuccess": "الصبر اساس النجاح"
 }

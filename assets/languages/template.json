@@ -534,5 +534,9 @@
   "createNewPassword": "Create new password",
   "yourNewPasswordMustBeDifferentFromPreviously": "Your new password must be different from previously used password",
   "passwordChangeSuccess": "We have successfully changed your password",
+  "sorry": "Sorry !!",
+  "renewPackage": "Renew package",
+  "back": "Back",
+  "youHaveExceededNumberOfAdsAllowedInYourPackage": "You have exceeded the number of ads allowed in your package.",
   "patienceFoundationOfSuccess": "Patience is the foundation of success."
 }

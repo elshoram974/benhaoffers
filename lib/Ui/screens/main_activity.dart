@@ -41,6 +41,7 @@ import 'Home/search_screen.dart';
 import 'Item/add_item_screen/select_category.dart';
 import 'Item/my_items_screen.dart';
 import 'Userprofile/profile_screen.dart';
+import 'add_item_no_package_screen.dart';
 import 'chat/chat_list_screen.dart';
 import 'home/home_screen.dart';
 import 'widgets/blurred_dialoge_box.dart';
@@ -627,7 +628,14 @@ class MainActivityState extends CloudState<MainActivity>
                               FetchUserPackageLimitState>(
                             listener: (context, state) {
                               if (state is FetchUserPackageLimitFailure) {
-                                UiUtils.noPackageAvailableDialog(context);
+                                if (state.error ==
+                                        "User is not allowed to create Item" ||
+                                    state.error ==
+                                        "لا يُسمح للمستخدم بإنشاء عنصر") {
+                                  AddItemNoPackageScreen.open(context);
+                                } else {
+                                  UiUtils.noPackageAvailableDialog(context);
+                                }
                               }
                               if (state is FetchUserPackageLimitInSuccess) {
                                 UiUtils.checkUser(
