@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:eClassify/Utils/api.dart';
+import 'package:eClassify/Utils/hive_utils.dart';
 import 'package:eClassify/data/model/data_output.dart';
 import 'package:eClassify/data/model/item/item_model.dart';
 import 'package:path/path.dart' as path;
+import '../../model/home_slider.dart';
 import '../../model/item_filter_model.dart';
 
 class ItemRepository {
@@ -130,6 +132,36 @@ class ItemRepository {
       "item_id": itemId,
     });
     return response;
+  }
+
+  Future<({List<HomeSlider> sliders, List<User> vendor})>
+      fetchSliderVendorsFromCatId(
+    int categoryId,
+  ) async {
+    Map<String, dynamic> parameters = {
+      Api.categoryId: categoryId,
+    };
+
+    print("parameters***$parameters");
+
+    List<Map<String, dynamic>> response = await Future.wait([
+      Api.get(url: Api.getSliderApi, queryParameters: parameters),
+      Api.get(url: Api.getCategorySellers, queryParameters: parameters),
+    ]);
+
+    List<HomeSlider> sliders = (response[0]['data'] as List?)
+            ?.map((e) => HomeSlider.fromJson(e))
+            .toList() ??
+        [];
+
+    List<User> vendors = [];
+    for (var e in response[1]['data'] as List? ?? []) {
+      final User user = User.fromJson(e);
+      if ((user.id ?? -100).toString() == HiveUtils.getUserId()) continue;
+      vendors.add(user);
+    }
+
+    return (sliders: sliders, vendor: vendors);
   }
 
   Future<DataOutput<ItemModel>> fetchItemFromCatId(

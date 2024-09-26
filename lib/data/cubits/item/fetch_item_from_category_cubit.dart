@@ -55,12 +55,19 @@ class FetchItemFromCategoryCubit extends Cubit<FetchItemFromCategoryState> {
   final ItemRepository _itemRepository = ItemRepository();
 
   Future<void> fetchItemFromCategory(
-      {required int categoryId, required String search, String? sortBy,ItemFilterModel? filter}) async {
+      {required int categoryId,
+      required String search,
+      String? sortBy,
+      ItemFilterModel? filter}) async {
     try {
       emit(FetchItemFromCategoryInProgress());
 
       DataOutput<ItemModel> result = await _itemRepository.fetchItemFromCatId(
-          categoryId: categoryId, page: 1, search: search, sortBy: sortBy,filter: filter);
+          categoryId: categoryId,
+          page: 1,
+          search: search,
+          sortBy: sortBy,
+          filter: filter);
       emit(
         FetchItemFromCategorySuccess(
           isLoadingMore: false,

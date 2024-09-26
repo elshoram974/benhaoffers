@@ -1,4 +1,5 @@
 import 'package:eClassify/data/model/category_model.dart';
+import 'package:eClassify/settings.dart';
 
 import '../CustomField/custom_field_model.dart';
 
@@ -334,7 +335,7 @@ class ItemModel {
       name: "this is test item -1",
       description: "item -1 description item -1 description item -1 description item -1 description",
       price: 25446,
-      image: "item -1 image",
+      image: AppSettings.image,
       address: "null",
       contact: "null",
       totalLikes: -145,

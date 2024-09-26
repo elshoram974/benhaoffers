@@ -17,13 +17,13 @@ class SellerNameContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: turnFnOn
+      onTap: turnFnOn && itemModel.user != null
           ? () {
               Navigator.pushNamed(
                 context,
                 Routes.sellerDetailsScreen,
                 arguments: {
-                  "model": itemModel,
+                  "seller": itemModel.user,
                 },
               );
             }

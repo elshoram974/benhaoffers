@@ -2491,15 +2491,17 @@ class AdDetailsScreenState extends CloudState<AdDetailsScreen> {
 
   Widget setSellerDetails() {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          Routes.sellerDetailsScreen,
-          arguments: {
-            "model": model,
-          },
-        );
-      },
+      onTap: model.user == null
+          ? null
+          : () {
+              Navigator.pushNamed(
+                context,
+                Routes.sellerDetailsScreen,
+                arguments: {
+                  "seller": model.user,
+                },
+              );
+            },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(children: [

@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../Utils/AppIcon.dart';
 import '../../../Utils/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
+import '../../../data/cubits/item/fetch_slider_vendor_category.dart';
 import '../../../data/model/home_slider.dart';
 import '../../../data/model/item/item_model.dart';
 import '../../../data/model/item_filter_model.dart';
@@ -37,10 +38,13 @@ class ItemsList extends StatefulWidget {
   static Route route(RouteSettings routeSettings) {
     Map? arguments = routeSettings.arguments as Map?;
     return BlurredRouter(
-      builder: (_) => ItemsList(
-        categoryId: arguments?['catID'] as String,
-        categoryName: arguments?['catName'],
-        categoryIds: arguments?['categoryIds'],
+      builder: (_) => BlocProvider(
+        create: (context) => FetchSliderVendorFromCategoryCubit(),
+        child: ItemsList(
+          categoryId: arguments?['catID'] as String,
+          categoryName: arguments?['catName'],
+          categoryIds: arguments?['categoryIds'],
+        ),
       ),
     );
   }
@@ -70,6 +74,12 @@ class ItemsListState extends State<ItemsList> {
           widget.categoryId,
         ),
         search: "");
+
+    context
+        .read<FetchSliderVendorFromCategoryCubit>()
+        .fetchSliderVendorFromCategory(
+          int.parse(widget.categoryId),
+        );
 
     Future.delayed(Duration.zero, () {
       selectedcategoryId = widget.categoryId;
@@ -310,12 +320,102 @@ class ItemsListState extends State<ItemsList> {
               children: [
                 searchBarWidget(),
                 filterBarWidget(),
-                Expanded(child: fetchItems()),
+                Expanded(
+                  child: screenContent(),
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  ListView screenContent() {
+    return ListView(
+      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(vertical: 10.rw(context)),
+      children: [
+        sliderAndVendor(),
+        fetchItems(),
+      ],
+    );
+  }
+
+  Widget sliderAndVendor() {
+    return BlocBuilder<FetchSliderVendorFromCategoryCubit,
+        FetchSliderVendorFromCategoryState>(
+      builder: (context, state) {
+        if (state is FetchSliderVendorFromCategoryInProgress) {
+
+          final HomeSlider s = HomeSlider(image: AppSettings.image);
+          final User u = User(profile: AppSettings.image);
+          return Skeletonizer(
+            enabled: true,
+            containersColor: Colors.grey.shade300,
+            child: _sliderAndVendors(
+              sliderList: [s, s, s],
+              vendors: List.generate(10, (i) => u),
+            ),
+          );
+        } else if (state is FetchSliderVendorFromCategorySuccess) {
+          return _sliderAndVendors(
+            sliderList: state.sliders,
+            vendors: state.vendors,
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Column _sliderAndVendors({
+    required List<HomeSlider> sliderList,
+    required List<User> vendors,
+  }) {
+    return Column(
+      children: [
+        if (sliderList.isNotEmpty) _SliderWidget(sliderList),
+        if (vendors.isNotEmpty)
+          Container(
+            height: 45.rw(context),
+            margin: EdgeInsets.symmetric(vertical: 10.rw(context)),
+            alignment: Alignment.center,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: vendors.length,
+              shrinkWrap: vendors.length < 10,
+              itemBuilder: (context, index) {
+                final User vendor = vendors[index];
+                return Container(
+                  width: 45.rw(context),
+                  margin: EdgeInsets.symmetric(horizontal: 10.rw(context)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.5),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          Routes.sellerDetailsScreen,
+                          arguments: {
+                            "seller": vendor,
+                          },
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(12.5),
+                      child: UiUtils.getImage(
+                        vendor.profile ?? "",
+                        height: 45.rw(context),
+                        width: 45.rw(context),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+      ],
     );
   }
 
@@ -548,134 +648,106 @@ class ItemsListState extends State<ItemsList> {
 
   Widget fetchItems() {
     return BlocBuilder<FetchItemFromCategoryCubit, FetchItemFromCategoryState>(
+        buildWhen: (p, c) =>
+            c is FetchItemFromCategoryInProgress ||
+            c is FetchItemFromCategorySuccess ||
+            c is FetchItemFromCategoryFailure,
         builder: (context, state) {
-      if (state is FetchItemFromCategoryInProgress) {
-        final List<ItemModel> temp =
-            List.generate(20, (i) => ItemModel.empty());
-        return Skeletonizer(
-          enabled: true,
-          containersColor: Colors.grey.shade300,
-          child: pageData(temp, false),
-        );
-      }
+          if (state is FetchItemFromCategoryInProgress) {
+            final List<ItemModel> temp =
+                List.generate(20, (i) => ItemModel.empty());
+            return Skeletonizer(
+              enabled: true,
+              containersColor: Colors.grey.shade300,
+              child: pageData(temp, false),
+            );
+          }
 
-      if (state is FetchItemFromCategoryFailure) {
-        return Center(
-          child: Text(state.errorMessage),
-        );
-      }
-      if (state is FetchItemFromCategorySuccess) {
-        if (state.itemModel.isEmpty) {
-          return Center(
-            child: NoDataFound(
-              onTap: () {
-                context
-                    .read<FetchItemFromCategoryCubit>()
-                    .fetchItemFromCategory(
-                        categoryId: int.parse(
-                          widget.categoryId,
-                        ),
-                        search: searchController.text.toString());
-              },
-            ),
-          );
-        }
-        return pageData(state.itemModel, state.isLoadingMore);
-      }
-      return Container();
-    });
+          if (state is FetchItemFromCategoryFailure) {
+            return Center(
+              child: Text(state.errorMessage),
+            );
+          }
+          if (state is FetchItemFromCategorySuccess) {
+            if (state.itemModel.isEmpty) {
+              return Center(
+                child: NoDataFound(
+                  onTap: () {
+                    context
+                        .read<FetchItemFromCategoryCubit>()
+                        .fetchItemFromCategory(
+                            categoryId: int.parse(
+                              widget.categoryId,
+                            ),
+                            search: searchController.text.toString());
+                  },
+                ),
+              );
+            }
+            return pageData(state.itemModel, state.isLoadingMore);
+          }
+          return Container();
+        });
   }
 
   Column pageData(List<ItemModel> itemModel, bool isLoading) {
     return Column(
       children: [
-        SizedBox(height: 10.rw(context)),
-        _SliderWidget([HomeSlider.new()]),
-        Container(
-          height: 45.rw(context),
-          margin: EdgeInsets.symmetric(vertical: 10.rw(context)),
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 55,
-            itemBuilder: (context, index) {
-              return Container(
-                width: 45.rw(context),
-                margin: EdgeInsets.symmetric(horizontal: 10.rw(context)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.5),
-                  child: InkWell(
+        isList
+            ? ListView.builder(
+                shrinkWrap: true,
+                controller: controller,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                itemCount: itemModel.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  ItemModel item = itemModel[index];
+
+                  return GestureDetector(
                     onTap: () {
-                      print("object");
+                      Navigator.pushNamed(
+                        context,
+                        Routes.adDetailsScreen,
+                        arguments: {
+                          'model': item,
+                        },
+                      );
                     },
-                    borderRadius: BorderRadius.circular(12.5),
-                    child: UiUtils.getImage(
-                      "https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvam9iNjgwLTE2Ni1wLWwxZGJ1cTN2LnBuZw.png",
-                      height: 45.rw(context),
-                      width: 45.rw(context),
-                      fit: BoxFit.cover,
+                    child: ItemHorizontalCard(
+                      item: item,
                     ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        Expanded(
-          child: isList
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  controller: controller,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                  itemCount: itemModel.length,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    ItemModel item = itemModel[index];
+                  );
+                },
+              )
+            : GridView.builder(
+                shrinkWrap: true,
+                controller: controller,
+                physics: const NeverScrollableScrollPhysics(),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                        crossAxisCount: context.resValue<int>(
+                          inPhone: 2,
+                          inTablet: 3,
+                          inDesktop: 4,
+                        ),
+                        height: 300,
+                        mainAxisSpacing: 7,
+                        crossAxisSpacing: 10),
+                itemCount: itemModel.length,
+                itemBuilder: (context, index) {
+                  ItemModel item = itemModel[index];
 
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.adDetailsScreen,
-                          arguments: {
-                            'model': item,
-                          },
-                        );
-                      },
-                      child: ItemHorizontalCard(
-                        item: item,
-                      ),
-                    );
-                  },
-                )
-              : GridView.builder(
-                  shrinkWrap: true,
-                  controller: controller,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                          crossAxisCount: context.resValue<int>(
-                            inPhone: 2,
-                            inTablet: 3,
-                            inDesktop: 4,
-                          ),
-                          height: 300,
-                          mainAxisSpacing: 7,
-                          crossAxisSpacing: 10),
-                  itemCount: itemModel.length,
-                  itemBuilder: (context, index) {
-                    ItemModel item = itemModel[index];
-
-                    return Align(
-                      child: ItemCard(
-                        item: item,
-                        width: 190,
-                      ),
-                    );
-                  },
-                ),
-        ),
+                  return Align(
+                    child: ItemCard(
+                      item: item,
+                      width: 190,
+                    ),
+                  );
+                },
+              ),
         if (isLoading) UiUtils.progress()
       ],
     );

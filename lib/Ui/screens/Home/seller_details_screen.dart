@@ -17,9 +17,9 @@ import '../widgets/AnimatedRoutes/blur_page_route.dart';
 import '../widgets/shimmerLoadingContainer.dart';
 
 class SellerDetailsScreen extends StatefulWidget {
-  final ItemModel model;
+  final User user;
 
-  const SellerDetailsScreen({super.key, required this.model});
+  const SellerDetailsScreen({super.key, required this.user});
 
   @override
   SellerDetailsScreenState createState() => SellerDetailsScreenState();
@@ -29,14 +29,14 @@ class SellerDetailsScreen extends StatefulWidget {
     return BlurredRouter(
       builder: (_) => BlocProvider(
         create: (context) => FetchItemFromSellerCubit(),
-        child: SellerDetailsScreen(model: arguments?['model']),
+        child: SellerDetailsScreen(user: arguments?['seller']),
       ),
     );
   }
 }
 
 class SellerDetailsScreenState extends State<SellerDetailsScreen> {
-  late final User seller = widget.model.user!;
+  late final User seller = widget.user;
 
   late ScrollController controller;
 
@@ -163,7 +163,7 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
                         isTelephone: false,
                         isSMS: true,
                         isMail: false,
-                        value: widget.model.contact!,
+                        value: seller.mobile!,
                         context: context);
                   },
                 ),
@@ -175,7 +175,7 @@ class SellerDetailsScreenState extends State<SellerDetailsScreen> {
                         isTelephone: true,
                         isSMS: false,
                         isMail: false,
-                        value: widget.model.contact!,
+                        value: seller.mobile!,
                         context: context);
                   },
                 )
