@@ -261,6 +261,13 @@ class LoginScreenState extends State<LoginScreen> {
                 body: BlocListener<LoginCubit, LoginState>(
                   listener: (context, state) {
                     if (state is LoginSuccess) {
+                      if (state.apiResponse[Api.deletedAt] != null) {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          Routes.authWaiting,
+                        );
+                        return;
+                      }
                       HiveUtils.setUserIsAuthenticated(true);
                       //GuestChecker.set(isGuest: false);
                       //context.read<AuthCubit>().updateFCM(context);

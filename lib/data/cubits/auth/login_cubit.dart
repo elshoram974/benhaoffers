@@ -113,8 +113,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void loginEmailPhone(
-    BuildContext context,
-    {
+    BuildContext context, {
     required String email,
     required String password,
     required AuthenticationType type,
@@ -133,11 +132,11 @@ class LoginCubit extends Cubit<LoginState> {
         password: password,
         countryCode: countryCode,
       );
-      if(context.mounted) Widgets.hideLoder(context);
-      if(result == null) return;
+      if (context.mounted) Widgets.hideLoder(context);
+      if (result == null) return;
 
       // Storing data to local database {HIVE}
-      HiveUtils.setJWT(result['token']);
+      if (result['token'] != null) HiveUtils.setJWT(result['token']);
 
       if ((result['data']['name'] == "" || result['data']['name'] == null) ||
           (result['data']['email'] == "" || result['data']['email'] == null) ||
