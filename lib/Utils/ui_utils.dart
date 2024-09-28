@@ -165,12 +165,15 @@ class UiUtils {
     );
   }
 
-  static Widget getImage(String url,
-      {double? width,
-      double? height,
-      BoxFit? fit,
-      String? blurHash,
-      bool? showFullScreenImage}) {
+  static Widget getImage(
+    String url, {
+    double? width,
+    double? height,
+    BoxFit? fit,
+    String? blurHash,
+    bool? showFullScreenImage,
+    Widget? errorWidget,
+  }) {
     return CachedNetworkImage(
       imageUrl: url,
       fit: fit,
@@ -200,11 +203,12 @@ class UiUtils {
           child: SizedBox(
             width: width,
             height: height,
-            child: Image.asset(
-              AppIcons.placeHolder,
-              width: width ?? 70,
-              height: height ?? 70,
-            ),
+            child: errorWidget ??
+                Image.asset(
+                  AppIcons.placeHolder,
+                  width: width ?? 70,
+                  height: height ?? 70,
+                ),
           ),
         );
       },

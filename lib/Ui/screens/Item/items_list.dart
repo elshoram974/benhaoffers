@@ -347,7 +347,6 @@ class ItemsListState extends State<ItemsList> {
         FetchSliderVendorFromCategoryState>(
       builder: (context, state) {
         if (state is FetchSliderVendorFromCategoryInProgress) {
-
           final HomeSlider s = HomeSlider(image: AppSettings.image);
           final User u = User(profile: AppSettings.image);
           return Skeletonizer(
@@ -408,6 +407,7 @@ class ItemsListState extends State<ItemsList> {
                         height: 45.rw(context),
                         width: 45.rw(context),
                         fit: BoxFit.cover,
+                        errorWidget: _firstLetter(vendor.projectName),
                       ),
                     ),
                   ),
@@ -416,6 +416,21 @@ class ItemsListState extends State<ItemsList> {
             ),
           ),
       ],
+    );
+  }
+
+  Padding? _firstLetter(String? sellerName) {
+    if (sellerName == null) return null;
+    List<String> list = sellerName.split(" ");
+    String name = '';
+    for (String e in list) {
+      name += e[0].toUpperCase();
+    }
+    return Padding(
+      padding: EdgeInsets.all(10.rw(context)),
+      child: FittedBox(
+        child: Text(name).color(context.color.territoryColor),
+      ),
     );
   }
 
