@@ -1,7 +1,13 @@
 import 'dart:async';
 
+import 'package:eClassify/Utils/helper_utils.dart';
+import 'package:eClassify/data/Repositories/Item/item_repository.dart';
+import 'package:eClassify/data/helper/widgets.dart';
+import 'package:eClassify/data/model/category_model.dart';
+import 'package:eClassify/data/model/data_output.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart' as urllauncher;
 
 import '../../../Utils/AppIcon.dart';
 import '../../../Utils/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
@@ -429,7 +435,11 @@ class ItemsListState extends State<ItemsList> {
     return Padding(
       padding: EdgeInsets.all(10.rw(context)),
       child: FittedBox(
-        child: Text(name).color(context.color.territoryColor),
+        fit: BoxFit.scaleDown,
+        child: Text(name)
+            .color(context.color.territoryColor)
+            .bold()
+            .size(16.rw(context)),
       ),
     );
   }
@@ -843,61 +853,61 @@ class _SliderWidgetState extends State<_SliderWidget>
                 bannersLength,
                 (index) => InkWell(
                   onTap: () async {
-                    // if (widget.sliderlist[index].thirdPartyLink != "") {
-                    //   await urllauncher.launchUrl(
-                    //       Uri.parse(widget.sliderlist[index].thirdPartyLink!),
-                    //       mode: LaunchMode.externalApplication);
-                    // } else if (widget.sliderlist[index].modelType!
-                    //     .contains("Category")) {
-                    //   if (widget.sliderlist[index].model!.subCategoriesCount! >
-                    //       0) {
-                    //     Navigator.pushNamed(context, Routes.subCategoryScreen,
-                    //         arguments: {
-                    //           "categoryList": <CategoryModel>[],
-                    //           "catName": widget.sliderlist[index].model!.name,
-                    //           "catId": widget.sliderlist[index].modelId,
-                    //           "categoryIds": [
-                    //             widget.sliderlist[index].model!.parentCategoryId
-                    //                 .toString(),
-                    //             widget.sliderlist[index].modelId.toString()
-                    //           ]
-                    //         });
-                    //   } else {
-                    //     Navigator.pushNamed(context, Routes.itemsList,
-                    //         arguments: {
-                    //           'catID':
-                    //               widget.sliderlist[index].modelId.toString(),
-                    //           'catName': widget.sliderlist[index].model!.name,
-                    //           "categoryIds": [
-                    //             widget.sliderlist[index].modelId.toString()
-                    //           ]
-                    //         });
-                    //   }
-                    // } else {
-                    //   try {
-                    //     ItemRepository fetch = ItemRepository();
+                    if (widget.sliderlist[index].thirdPartyLink != "") {
+                      await urllauncher.launchUrl(
+                          Uri.parse(widget.sliderlist[index].thirdPartyLink!),
+                          mode: urllauncher.LaunchMode.externalApplication);
+                    } else if (widget.sliderlist[index].modelType!
+                        .contains("Category")) {
+                      if (widget.sliderlist[index].model!.subCategoriesCount! >
+                          0) {
+                        Navigator.pushNamed(context, Routes.subCategoryScreen,
+                            arguments: {
+                              "categoryList": <CategoryModel>[],
+                              "catName": widget.sliderlist[index].model!.name,
+                              "catId": widget.sliderlist[index].modelId,
+                              "categoryIds": [
+                                widget.sliderlist[index].model!.parentCategoryId
+                                    .toString(),
+                                widget.sliderlist[index].modelId.toString()
+                              ]
+                            });
+                      } else {
+                        Navigator.pushNamed(context, Routes.itemsList,
+                            arguments: {
+                              'catID':
+                                  widget.sliderlist[index].modelId.toString(),
+                              'catName': widget.sliderlist[index].model!.name,
+                              "categoryIds": [
+                                widget.sliderlist[index].modelId.toString()
+                              ]
+                            });
+                      }
+                    } else {
+                      try {
+                        ItemRepository fetch = ItemRepository();
 
-                    //     Widgets.showLoader(context);
+                        Widgets.showLoader(context);
 
-                    //     DataOutput<ItemModel> dataOutput =
-                    //         await fetch.fetchItemFromItemId(
-                    //             widget.sliderlist[index].modelId!);
+                        DataOutput<ItemModel> dataOutput =
+                            await fetch.fetchItemFromItemId(
+                                widget.sliderlist[index].modelId!);
 
-                    //     Future.delayed(
-                    //       Duration.zero,
-                    //       () {
-                    //         Widgets.hideLoder(context);
-                    //         Navigator.pushNamed(context, Routes.adDetailsScreen,
-                    //             arguments: {
-                    //               "model": dataOutput.modelList[0],
-                    //             });
-                    //       },
-                    //     );
-                    //   } catch (e) {
-                    //     Widgets.hideLoder(context);
-                    //     HelperUtils.showSnackBarMessage(context, e.toString());
-                    //   }
-                    // }
+                        Future.delayed(
+                          Duration.zero,
+                          () {
+                            Widgets.hideLoder(context);
+                            Navigator.pushNamed(context, Routes.adDetailsScreen,
+                                arguments: {
+                                  "model": dataOutput.modelList[0],
+                                });
+                          },
+                        );
+                      } catch (e) {
+                        Widgets.hideLoder(context);
+                        HelperUtils.showSnackBarMessage(context, e.toString());
+                      }
+                    }
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: sidePadding),
