@@ -264,7 +264,7 @@ class _SliderWidgetState extends State<_SliderWidget>
                 bannersLength,
                 (index) => InkWell(
                   onTap: () async {
-                    if (widget.sliderlist[index].thirdPartyLink != "") {
+                    if (widget.sliderlist[index].thirdPartyLink?.isNotEmpty == true) {
                       await urllauncher.launchUrl(
                           Uri.parse(widget.sliderlist[index].thirdPartyLink!),
                           mode: LaunchMode.externalApplication);

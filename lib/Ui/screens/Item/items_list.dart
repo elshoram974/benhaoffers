@@ -853,7 +853,7 @@ class _SliderWidgetState extends State<_SliderWidget>
                 bannersLength,
                 (index) => InkWell(
                   onTap: () async {
-                    if (widget.sliderlist[index].thirdPartyLink != "") {
+                    if (widget.sliderlist[index].thirdPartyLink?.isNotEmpty == true) {
                       await urllauncher.launchUrl(
                           Uri.parse(widget.sliderlist[index].thirdPartyLink!),
                           mode: urllauncher.LaunchMode.externalApplication);
@@ -861,7 +861,7 @@ class _SliderWidgetState extends State<_SliderWidget>
                         .contains("Category")) {
                       if (widget.sliderlist[index].model!.subCategoriesCount! >
                           0) {
-                        Navigator.pushNamed(context, Routes.subCategoryScreen,
+                        Navigator.pushReplacementNamed(context, Routes.subCategoryScreen,
                             arguments: {
                               "categoryList": <CategoryModel>[],
                               "catName": widget.sliderlist[index].model!.name,
@@ -873,7 +873,7 @@ class _SliderWidgetState extends State<_SliderWidget>
                               ]
                             });
                       } else {
-                        Navigator.pushNamed(context, Routes.itemsList,
+                        Navigator.pushReplacementNamed(context, Routes.itemsList,
                             arguments: {
                               'catID':
                                   widget.sliderlist[index].modelId.toString(),
