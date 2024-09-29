@@ -353,12 +353,13 @@ class ItemsListState extends State<ItemsList> {
         FetchSliderVendorFromCategoryState>(
       builder: (context, state) {
         if (state is FetchSliderVendorFromCategoryInProgress) {
-          final HomeSlider s = HomeSlider(image: AppSettings.image);
-          final User u = User(profile: AppSettings.image);
+          final HomeSlider s = HomeSlider(image: '');
+          final User u = User(profile: '');
           return Skeletonizer(
             enabled: true,
             containersColor: Colors.grey.shade300,
             child: _sliderAndVendors(
+              isLoading: true,
               sliderList: [s, s, s],
               vendors: List.generate(10, (i) => u),
             ),
@@ -377,10 +378,11 @@ class ItemsListState extends State<ItemsList> {
   Column _sliderAndVendors({
     required List<HomeSlider> sliderList,
     required List<User> vendors,
+    bool isLoading = false,
   }) {
     return Column(
       children: [
-        if (sliderList.isNotEmpty) _SliderWidget(sliderList),
+        if (sliderList.isNotEmpty) _SliderWidget(sliderList, isLoading),
         if (vendors.isNotEmpty)
           Container(
             height: 45.rw(context),
@@ -413,6 +415,7 @@ class ItemsListState extends State<ItemsList> {
                         height: 45.rw(context),
                         width: 45.rw(context),
                         fit: BoxFit.cover,
+                        isLoading: isLoading,
                         errorWidget: _firstLetter(vendor.projectName),
                       ),
                     ),
@@ -780,8 +783,9 @@ class ItemsListState extends State<ItemsList> {
 }
 
 class _SliderWidget extends StatefulWidget {
-  const _SliderWidget(this.sliderlist);
+  const _SliderWidget(this.sliderlist, this.isLoading);
   final List<HomeSlider> sliderlist;
+  final bool isLoading;
 
   @override
   State<_SliderWidget> createState() => _SliderWidgetState();
@@ -842,6 +846,8 @@ class _SliderWidgetState extends State<_SliderWidget>
     super.build(context);
     _bannerIndex.value = 0;
 
+    double? getWidth = widget.isLoading ? double.maxFinite : null;
+
     return Column(
       children: [
         AspectRatio(
@@ -853,7 +859,8 @@ class _SliderWidgetState extends State<_SliderWidget>
                 bannersLength,
                 (index) => InkWell(
                   onTap: () async {
-                    if (widget.sliderlist[index].thirdPartyLink?.isNotEmpty == true) {
+                    if (widget.sliderlist[index].thirdPartyLink?.isNotEmpty ==
+                        true) {
                       await urllauncher.launchUrl(
                           Uri.parse(widget.sliderlist[index].thirdPartyLink!),
                           mode: urllauncher.LaunchMode.externalApplication);
@@ -861,7 +868,8 @@ class _SliderWidgetState extends State<_SliderWidget>
                         .contains("Category")) {
                       if (widget.sliderlist[index].model!.subCategoriesCount! >
                           0) {
-                        Navigator.pushReplacementNamed(context, Routes.subCategoryScreen,
+                        Navigator.pushReplacementNamed(
+                            context, Routes.subCategoryScreen,
                             arguments: {
                               "categoryList": <CategoryModel>[],
                               "catName": widget.sliderlist[index].model!.name,
@@ -873,7 +881,8 @@ class _SliderWidgetState extends State<_SliderWidget>
                               ]
                             });
                       } else {
-                        Navigator.pushReplacementNamed(context, Routes.itemsList,
+                        Navigator.pushReplacementNamed(
+                            context, Routes.itemsList,
                             arguments: {
                               'catID':
                                   widget.sliderlist[index].modelId.toString(),
@@ -920,6 +929,9 @@ class _SliderWidgetState extends State<_SliderWidget>
                       borderRadius: BorderRadius.circular(10),
                       child: UiUtils.getImage(
                           widget.sliderlist[index].image ?? "",
+                          isLoading: widget.isLoading,
+                          height: getWidth,
+                          width: getWidth,
                           fit: BoxFit.fill),
                     ),
                   ),

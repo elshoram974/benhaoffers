@@ -171,7 +171,7 @@ class UiUtils {
     double? height,
     BoxFit? fit,
     String? blurHash,
-    bool? showFullScreenImage,
+    bool isLoading = false,
     Widget? errorWidget,
   }) {
     return CachedNetworkImage(
@@ -208,6 +208,7 @@ class UiUtils {
                   AppIcons.placeHolder,
                   width: width ?? 70,
                   height: height ?? 70,
+                  fit: isLoading ? BoxFit.fill : null,
                 ),
           ),
         );

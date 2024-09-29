@@ -206,9 +206,6 @@ it will call API in background without showing the process and when data availab
     return paymentGateways.where((gateway) => gateway.status == 1).toList();
   }
 
-  // test
-  static const String image =
-      "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg";
 }
 
 /*enum HomeScreenSections {
