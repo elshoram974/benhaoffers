@@ -357,7 +357,7 @@ class ItemsListState extends State<ItemsList> {
           final User u = User(profile: '');
           return Skeletonizer(
             enabled: true,
-            containersColor: Colors.grey.shade300,
+            containersColor: Theme.of(context).colorScheme.shimmerBaseColor,
             child: _sliderAndVendors(
               isLoading: true,
               sliderList: [s, s, s],
@@ -686,7 +686,7 @@ class ItemsListState extends State<ItemsList> {
                 List.generate(20, (i) => ItemModel.empty());
             return Skeletonizer(
               enabled: true,
-              containersColor: Colors.grey.shade300,
+              containersColor: Theme.of(context).colorScheme.shimmerBaseColor,
               child: pageData(temp, false),
             );
           }
