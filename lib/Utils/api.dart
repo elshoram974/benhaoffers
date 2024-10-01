@@ -63,6 +63,7 @@ class Api {
   static String createNewPassword = "forgetten-update-password";
   static String updateProfileApi = "update-profile";
   static String getSliderApi = "get-slider";
+  static String getCategorySliderApi = "get-category-slider";
   static String getCategorySellers = "get-category-sellers";
   static String getCategoriesApi = "get-categories";
   static String getItemApi = "get-item";

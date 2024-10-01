@@ -145,7 +145,7 @@ class ItemRepository {
     print("parameters***$parameters");
 
     List<Map<String, dynamic>> response = await Future.wait([
-      Api.get(url: Api.getSliderApi, queryParameters: parameters),
+      Api.get(url: "${Api.getCategorySliderApi}/$categoryId"),
       Api.get(url: Api.getCategorySellers, queryParameters: parameters),
     ]);
 
